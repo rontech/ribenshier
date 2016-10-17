@@ -1,0 +1,30 @@
+<ion-header>
+  <ion-toolbar color="myapp">
+    <ion-title>新主题</ion-title>
+ 
+    <ion-buttons end>
+      <button ion-button icon-only (click)="viewCtrl.dismiss()"><ion-icon name="close"></ion-icon></button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+ 
+<ion-content class="new-topic">
+  <ion-list>
+    <ion-item>
+      <ion-label floating color="primary">标题</ion-label>
+      <ion-input [(ngModel)]="title"  name="title"  spellcheck="false" autocapitalize="off" required>
+      </ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label floating color="primary">内容</ion-label>
+      <ion-textarea rows="6"  [(ngModel)]="content"></ion-textarea>
+      </ion-input>
+    </ion-item>
+
+    <div class="screenSpacer"></div>
+    <ion-item>
+      <button ion-button (click)="addTopic()" type="submit" color="favorite" block>发表</button>
+    </ion-item>
+  </ion-list>
+</ion-content>

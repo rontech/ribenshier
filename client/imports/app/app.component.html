@@ -1,0 +1,70 @@
+<!-- logged out menu -->
+<ion-menu id="loggedOutMenu" [content]="content">
+
+  <ion-header>
+    <ion-toolbar color="myapp">
+      <ion-title>日本事儿</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content class="outer-content">
+
+    <ion-list>
+      <ion-list-header>
+        功能快览 
+      </ion-list-header>
+      <button ion-item menuClose *ngFor="let p of appPages" (click)="openPage(p)">
+        <ion-icon item-left [name]="p.icon" color="myapp"></ion-icon>
+        <h2 color="primary"> {{p.title}}</h2>
+      </button>
+    </ion-list>
+
+    <ion-list>
+      <ion-list-header>
+        账户管理
+      </ion-list-header>
+      <button ion-item menuClose *ngFor="let p of loggedOutPages" (click)="openPage(p)">
+        <ion-icon item-left [name]="p.icon" color="myapp"></ion-icon>
+        <h2 color="primary"> {{p.title}}</h2>
+      </button>
+    </ion-list>
+  </ion-content>
+
+</ion-menu>
+
+<!-- logged in menu -->
+<ion-menu id="loggedInMenu" [content]="content">
+
+  <ion-header>
+    <ion-toolbar>
+      <ion-title>日本事儿</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content class="outer-content">
+
+    <ion-list>
+      <ion-list-header>
+        功能快览 
+      </ion-list-header>
+      <button ion-item menuClose *ngFor="let p of appPages" (click)="openPage(p)">
+        <ion-icon item-left [name]="p.icon" color="myapp"></ion-icon>
+        <h2 color="primary"> {{p.title}}</h2>
+      </button>
+    </ion-list>
+
+    <ion-list>
+      <ion-list-header>
+        账户管理
+      </ion-list-header>
+      <button ion-item menuClose *ngFor="let p of loggedInPages" (click)="openPage(p)">
+        <ion-icon item-left [name]="p.icon" color="myapp"></ion-icon>
+        <h2 color="primary"> {{p.title}}</h2>
+      </button>
+    </ion-list>
+
+  </ion-content>
+
+</ion-menu>
+
+<ion-nav [root]="rootPage" #content swipeBackEnabled="false"></ion-nav>

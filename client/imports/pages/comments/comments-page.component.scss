@@ -1,0 +1,112 @@
+.comments-page-navbar {
+  .topic-picture {
+    width: 50px;
+    border-radius: 50%;
+    float: left;
+  }
+ 
+  .topic-title {
+    line-height: 50px;
+    float: left;
+  }
+}
+ 
+.comments-page-content {
+  .scroll-content {
+    margin: 42px -15px 53px !important;
+  }
+ 
+  .comments {
+    height: 100%;
+    background-image: url(/assets/topic-background.jpg);
+    background-color: #E0DAD6;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+ 
+  .comment-wrapper {
+    margin-bottom: 9px;
+ 
+    &::after {
+      content: "";
+      display: table;
+      clear: both;
+    }
+  }
+ 
+  .comment {
+    display: inline-block;
+    position: relative;
+    max-width: 236px;
+    border-radius: 7px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, .15);
+ 
+    &.comment-mine {
+      float: right;
+      background-color: #DCF8C6;
+ 
+      &::before {
+        right: -11px;
+        background-image: url(/assets/comment-mine.png)
+      }
+    }
+ 
+    &.comment-other {
+      float: left;
+      background-color: #FFF;
+ 
+      &::before {
+        left: -11px;
+        background-image: url(/assets/comment-other.png)
+      }
+    }
+ 
+    &.comment-other::before, &.comment-mine::before {
+      content: "";
+      position: absolute;
+      bottom: 3px;
+      width: 12px;
+      height: 19px;
+      background-position: 50% 50%;
+      background-repeat: no-repeat;
+      background-size: contain;
+    }
+ 
+    .comment-content {
+      padding: 5px 7px;
+      word-wrap: break-word;
+ 
+      &::after {
+        content: " \00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0";
+        display: inline;
+      }
+    }
+ 
+    .comment-timestamp {
+      position: absolute;
+      bottom: 2px;
+      right: 7px;
+      font-size: 12px;
+      color: gray;
+    }
+  }
+}
+
+.comments-page-footer {
+  padding-right: 0;
+ 
+  .comment-editor {
+    margin-left: 2px;
+    padding-left: 5px;
+    background: white;
+    border-radius: 3px;
+  }
+ 
+  .comment-editor-button {
+    box-shadow: none;
+    width: 50px;
+    height: 50px;
+    font-size: 17px;
+    margin: auto;
+  }
+}

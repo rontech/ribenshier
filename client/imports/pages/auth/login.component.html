@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-navbar color="myapp">
+    <ion-title>登录</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding class="login-page-content">
+  <div class="instructions">
+    <div>
+     请输入邮件地址和密码 
+    </div>
+  </div>
+
+  <ion-list>
+    <ion-item>
+      <ion-label floating color="primary">邮件</ion-label>
+      <ion-input [(ngModel)]="username"  name="username" type="email"  spellcheck="false" autocapitalize="off" required>
+      </ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label floating color="primary">密码</ion-label>
+      <ion-input [(ngModel)]="password" name="password" type="password"  (keypress)="onInputKeypress($event)"  required>
+      </ion-input>
+    </ion-item>
+    <div class="screenSpacer"></div>
+    <ion-item>
+      <ion-row responsive-sm>
+        <ion-col>
+          <button ion-button (click)="login()" type="submit" color="favorite" block>登录</button>
+        </ion-col>
+        <ion-col>
+          <button ion-button (click)="createUser()" color="light" block>创建新用户</button>
+        </ion-col>
+      </ion-row>
+    </ion-item>
+  </ion-list>
+</ion-content>

@@ -1,0 +1,71 @@
+.topics-page-content {
+  .topic-title {
+    float: left;
+    padding: 0px;
+    font-weight: bold;
+    font-size: 18px;
+  }
+  .topic-picture {
+    width: 100%;
+  }
+  
+  .creator-info {
+    font-size: 10px;
+    margin: 5px 0px 0px 0px !important;
+    padding: 0px;
+  }
+
+  .topic-brief {
+    font-size: 14px;
+  }
+
+  ion-col div {
+    padding: 0px;
+    text-align: left;
+    height: 25px;
+  }
+
+  .top-user-avatar {
+    max-width: 20px;
+    max-height: 20px;
+  }
+
+  .label-md {
+    margin: 0px 0px 0px 0px !important;
+  }
+  .label-ios {
+    margin: 0px 0px 0px 0px !important;
+  }
+
+  .item-md ion-avatar {
+    min-height: 25px;
+  }
+  
+  .item-ios ion-avatar {
+    min-height: 25px;
+  }
+
+  .shrink-item {
+    padding: 0px !important;
+    min-height: 25px;
+    width: 30px;
+  }
+  
+  .no-padding {
+    padding: 0px !important;
+  }
+}
+ 
+.options-popover {
+  $popover-width: 200px;
+  $popover-margin: 5px;
+ 
+  .popover-content {
+    width: $popover-width;
+    transform-origin: right top 0px !important;
+    left: calc(100% - #{$popover-width} - #{$popover-margin}) !important;
+    top: $popover-margin !important;
+  }
+}
+
+

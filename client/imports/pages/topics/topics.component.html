@@ -1,0 +1,86 @@
+<ion-header>
+  <ion-navbar color="myapp">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-buttons end>
+      <button ion-button icon-only class="add-topic-button" (click)="addTopic()">
+        <ion-icon ios="ios-create-outline" md="md-create"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-toolbar>
+      <ion-searchbar color="primary"
+                     [(ngModel)]="queryText"
+                     (ionInput)="updateSchedule()"
+                     placeholder="Search">
+      </ion-searchbar>
+    </ion-toolbar>
+  </ion-navbar>
+
+
+</ion-header>
+
+<ion-content class="topics-page-content">
+  <ion-segment [(ngModel)]="segment" (ionChange)="updateSchedule()">
+    <ion-segment-button value="0">
+      日本杂谈 
+    </ion-segment-button>
+    <ion-segment-button value="1">
+       社群
+    </ion-segment-button>
+    <ion-segment-button value="2">
+       住居
+     </ion-segment-button>
+     <ion-segment-button value="3">
+       工作
+    </ion-segment-button>
+  </ion-segment>
+  <ion-list>
+    <ion-card *ngFor="let topic of topics | async">
+      <ion-row>
+        <ion-col>
+           <div>
+             <p class="topic-title">{{topic.title}}</ion-label>
+             <ion-row class="no-padding">
+                <ion-item class="shrink-item">
+                  <ion-avatar>
+                    <img [src]="topic.picture" class="top-user-avatar"></img>
+                  </ion-avatar>
+                </ion-item>
+                <p class="creator-info">Lambert Zhang 5天前</p>
+             </ion-row>
+           </div>
+        </ion-col>
+        <div class="float: right;">
+          <img src='/assets/bjork-live-60.jpg' class="topic-picture"></img>
+        </div>
+      </ion-row>
+
+      <button ion-item clear (click)="showDetail(topic)">
+        <span>
+          <p class="topic-brief">{{topic.content.slice(0,22)}}</p>
+          <p class="topic-brief">{{topic.content.slice(22,40)}}...</p>
+        </span>
+      </buttoN>
+
+      <ion-row>
+        <ion-col>
+          <button ion-button clear small>
+            <ion-icon name="thumbs-up" style="color: #d03e84"></ion-icon>
+            <div>9</div>
+          </button>
+        </ion-col>
+        <ion-col>
+          <button ion-button clear small  (click)="showComments(topic)">
+            <ion-icon name="text" style="color: #556b2f"></ion-icon>
+            <div>12</div>
+          </button>
+        </ion-col>
+        <ion-col center text-center>
+          <ion-note> 最后评论:3小时前 </ion-note>
+        </ion-col>
+      </ion-row>
+
+    </ion-card>
+  </ion-list>
+</ion-content> 

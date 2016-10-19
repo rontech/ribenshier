@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
-import { NavParams, NavController } from "ionic-angular";
+import { NavParams, NavController, AlertController } from "ionic-angular";
 import { Meteor } from 'meteor/meteor';
 import { Topic } from "../../../../both/models/topic.model";
 import { Comments } from "../../../../both/collections/comments.collection";
@@ -19,34 +19,54 @@ import { CommentsPage } from "../../pages/comments/comments-page.component";
   ]
 })
 export class TopicDetail implements OnInit, OnDestroy {
-  private selectedTopic: Topic;
-  private title: string;
+  private topic: Topic;
   private barTitle: string;
-  private picture: string;
-  private content: string;
  
   constructor(
     navParams: NavParams,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private alertCtrl: AlertController
   ) {
-    this.selectedTopic = <Topic>navParams.get('topic');
-    this.title = this.selectedTopic.title;
-    this.barTitle = this.selectedTopic.title.slice(0, 12);
-    if (this.selectedTopic.title.length > 12) {
+    this.topic = <Topic>navParams.get('topic');
+    this.barTitle = this.topic.title.slice(0, 12);
+    if (this.topic.title.length > 12) {
       this.barTitle = this.barTitle + "...";
     }  
-    this.content = this.selectedTopic.content;
-    this.picture = this.selectedTopic.picture; 
   }
  
   ngOnInit() {
   }
 
-  showComments(): void {
-    this.navCtrl.push(CommentsPage, {topic: this.selectedTopic}); 
-  }
- 
   ngOnDestroy() {
+  }
+
+  showComments(): void {
+    this.navCtrl.push(CommentsPage, {topic: this.topic}); 
+  }
+
+  thumbUp(): void {
+    MeteorObservable.call('thumbUp',
+                      this.topic._id,
+                      Meteor.userId()
+      ).subscribe({
+      next: () => {
+      },
+      error: (e: Error) => {
+        this.handleThumbUpError(e)
+      }
+    });
+  }
+
+  private handleThumbUpError(e: Error): void {
+    console.error(e);
+
+    const alert = this.alertCtrl.create({
+      title: '提醒',
+      message: e.message,
+      buttons: ['了解']
+    });
+
+    alert.present();
   }
 
 }

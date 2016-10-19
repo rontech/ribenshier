@@ -13,24 +13,26 @@
 <ion-content class="topic-detail-content">
   <ion-card>
     <h1 class="card-title">
-      {{title}}
+      {{topic.title}}
     </h1>
+
     <ion-card-content>
-      <img class="topic-picture" [src]="picture"/>
-      <div class="topic-content">{{content}}</div>
+      <img class="topic-picture" [src]="topic.picture"/>
+      <div class="topic-content">{{topic.content}}</div>
     </ion-card-content>
+
     <ion-item>
-      <button ion-button  icon-only clear (click)="showComments()" item-right>
+      <button ion-button  icon-only clear (click)="thumbUp()" item-right>
         <ion-icon name='thumbs-up' item-right style="color: #d03e84"></ion-icon>
       </button>
-      <ion-badge item-right>9</ion-badge>
+      <ion-badge item-right>{{topic.thumbed}}</ion-badge>
     </ion-item>
 
     <ion-item>
       <button ion-button icon-only clear (click)="showComments()" item-right>
         <ion-icon name='text' item-right style="color: #556b2f"></ion-icon>
       </button>
-      <ion-badge item-right>260k</ion-badge></ion-icon>
+      <ion-badge item-right>{{topic.commented}}</ion-badge></ion-icon>
     </ion-item>
   </ion-card>
 

@@ -97,13 +97,14 @@ export class TopicsComponent implements OnInit {
     console.error(e);
 
     const alert = this.alertCtrl.create({
-      title: '警告',
+      title: '提醒',
       message: e.message,
       buttons: ['了解']
     });
 
     alert.present();
   }
+
   doRefresh(refresher): void {
     console.log('Begin async operation', refresher);
     setTimeout(() => {

@@ -75,4 +75,12 @@ export class TopicsComponent implements OnInit {
   showComments(topic): void {
     this.navCtrl.push(CommentsPage, {topic});
   }
+
+  doRefresh(refresher): void {
+    console.log('Begin async operation', refresher);
+    setTimeout(() => {
+      console.log('Async operation has ended');
+      refresher.complete();
+    }, 2000);
+  }
 }

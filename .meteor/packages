@@ -26,4 +26,5 @@ check
 accounts-base
 accounts-password
 reywood:publish-composite
-edgee:slingshot
+jalik:ufs
+jalik:ufs-gridfs

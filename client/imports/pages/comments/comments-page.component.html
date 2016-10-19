@@ -22,8 +22,7 @@
  
 <ion-footer>
   <ion-toolbar color="myapp" class="comments-page-footer" position="bottom">
-    <ion-input [(ngModel)]="comment" (keypress)="onInputKeypress($event)" class="comment-editor" placeholder="Type a comment"></ion-input>
- 
+    <ion-textarea rows="5" [(ngModel)]="comment"  class="comment-editor" placeholder="Type a comment"></ion-textarea>
     <ion-buttons end>
       <button ion-button icon-only *ngIf="comment" class="comment-editor-button" (click)="sendComment()">
         <ion-icon name="send"></ion-icon>

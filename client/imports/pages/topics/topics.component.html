@@ -16,8 +16,6 @@
       </ion-searchbar>
     </ion-toolbar>
   </ion-navbar>
-
-
 </ion-header>
 
 <ion-content class="topics-page-content">
@@ -35,6 +33,16 @@
        工作
     </ion-segment-button>
   </ion-segment>
+
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content
+      pullingIcon="arrow-dropdown"
+      pullingText="向下拖拽来更新内容"
+      refreshingSpinner="circles"
+      refreshingText="更新中...">
+    </ion-refresher-content>
+  </ion-refresher>
+ 
   <ion-list>
     <ion-card *ngFor="let topic of topics | async">
       <ion-row>
@@ -44,7 +52,7 @@
              <ion-row class="no-padding">
                 <ion-item class="shrink-item">
                   <ion-avatar>
-                    <img [src]="topic.picture" class="top-user-avatar"></img>
+                    <img src="assets/none.png" class="top-user-avatar"></img>
                   </ion-avatar>
                 </ion-item>
                 <p class="creator-info">Lambert Zhang 5天前</p>
@@ -52,16 +60,18 @@
            </div>
         </ion-col>
         <div class="float: right;">
-          <img src='/assets/bjork-live-60.jpg' class="topic-picture"></img>
+          <img [src]='topic.thumb' class="topic-picture"></img>
         </div>
       </ion-row>
-
-      <button ion-item clear (click)="showDetail(topic)">
-        <span>
-          <p class="topic-brief">{{topic.content.slice(0,22)}}</p>
-          <p class="topic-brief">{{topic.content.slice(22,40)}}...</p>
-        </span>
-      </buttoN>
+      
+      <ion-card-content>
+        <button ion-item clear (click)="showDetail(topic)">
+          <span>
+            <p class="topic-brief">{{topic.content.slice(0,22)}}</p>
+            <p class="topic-brief">{{topic.content.slice(22,40)}}...</p>
+          </span>
+        </buttoN>
+      </ion-card-content>
 
       <ion-row>
         <ion-col>

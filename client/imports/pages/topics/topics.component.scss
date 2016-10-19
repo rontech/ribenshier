@@ -37,11 +37,7 @@
     margin: 0px 0px 0px 0px !important;
   }
 
-  .item-md ion-avatar {
-    min-height: 25px;
-  }
-  
-  .item-ios ion-avatar {
+  ion-avatar {
     min-height: 25px;
   }
 
@@ -49,6 +45,10 @@
     padding: 0px !important;
     min-height: 25px;
     width: 30px;
+  }
+
+  ion-card-content {
+    padding: 0px 0px 0px 0px !important;
   }
   
   .no-padding {

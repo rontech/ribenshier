@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { NavParams, PopoverController } from "ionic-angular";
-import {Meteor} from 'meteor/meteor';
+import { Meteor } from 'meteor/meteor';
 import { Topic } from "../../../../both/models/topic.model";
 import { Comments } from "../../../../both/collections/comments.collection";
 import { Observable, Subscription } from "rxjs";
@@ -37,6 +37,7 @@ export class CommentsPage implements OnInit, OnDestroy {
     }
     
     this.picture = this.selectedTopic.picture; 
+    this.senderId = Meteor.userId();
   }
  
   ngOnInit() {
@@ -49,7 +50,6 @@ export class CommentsPage implements OnInit, OnDestroy {
           comments.forEach((comment: Comment) => {
             comment.ownership = this.senderId == comment.senderId ? 'mine' : 'other';
           });
- 
           return comments;
         });
       });
@@ -78,7 +78,7 @@ export class CommentsPage implements OnInit, OnDestroy {
   }
  
   private get scroller(): Element {
-    return this.commentsList.querySelector('.scroll-content');
+    return this.commentsList;
   }
 
   showOptions(): void {

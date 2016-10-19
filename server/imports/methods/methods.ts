@@ -22,7 +22,13 @@ Meteor.methods({
       $set: {profile}
     });
   },
-  addTopic(receiverId: string, title: string, content: string): void {
+  addTopic(receiverId: string,
+           title: string,
+           content: string,
+           pictureId: string,
+           picture: string,
+           thumbId: string,
+           thumb: string): void {
     if (!this.userId) throw new Meteor.Error('unauthorized',
       'User must be logged-in to create a new topic');
  
@@ -37,7 +43,13 @@ Meteor.methods({
       title: title,
       content: content,
       creatorId: receiverId, 
-      picture: "assets/none.png"
+      pictureId: pictureId,
+      picture: picture,
+      thumbId: thumbId,
+      thumb: thumb,
+      commented: 0,
+      thumbed: 0, 
+      createdAt: Date.now()
     };
  
     Topics.insert(topic);

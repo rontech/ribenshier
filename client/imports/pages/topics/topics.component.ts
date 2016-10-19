@@ -23,6 +23,7 @@ import { CommentsPage } from "../../pages/comments/comments-page.component";
 export class TopicsComponent implements OnInit {
   topics: Observable<Topic[]>;
   senderId: string;
+  queryText: string;
 
   constructor(
     private navCtrl: NavController,
@@ -33,6 +34,7 @@ export class TopicsComponent implements OnInit {
 
   ngOnInit() {
     this.senderId = Meteor.userId();
+    this.queryText = "";
 
     MeteorObservable.subscribe('topics').subscribe(() => {
       MeteorObservable.autorun().subscribe(() => {

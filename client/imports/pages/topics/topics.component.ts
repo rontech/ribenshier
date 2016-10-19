@@ -6,7 +6,7 @@ import { Meteor} from 'meteor/meteor';
 import { MeteorObservable } from 'meteor-rxjs';
 import * as style from "./topics.component.scss";
 import { Topics } from "../../../../both/collections/topics.collection";
-import { NavController, PopoverController, ModalController } from "ionic-angular";
+import { NavController, PopoverController, ModalController, AlertController } from "ionic-angular";
 import { TopicsOptionsComponent } from '../topics/topics-options.component';
 import { NewTopicComponent } from './new-topic.component';
 import { TopicDetail } from "../topic-detail/topic-detail.component";
@@ -27,7 +27,8 @@ export class TopicsComponent implements OnInit {
   constructor(
     private navCtrl: NavController,
     private popoverCtrl: PopoverController,
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
+    private alertCtrl: AlertController
     ) {}
 
   ngOnInit() {
@@ -39,12 +40,13 @@ export class TopicsComponent implements OnInit {
           .find({})
           .mergeMap<Topic[]>(topics =>
             Observable.combineLatest(
-              ...topics.map(topic =>
-
+              topics.map(topic =>
                 Comments.find({ topicId: topic._id }, { sort: { createdAt: -1 }, limit: 1 })
                   .startWith(null)
                   .map(comments => {
-                    if (comments) topic.lastComment = comments[0];
+                    if (comments && comments[0]) {
+                      topic.lastComment = comments[0];
+                    }
                     return topic;
                   })
 
@@ -76,6 +78,30 @@ export class TopicsComponent implements OnInit {
     this.navCtrl.push(CommentsPage, {topic});
   }
 
+  thumbUp(topic): void {
+    MeteorObservable.call('thumbUp',
+                      topic._id,
+                      this.senderId
+      ).subscribe({
+      next: () => {
+      },
+      error: (e: Error) => {
+        this.handleThumbUpError(e)
+      }
+    });
+  }
+
+  private handleThumbUpError(e: Error): void {
+    console.error(e);
+
+    const alert = this.alertCtrl.create({
+      title: '警告',
+      message: e.message,
+      buttons: ['了解']
+    });
+
+    alert.present();
+  }
   doRefresh(refresher): void {
     console.log('Begin async operation', refresher);
     setTimeout(() => {

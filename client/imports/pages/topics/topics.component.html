@@ -75,15 +75,15 @@
 
       <ion-row>
         <ion-col>
-          <button ion-button clear small>
+          <button ion-button clear small (click)="thumbUp(topic)">
             <ion-icon name="thumbs-up" style="color: #d03e84"></ion-icon>
-            <div>9</div>
+            <div>{{topic.thumbed}}</div>
           </button>
         </ion-col>
         <ion-col>
           <button ion-button clear small  (click)="showComments(topic)">
             <ion-icon name="text" style="color: #556b2f"></ion-icon>
-            <div>12</div>
+            <div>{{topic.commented}}</div>
           </button>
         </ion-col>
         <ion-col center text-center>

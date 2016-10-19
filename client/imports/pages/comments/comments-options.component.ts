@@ -23,15 +23,15 @@ export class CommentsOptionsComponent {
  
   remove(): void {
     const alert = this.alertCtrl.create({
-      title: 'Remove',
-      message: 'Are you sure you would like to proceed?',
+      title: '提醒',
+      message: '你确信你要删除?',
       buttons: [
         {
-          text: 'Cancel',
+          text: '取消',
           role: 'cancel'
         },
         {
-          text: 'Yes',
+          text: '了解',
           handler: () => {
             this.handleRemove(alert);
             return false;

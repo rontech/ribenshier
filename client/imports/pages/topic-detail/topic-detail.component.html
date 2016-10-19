@@ -10,14 +10,14 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content>
+<ion-content class="topic-detail-content">
   <ion-card>
-    <img [src]="picture"/>
+    <h1 class="card-title">
+      {{title}}
+    </h1>
     <ion-card-content>
-      <h1 class="card-title">
-        {{title}}
-      </h1>
-      <pre>{{content}}</pre>
+      <img class="topic-picture" [src]="picture"/>
+      <div class="topic-content">{{content}}</div>
     </ion-card-content>
     <ion-item>
       <button ion-button  icon-only clear (click)="showComments()" item-right>

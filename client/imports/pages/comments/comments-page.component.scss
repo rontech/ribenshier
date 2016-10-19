@@ -7,13 +7,13 @@
  
   .topic-title {
     line-height: 50px;
-    float: left;
+    float: center;
   }
 }
  
 .comments-page-content {
   .scroll-content {
-    margin: 42px -15px 53px !important;
+    margin: 18px -15px 53px !important;
   }
  
   .comments {
@@ -75,9 +75,10 @@
     .comment-content {
       padding: 5px 7px;
       word-wrap: break-word;
+      white-space: pre-wrap;
  
       &::after {
-        content: " \00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0";
+        content: " \00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0";
         display: inline;
       }
     }

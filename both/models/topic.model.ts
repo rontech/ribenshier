@@ -10,7 +10,7 @@ export interface Topic {
   thumbId?: string;
   creatorId?: string,
   lastComment?: Comment;
-  commented: number;
+  commented?: number;
   thumbed?: number;
   createdAt?: Date;
 }

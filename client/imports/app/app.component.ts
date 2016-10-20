@@ -6,6 +6,8 @@ import template from './app.component.html';
 import { TabsContainerComponent } from "../pages/tabs-container/tabs-container.component";
 import { LoginComponent } from '../pages/auth/login.component';
 import { ProfileComponent } from '../pages/auth/profile.component';
+import * as moment from 'moment';
+import { ChineseTimeAgoPipe } from '../filters/time.filter';
 
 export interface PageObj {
   title: string;
@@ -39,6 +41,8 @@ export class AppComponent {
   ];
 
   constructor(platform: Platform) {
+    moment.locale("zh-cn");
+
     this.rootPage = Meteor.user() ? TabsContainerComponent : LoginComponent;
 
     platform.ready().then(() => {

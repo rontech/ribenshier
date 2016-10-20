@@ -13,7 +13,7 @@
     <div *ngFor="let comment of comments | async" class="comment-wrapper">
       <div [class]="'comment comment-' + comment.ownership">
         <div class="comment-content">{{comment.content}}</div>
-        <span class="comment-timestamp">{{comment.createdAt | amDateFormat: 'HH:MM'}}</span>
+        <span class="comment-timestamp">{{comment.createdAt | amDateFormat: 'H时m分'}}</span>
       </div>
     </div>
   </ion-scroll>

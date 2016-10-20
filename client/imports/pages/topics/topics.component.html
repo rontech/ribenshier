@@ -55,7 +55,7 @@
                     <img src="assets/none.png" class="top-user-avatar"></img>
                   </ion-avatar>
                 </ion-item>
-                <p class="creator-info">Lambert Zhang 5天前</p>
+                <p class="creator-info">Lambert Zhang {{topic.createdAt | amTimeAgo | chineseTimeAgo}}</p>
              </ion-row>
            </div>
         </ion-col>
@@ -67,8 +67,8 @@
       <ion-card-content>
         <button ion-item clear (click)="showDetail(topic)">
           <span>
-            <p class="topic-brief">{{topic.content.slice(0,22)}}</p>
-            <p class="topic-brief">{{topic.content.slice(22,40)}}...</p>
+            <p class="topic-brief">{{topic.content.slice(0, 22)}}</p>
+            <p class="topic-brief">{{topic.content.slice(22, 44)}}...</p>
           </span>
         </buttoN>
       </ion-card-content>
@@ -86,8 +86,8 @@
             <div>{{topic.commented}}</div>
           </button>
         </ion-col>
-        <ion-col center text-center>
-          <ion-note> 最后评论:3小时前 </ion-note>
+        <ion-col left  text-left>
+          <div class="last-comment-time" *ngIf="topic.lastComment">最后评论:{{topic.lastComment.createdAt | amTimeAgo | chineseTimeAgo}}</div>
         </ion-col>
       </ion-row>
 

@@ -11,6 +11,7 @@ import { TopicsOptionsComponent } from '../pages/topics/topics-options.component
 import { NewTopicComponent } from '../pages/topics/new-topic.component';
 import { CommentsOptionsComponent } from '../pages/comments/comments-options.component';
 import { TopicDetail } from "../pages/topic-detail/topic-detail.component";
+import { ChineseTimeAgoPipe } from "../filters/time.filter";
 
 @NgModule({
   // Components, Pipes, Directive
@@ -24,7 +25,8 @@ import { TopicDetail } from "../pages/topic-detail/topic-detail.component";
     TopicsOptionsComponent,
     NewTopicComponent,
     CommentsOptionsComponent,
-    TopicDetail
+    TopicDetail,
+    ChineseTimeAgoPipe
   ],
   // Entry Components
   entryComponents: [
@@ -41,13 +43,13 @@ import { TopicDetail } from "../pages/topic-detail/topic-detail.component";
   ],
   // Providers
   providers: [
-
   ],
   // Modules
   imports: [
     IonicModule.forRoot(AppComponent),
     MomentModule
   ],
+  exports: [ChineseTimeAgoPipe],
   // Main Component
   bootstrap: [ IonicApp ]
 })

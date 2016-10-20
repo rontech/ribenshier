@@ -1,17 +1,17 @@
-import { Component, OnInit } from "@angular/core";
-import template from "./topics.component.html"
-import { Observable } from "rxjs";
-import { Topic } from "../../../../both/models/topic.model";
+import { Component, OnInit, Directive } from '@angular/core';
+import template from './topics.component.html';
+import { Observable } from 'rxjs';
+import { Topic } from '../../../../both/models/topic.model';
 import { Meteor} from 'meteor/meteor';
 import { MeteorObservable } from 'meteor-rxjs';
-import * as style from "./topics.component.scss";
-import { Topics } from "../../../../both/collections/topics.collection";
-import { NavController, PopoverController, ModalController, AlertController } from "ionic-angular";
+import * as style from './topics.component.scss';
+import { Topics } from '../../../../both/collections/topics.collection';
+import { NavController, PopoverController, ModalController, AlertController } from 'ionic-angular';
 import { TopicsOptionsComponent } from '../topics/topics-options.component';
 import { NewTopicComponent } from './new-topic.component';
-import { TopicDetail } from "../topic-detail/topic-detail.component";
-import { Comments } from "../../../../both/collections/comments.collection";
-import { CommentsPage } from "../../pages/comments/comments-page.component";
+import { TopicDetail } from '../topic-detail/topic-detail.component';
+import { Comments } from '../../../../both/collections/comments.collection';
+import { CommentsPage } from '../../pages/comments/comments-page.component';
  
 @Component({
   selector: "topics",
@@ -39,7 +39,7 @@ export class TopicsComponent implements OnInit {
     MeteorObservable.subscribe('topics').subscribe(() => {
       MeteorObservable.autorun().subscribe(() => {
         this.topics = Topics
-          .find({})
+          .find({}, { sort: { createdAt: -1 } })
           .mergeMap<Topic[]>(topics =>
             Observable.combineLatest(
               topics.map(topic =>

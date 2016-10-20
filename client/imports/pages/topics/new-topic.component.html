@@ -20,13 +20,17 @@
     </ion-item>
     
     <ion-row>
-      <label class="upload-label" for="picture_upload">
-        ＋上传图片
-        <input type="file" id="picture_upload" style="display:none;" (change)="uploadPicture($event.target.files)">
-      <label>
+      <ion-item>
+        <label class="upload-label" for="picture_upload">
+          ＋上传图片
+          <input type="file" id="picture_upload" style="display:none;" (change)="uploadPicture($event.target.files)">
+        <label>
+      </ion-item>
+      <ion-item>
       <div *ngFor="let thumb of thumbs | async" class="float: right;">
          <img [src]= 'thumb.path'></img>
       </div>
+      </ion-item>
     </ion-row>
 
     <ion-item>

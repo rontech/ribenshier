@@ -73,25 +73,30 @@ export class NewTopicComponent implements OnInit, OnDestroy {
     alert.present();
   }
 
-  uploadPicture(): void {
+  uploadPicture(files): void {
+    if(files.length == 0) {
+      return;
+    }
+   
     let loader = this.loadingCtrl.create({
       content: "上载中...",
       dismissOnPageChange: true
     });
 
-    UploadFS.selectFiles((file) => {
-      loader.present();
-      upload(file)
-        .then((result) => { 
-          loader.dismissAll();
-          this.picture = result.path;
-          this.pictureId = result._id;
-          this.updatePicture();
-        }).catch((e) => {
-          loader.dismissAll();
-          this.handleUploadError(e);
-        });
-    });
+    loader.present();
+    upload(files[0])
+      .then((result) => { 
+        loader.dismissAll();
+        this.picture = result.path;
+        this.pictureId = result._id;
+        this.updatePicture();
+      }).catch((e) => {
+        loader.dismissAll();
+        this.handleUploadError(e);
+      });
+  }
+
+  ngOnDestroy() {
   }
 
   private updatePicture(): void {
@@ -119,8 +124,5 @@ export class NewTopicComponent implements OnInit, OnDestroy {
     });
  
     alert.present(); 
-  }
-
-  ngOnDestroy() {
   }
 }

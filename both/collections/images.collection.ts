@@ -5,7 +5,7 @@ import { UploadFS } from 'meteor/jalik:ufs'
  
 export const Images = new MongoObservable.Collection<Image>('images');
 export const Thumbs = new MongoObservable.Collection<Thumb>('thumbs');
- 
+
 export const ThumbsStore = new UploadFS.store.GridFS({
   collection: Thumbs.collection,
   name: 'thumbs',

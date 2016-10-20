@@ -13,15 +13,17 @@
       <ion-label floating color="primary">标题</ion-label>
       <ion-input [(ngModel)]="title"  name="title" required></ion-input>
     </ion-item>
+    
     <ion-item>
       <ion-label floating color="primary">内容</ion-label>
       <ion-textarea rows="6"  [(ngModel)]="content"></ion-textarea>
     </ion-item>
-
+    
     <ion-row>
-      <ion-item>
-        <button ion-button (click)="uploadPicture()" color="dark" round>上传图片</button>
-      </ion-item>
+      <label class="upload-label" for="picture_upload">
+        ＋上传图片
+        <input type="file" id="picture_upload" style="display:none;" (change)="uploadPicture($event.target.files)">
+      <label>
       <div *ngFor="let thumb of thumbs | async" class="float: right;">
          <img [src]= 'thumb.path'></img>
       </div>

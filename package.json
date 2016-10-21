@@ -30,6 +30,7 @@
     "angular2-meteor-tests-polyfills": "0.0.2",
     "angular2-moment": "^1.0.0-beta.3",
     "gm": "^1.23.0",
+    "gravatar": "^1.5.2",
     "gravatar4node": "0.0.4",
     "ionic-angular": "^2.0.0-rc.0",
     "ionic-native": "^2.2.2",

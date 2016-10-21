@@ -42,7 +42,6 @@ export class TopicsComponent implements OnInit {
               topics.map(topic => 
                 Meteor.users.find({_id: topic.creatorId}, {fields: {profile: 1}})
                 .map(user => {
-                  console.log("user=", user);
                   topic.profile = user.profile;
                   Comments.find({ topicId: topic._id }, { sort: { createdAt: -1 }, limit: 1 })
                     .startWith(null)

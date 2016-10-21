@@ -4,7 +4,7 @@ import { Accounts } from 'meteor/accounts-base';
 import { TabsContainerComponent } from '../tabs-container/tabs-container.component';
 import template from './login.component.html';
 import * as style from './login.component.scss';
-import { getAvatar } from 'gravatar4node';
+import * as Gravatar from 'gravatar';
  
 @Component({
   selector: 'login',
@@ -56,7 +56,7 @@ export class LoginComponent {
   createUser(): void {
     let gravatar;
     try {
-      gravatar = getAvatar(this.username, {s: 100, d: 'monsterid'}, null);
+      gravatar = Gravatar.url(this.username, {s: 100, d: 'monsterid'}, null);
     } catch(e) {
       gravatar = "assets/none.png";
     }

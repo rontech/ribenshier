@@ -19,6 +19,6 @@ declare module "meteor/jalik:ufs" {
   export var UploadFS;
 }
 
-declare module "gravatar4node" {
-   export function getAvatar(email: any, params: any, https: any): any;
+declare module "gravatar" {
+   export function url(email: any, params: any, https: any): any;
 }

@@ -6,8 +6,7 @@ import { Meteor} from 'meteor/meteor';
 import { MeteorObservable } from 'meteor-rxjs';
 import * as style from './topics.component.scss';
 import { Topics } from '../../../../both/collections/topics.collection';
-import { NavController, PopoverController, ModalController, AlertController } from 'ionic-angular';
-import { TopicsOptionsComponent } from '../topics/topics-options.component';
+import { NavController, ModalController, AlertController } from 'ionic-angular';
 import { NewTopicComponent } from './new-topic.component';
 import { TopicDetail } from '../topic-detail/topic-detail.component';
 import { Comments } from '../../../../both/collections/comments.collection';
@@ -27,7 +26,6 @@ export class TopicsComponent implements OnInit {
 
   constructor(
     private navCtrl: NavController,
-    private popoverCtrl: PopoverController,
     private modalCtrl: ModalController,
     private alertCtrl: AlertController
     ) {}
@@ -35,23 +33,26 @@ export class TopicsComponent implements OnInit {
   ngOnInit() {
     this.senderId = Meteor.userId();
     this.queryText = "";
-
     MeteorObservable.subscribe('topics').subscribe(() => {
       MeteorObservable.autorun().subscribe(() => {
         this.topics = Topics
           .find({}, { sort: { createdAt: -1 } })
           .mergeMap<Topic[]>(topics =>
             Observable.combineLatest(
-              topics.map(topic =>
-                Comments.find({ topicId: topic._id }, { sort: { createdAt: -1 }, limit: 1 })
-                  .startWith(null)
-                  .map(comments => {
-                    if (comments && comments[0]) {
-                      topic.lastComment = comments[0];
-                    }
-                    return topic;
-                  })
-
+              topics.map(topic => 
+                Meteor.users.find({_id: topic.creatorId}, {fields: {profile: 1}})
+                .map(user => {
+                  console.log("user=", user);
+                  topic.profile = user.profile;
+                  Comments.find({ topicId: topic._id }, { sort: { createdAt: -1 }, limit: 1 })
+                    .startWith(null)
+                    .map(comments => {
+                      if (comments && comments[0]) {
+                        topic.lastComment = comments[0];
+                      }
+                    });
+                  return topic;
+                })
               )
             )
           ).zone();
@@ -60,16 +61,18 @@ export class TopicsComponent implements OnInit {
   }
 
   addTopic(): void {
-    const modal = this.modalCtrl.create(NewTopicComponent);
-    modal.present();
-  }
-
-  showOptions(): void {
-    const popover = this.popoverCtrl.create(TopicsOptionsComponent, {}, {
-      cssClass: 'options-popover'
+    const alert = this.alertCtrl.create({
+      title: '提醒',
+      message: '你需要登录才可以发表。',
+      buttons: ['了解']
     });
- 
-    popover.present();
+
+    if(Meteor.user()) {
+      const modal = this.modalCtrl.create(NewTopicComponent);
+      modal.present();
+    } else {
+      alert.present();
+    }
   }
 
   showDetail(topic): void {
@@ -93,6 +96,14 @@ export class TopicsComponent implements OnInit {
     });
   }
 
+  doRefresh(refresher): void {
+    console.log('Begin async operation', refresher);
+    setTimeout(() => {
+      console.log('Async operation has ended');
+      refresher.complete();
+    }, 2000);
+  }
+
   private handleThumbUpError(e: Error): void {
     console.error(e);
 
@@ -103,13 +114,5 @@ export class TopicsComponent implements OnInit {
     });
 
     alert.present();
-  }
-
-  doRefresh(refresher): void {
-    console.log('Begin async operation', refresher);
-    setTimeout(() => {
-      console.log('Async operation has ended');
-      refresher.complete();
-    }, 2000);
   }
 }

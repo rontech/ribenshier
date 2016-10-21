@@ -1,6 +1,5 @@
 <!-- logged out menu -->
 <ion-menu id="loggedOutMenu" [content]="content">
-
   <ion-header>
     <ion-toolbar color="myapp">
       <ion-title>日本事儿</ion-title>
@@ -8,7 +7,6 @@
   </ion-header>
 
   <ion-content class="outer-content">
-
     <ion-list>
       <ion-list-header>
         功能快览 
@@ -29,20 +27,17 @@
       </button>
     </ion-list>
   </ion-content>
-
 </ion-menu>
 
 <!-- logged in menu -->
 <ion-menu id="loggedInMenu" [content]="content">
-
   <ion-header>
-    <ion-toolbar>
+    <ion-toolbar color="myapp">
       <ion-title>日本事儿</ion-title>
     </ion-toolbar>
   </ion-header>
 
   <ion-content class="outer-content">
-
     <ion-list>
       <ion-list-header>
         功能快览 
@@ -62,9 +57,7 @@
         <h2 color="primary"> {{p.title}}</h2>
       </button>
     </ion-list>
-
   </ion-content>
-
 </ion-menu>
 
 <ion-nav [root]="rootPage" #content swipeBackEnabled="false"></ion-nav>

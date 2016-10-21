@@ -7,7 +7,6 @@ import { MomentModule } from "angular2-moment";
 import { CommentsPage } from "../pages/comments/comments-page.component";
 import { LoginComponent } from '../pages/auth/login.component';
 import { ProfileComponent } from '../pages/auth/profile.component';
-import { TopicsOptionsComponent } from '../pages/topics/topics-options.component';
 import { NewTopicComponent } from '../pages/topics/new-topic.component';
 import { CommentsOptionsComponent } from '../pages/comments/comments-options.component';
 import { TopicDetail } from "../pages/topic-detail/topic-detail.component";
@@ -22,7 +21,6 @@ import { ChineseTimeAgoPipe } from "../filters/time.filter";
     CommentsPage,
     LoginComponent,
     ProfileComponent,
-    TopicsOptionsComponent,
     NewTopicComponent,
     CommentsOptionsComponent,
     TopicDetail,
@@ -36,7 +34,6 @@ import { ChineseTimeAgoPipe } from "../filters/time.filter";
     CommentsPage,
     LoginComponent,
     ProfileComponent,
-    TopicsOptionsComponent,
     NewTopicComponent,
     CommentsOptionsComponent,
     TopicDetail

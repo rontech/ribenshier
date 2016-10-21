@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
-import { NavController, AlertController } from 'ionic-angular';
+import { NavController, AlertController, Events } from 'ionic-angular';
 import { Accounts } from 'meteor/accounts-base';
-import { TabsContainerComponent } from "../tabs-container/tabs-container.component";
+import { TabsContainerComponent } from '../tabs-container/tabs-container.component';
 import template from './login.component.html';
-import * as style from "./login.component.scss";
+import * as style from './login.component.scss';
+import { getAvatar } from 'gravatar4node';
  
 @Component({
   selector: 'login',
@@ -18,7 +19,8 @@ export class LoginComponent {
  
   constructor(
     private navCtrl: NavController,
-    private alertCtrl: AlertController
+    private alertCtrl: AlertController,
+    private events: Events
     ) {}
  
   onInputKeypress({keyCode}: KeyboardEvent): void {
@@ -33,6 +35,7 @@ export class LoginComponent {
       this.password,
       (e: Error) => {
         if (e) return this.handleLoginError(e);
+        this.events.publish('user:login');
         this.navCtrl.push(TabsContainerComponent);
       }
     );
@@ -51,16 +54,24 @@ export class LoginComponent {
   }
 
   createUser(): void {
+    let gravatar;
+    try {
+      gravatar = getAvatar(this.username, {s: 100, d: 'monsterid'}, null);
+    } catch(e) {
+      gravatar = "assets/none.png";
+    }
+
     Accounts.createUser({
       username: this.username,
       password: this.password,
       email: this.username,
       profile: {
-        name: "",
-        picture:""
+        name: this.username,
+        picture: gravatar
       }
     }, (e: Error) => {
       if (e) return this.handleCreateUserError(e);
+      this.events.publish('user:signup');
       this.navCtrl.push(TabsContainerComponent);
     });
   }

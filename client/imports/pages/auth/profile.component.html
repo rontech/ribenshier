@@ -1,21 +1,26 @@
 <ion-header>
   <ion-navbar color="myapp">
-    <ion-title>Profile</ion-title>
+    <ion-title>信息设定</ion-title>
  
     <ion-buttons end>
-      <button ion-button class="done-button" (click)="done()">Done</button>
+      <button ion-button class="done-button" (click)="done()">确定</button>
     </ion-buttons>
   </ion-navbar>
 </ion-header>
  
 <ion-content class="profile-page-content">
-  <div class="profile-picture">
-    <img [src]="profile.picture">
-    <ion-icon name="create"></ion-icon>
+  <div *ngFor="let thumb of thumbs | async">
   </div>
- 
+  <div class="profile-picture">
+    <img [src]="profile.picture" />
+    <label class="upload-label" for="picture_upload">
+      <ion-icon name="create"></ion-icon>
+      <input type="file" id="picture_upload" style="display:none;" (change)="uploadPicture($event.target.files)"/>
+    </label>
+  </div>
+
   <ion-item class="profile-name">
-    <ion-label stacked>Name</ion-label>
-    <ion-input [(ngModel)]="profile.name" placeholder="Your name"></ion-input>
+    <ion-label stacked>昵称</ion-label>
+    <ion-input [(ngModel)]="profile.name" placeholder="修改你的昵称"></ion-input>
   </ion-item>
 </ion-content>

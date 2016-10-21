@@ -8,8 +8,6 @@ import { Users } from '../../../both/collections/users.collection';
 import { User } from '../../../both/models/user.model';
  
 Meteor.publishComposite('topics', function(): PublishCompositeConfig<Topic> {
-  if (!this.userId) return;
- 
   return {
     find: () => {
       return Topics.collection.find({});

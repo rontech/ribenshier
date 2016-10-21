@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
-import { NavParams, PopoverController } from "ionic-angular";
+import { NavParams, PopoverController, AlertController } from "ionic-angular";
 import { Meteor } from 'meteor/meteor';
 import { Topic } from "../../../../both/models/topic.model";
 import { Comments } from "../../../../both/collections/comments.collection";
@@ -28,7 +28,8 @@ export class CommentsPage implements OnInit, OnDestroy {
  
   constructor(
     navParams: NavParams,
-    private popoverCtrl: PopoverController
+    private popoverCtrl: PopoverController,
+    private alertCtrl: AlertController
   ) {
     this.selectedTopic = <Topic>navParams.get('topic');
     this.title = this.selectedTopic.title.slice(0, 12);
@@ -105,8 +106,18 @@ export class CommentsPage implements OnInit, OnDestroy {
   }
  
   sendComment(): void {
-    MeteorObservable.call('addComment', this.selectedTopic._id, this.comment).zone().subscribe(() => {
-      this.comment = '';
+    const alert = this.alertCtrl.create({
+      title: '提醒',
+      message: '你需要登录才可以评论。',
+      buttons: ['了解']
     });
+
+    if(Meteor.user()) {
+      MeteorObservable.call('addComment', this.selectedTopic._id, this.comment).zone().subscribe(() => {
+        this.comment = '';
+      });
+    } else {
+      alert.present();
+    }
   }
 }

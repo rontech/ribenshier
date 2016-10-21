@@ -14,11 +14,8 @@ const nonEmptyString = Match.Where((str) => {
 Meteor.methods({
   updateProfile(profile: Profile): void {
     if (!this.userId) throw new Meteor.Error('unauthorized',
-      'User must be logged-in to create a new topic');
-    check(profile, {
-      name: nonEmptyString,
-      picture: nonEmptyString
-    });
+      '你需要登录才可以操作。');
+    check(profile.name,  nonEmptyString);
  
     Meteor.users.update(this.userId, {
       $set: {profile}
@@ -32,14 +29,14 @@ Meteor.methods({
            thumbId: string,
            thumb: string): void {
     if (!this.userId) throw new Meteor.Error('unauthorized',
-      'User must be logged-in to create a new topic');
+      '你需要登录才可以操作。');
  
     check(receiverId, nonEmptyString);
     check(title, nonEmptyString);
     check(content, nonEmptyString);
  
     if (receiverId !== this.userId) throw new Meteor.Error('illegal-receiver',
-      'Receiver must be same as  the current logged in user');
+      '你需要登录才可以操作。');
  
     const topic = {
       title: title,
@@ -58,14 +55,14 @@ Meteor.methods({
   },
   removeTopic(topicId: string): void {
     if (!this.userId) throw new Meteor.Error('unauthorized',
-      'User must be logged-in to remove topic');
+      '你需要登录才可以操作。');
  
     check(topicId, nonEmptyString);
  
     let topic = Topics.collection.findOne(topicId);
  
     if (!topic) throw new Meteor.Error('topic-not-exists',
-      'Topic doesn\'t exist');
+      '对象主题不存在。');
 
     Thumbs.remove({_id: topic.thumbId});
     Images.remove({_id: topic.pictureId});
@@ -75,14 +72,14 @@ Meteor.methods({
   },
   addComment(topicId: string, content: string): void {
     if (!this.userId) throw new Meteor.Error('unauthorized',
-      'User must be logged-in to create a new topic');
+      '你需要登录才可以操作。');
     check(topicId, nonEmptyString);
     check(content, nonEmptyString);
 
     const topic = Topics.collection.findOne(topicId);
  
     if (!topic) throw new Meteor.Error('topic-not-exists',
-      'Topic doesn\'t exist');
+      '对象主题不存在。');
  
     Comments.collection.insert({
       topicId: topicId,
@@ -97,7 +94,7 @@ Meteor.methods({
   },
   thumbUp(topicId: string, senderId: string): void {
     if (!this.userId) throw new Meteor.Error('unauthorized',
-      'User must be logged-in to create a new topic');
+      '你需要登录才可以操作。');
     check(senderId, nonEmptyString);
     check(topicId, nonEmptyString);
     

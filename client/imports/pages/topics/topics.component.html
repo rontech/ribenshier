@@ -37,7 +37,7 @@
   <ion-refresher (ionRefresh)="doRefresh($event)">
     <ion-refresher-content
       pullingIcon="arrow-dropdown"
-      pullingText="向下拖拽来更新内容"
+      pullingText="拖拽后放开来更新内容"
       refreshingSpinner="circles"
       refreshingText="更新中...">
     </ion-refresher-content>
@@ -52,10 +52,10 @@
              <ion-row class="no-padding">
                 <ion-item class="shrink-item">
                   <ion-avatar>
-                    <img src="assets/none.png" class="top-user-avatar"></img>
+                    <img [src]="topic.profile.picture" class="top-user-avatar"></img>
                   </ion-avatar>
                 </ion-item>
-                <p class="creator-info">Lambert Zhang {{topic.createdAt | amTimeAgo | chineseTimeAgo}}</p>
+                <p class="creator-info">{{topic.profile.name}} {{topic.createdAt | amTimeAgo | chineseTimeAgo}}</p>
              </ion-row>
            </div>
         </ion-col>

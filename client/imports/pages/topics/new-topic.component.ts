@@ -1,14 +1,13 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { NavController, ViewController, AlertController, LoadingController } from "ionic-angular";
 import { Meteor } from 'meteor/meteor';
-import { Observable, Subscription } from "rxjs";
+import { Observable } from "rxjs";
 import template from './new-topic.component.html';
 import * as style from "./new-topic.component.scss";
 import { MeteorObservable } from "meteor-rxjs";
 
 import { Thumbs, Images } from '../../../../both/collections/images.collection';
 import { Thumb, Image } from '../../../../both/models/image.model';
-import { UploadFS } from 'meteor/jalik:ufs';
 import { upload } from '../../../../both/methods/images.methods';
  
 @Component({

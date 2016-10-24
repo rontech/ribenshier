@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-navbar color="myapp">
+  <ion-navbar color="myapp" ng-show="flase">
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
@@ -16,24 +16,26 @@
       </ion-searchbar>
     </ion-toolbar>
   </ion-navbar>
+
+  <ion-toolbar>
+    <ion-segment [(ngModel)]="category">
+      <ion-segment-button value="topics">
+        日本杂谈 
+      </ion-segment-button>
+      <ion-segment-button value="communities">
+         社群
+      </ion-segment-button>
+      <ion-segment-button value="houses">
+         住居
+      </ion-segment-button>
+        <ion-segment-button value="jobs">
+        工作
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content class="topics-page-content">
-  <ion-segment [(ngModel)]="segment" (ionChange)="updateSchedule()">
-    <ion-segment-button value="0">
-      日本杂谈 
-    </ion-segment-button>
-    <ion-segment-button value="1">
-       社群
-    </ion-segment-button>
-    <ion-segment-button value="2">
-       住居
-     </ion-segment-button>
-     <ion-segment-button value="3">
-       工作
-    </ion-segment-button>
-  </ion-segment>
-
   <ion-refresher (ionRefresh)="doRefresh($event)">
     <ion-refresher-content
       pullingIcon="arrow-dropdown"
@@ -42,55 +44,76 @@
       refreshingText="更新中...">
     </ion-refresher-content>
   </ion-refresher>
- 
-  <ion-list>
-    <ion-card *ngFor="let topic of topics | async">
-      <ion-row>
-        <ion-col>
-           <div>
-             <p class="topic-title">{{topic.title}}</ion-label>
-             <ion-row class="no-padding">
-                <ion-item class="shrink-item">
-                  <ion-avatar>
-                    <img [src]="topic.profile.picture" class="top-user-avatar"></img>
-                  </ion-avatar>
-                </ion-item>
-                <p class="creator-info">{{topic.profile.name}} {{topic.createdAt | amTimeAgo | chineseTimeAgo}}</p>
-             </ion-row>
-           </div>
-        </ion-col>
-        <div class="float: right;">
-          <img [src]='topic.thumb' class="topic-picture"></img>
-        </div>
-      </ion-row>
+
+  <div [ngSwitch]="category">
+    <ion-list *ngSwitchCase="'topics'">
+      <ion-card *ngFor="let topic of topics | async">
+        <ion-row>
+          <ion-col>
+             <div>
+               <p class="topic-title">{{topic.title}}</ion-label>
+               <ion-row class="no-padding">
+                  <ion-item class="shrink-item">
+                    <ion-avatar>
+                      <img [src]="topic.profile.picture" class="top-user-avatar"></img>
+                    </ion-avatar>
+                  </ion-item>
+                  <p class="creator-info">{{topic.profile.name}} {{topic.createdAt | amTimeAgo | chineseTimeAgo}}</p>
+               </ion-row>
+             </div>
+          </ion-col>
+          <div class="float: right;">
+            <img [src]='topic.thumb' class="topic-picture"></img>
+          </div>
+        </ion-row>
       
-      <ion-card-content>
-        <button ion-item clear (click)="showDetail(topic)">
-          <span>
-            <p class="topic-brief">{{topic.content.slice(0, 22)}}</p>
-            <p class="topic-brief">{{topic.content.slice(22, 44)}}...</p>
-          </span>
-        </buttoN>
-      </ion-card-content>
+        <ion-card-content>
+          <button ion-item clear (click)="showDetail(topic)">
+            <span>
+              <p class="topic-brief">{{topic.content.slice(0, 22)}}</p>
+              <p class="topic-brief">{{topic.content.slice(22, 44)}}...</p>
+            </span>
+          </buttoN>
+        </ion-card-content>
 
-      <ion-row>
-        <ion-col>
-          <button ion-button clear small (click)="thumbUp(topic)">
-            <ion-icon name="thumbs-up" style="color: #d03e84"></ion-icon>
-            <div>{{topic.thumbed}}</div>
-          </button>
-        </ion-col>
-        <ion-col>
-          <button ion-button clear small  (click)="showComments(topic)">
-            <ion-icon name="text" style="color: #556b2f"></ion-icon>
-            <div>{{topic.commented}}</div>
-          </button>
-        </ion-col>
-        <ion-col left  text-left>
-          <div class="last-comment-time" *ngIf="topic.lastComment">最后评论:{{topic.lastComment.createdAt | amTimeAgo | chineseTimeAgo}}</div>
-        </ion-col>
-      </ion-row>
+        <ion-row>
+          <ion-col>
+            <button ion-button clear small (click)="thumbUp(topic)">
+              <ion-icon name="thumbs-up" style="color: #d03e84"></ion-icon>
+              <div>{{topic.thumbed}}</div>
+            </button>
+          </ion-col>
+          <ion-col>
+            <button ion-button clear small  (click)="showComments(topic)">
+              <ion-icon name="text" style="color: #556b2f"></ion-icon>
+              <div>{{topic.commented}}</div>
+            </button>
+          </ion-col>
+          <ion-col left  text-left>
+            <div class="last-comment-time" *ngIf="topic.lastComment">最后评论:{{topic.lastComment.createdAt | amTimeAgo | chineseTimeAgo}}</div>
+          </ion-col>
+        </ion-row>
 
-    </ion-card>
-  </ion-list>
+      </ion-card>
+    </ion-list>
+  
+    <div *ngSwitchCase="'communities'" >
+      <div>
+        this is communities page.
+      </div>
+    </div>
+
+    <div *ngSwitchCase="'houses'" >
+      <div>
+        this is houses page.
+      </div>
+    </div>
+
+    <div *ngSwitchCase="'jobs'" >
+      <div>
+        this is jobs page.
+      </div>
+    </div>
+  </div>
+
 </ion-content> 

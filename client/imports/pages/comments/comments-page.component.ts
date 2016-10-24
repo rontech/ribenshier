@@ -120,4 +120,12 @@ export class CommentsPage implements OnInit, OnDestroy {
       alert.present();
     }
   }
+
+  onPageWillEnter() {
+    //document.getElementsByTagName("ion-navbar-section")[0].style.display = "none";
+  }
+
+  onPageDidLeave() {
+    //document.getElementsByTagName("ion-navbar-section")[0].style.display = "block";
+  }
 }

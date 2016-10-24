@@ -1,4 +1,4 @@
-import { Component, OnInit, Directive } from '@angular/core';
+import { Component, OnInit, Directive,ViewChild } from '@angular/core';
 import template from './topics.component.html';
 import { Observable } from 'rxjs';
 import { Topic } from '../../../../both/models/topic.model';
@@ -6,7 +6,7 @@ import { Meteor} from 'meteor/meteor';
 import { MeteorObservable } from 'meteor-rxjs';
 import * as style from './topics.component.scss';
 import { Topics } from '../../../../both/collections/topics.collection';
-import { NavController, ModalController, AlertController } from 'ionic-angular';
+import { NavController, ModalController, AlertController, Content } from 'ionic-angular';
 import { NewTopicComponent } from './new-topic.component';
 import { TopicDetail } from '../topic-detail/topic-detail.component';
 import { Comments } from '../../../../both/collections/comments.collection';
@@ -23,6 +23,9 @@ export class TopicsComponent implements OnInit {
   topics: Observable<Topic[]>;
   senderId: string;
   queryText: string;
+  category: string = "topics";
+  scroll_order: string[] = ["topics", "commnunities", "houses", "jobs"];
+  @ViewChild(Content) content:Content;
 
   constructor(
     private navCtrl: NavController,
@@ -96,13 +99,45 @@ export class TopicsComponent implements OnInit {
   }
 
   doRefresh(refresher): void {
-    console.log('Begin async operation', refresher);
     setTimeout(() => {
       console.log('Async operation has ended');
       refresher.complete();
     }, 2000);
   }
 
+  ngAfterViewInit() {
+    this.content.addScrollListener((ev) => {
+      let nav = this.navbar;
+      let hidden = nav.classList.contains("hidden-nav");
+
+      if(ev.target.scrollTop>60 && !hidden) {
+        nav.classList.add('hidden-nav');
+        this.content.resize();
+      } else if(ev.target.scrollTop<60 && hidden) {
+        nav.classList.remove('hidden-nav');
+        this.content.resize();
+      }
+    });
+  }
+
+  swipeLeft(ev) {
+    let ind = this.scroll_order.indexOf(this.category);
+    ind = ind - 1;
+    ind = ind < 0 ? 3: ind;
+    this.category = this.scroll_order[ind];
+  }
+
+  swipeRight(ev) {
+    let ind = this.scroll_order.indexOf(this.category);
+    ind = ind + 1;
+    ind = ind > 3 ? 0: ind;
+    this.category = this.scroll_order[ind];
+  }
+
+  private get navbar(): Element {
+    return document.getElementsByTagName("ion-navbar")[0];
+  }
+  
   private handleThumbUpError(e: Error): void {
     console.error(e);
 

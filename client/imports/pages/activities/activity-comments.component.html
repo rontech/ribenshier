@@ -1,0 +1,41 @@
+<ion-header>
+  <ion-navbar color="myapp" class="activity-comments-page-navbar">
+    <ion-title class="activity-title">{{title}}</ion-title>
+ 
+    <ion-buttons end>
+      <button ion-button icon-only class="settings-button" (click)="showOptions()" *ngIf="showOptionsOrNot()"><ion-icon name="more"></ion-icon></button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+ 
+<ion-content padding class="activity-comments-page-content">
+  <div class="activity-comments">
+    <div *ngFor="let activityComment of activityComments | async" class="activity-comment-wrapper">
+    <!--
+      <div [class]="'activity-comment-timestamp timestamp-' + activityComment.ownership">{{activityComment.createdAt | amDateFormat: 'H时m分'}}</div>
+      -->
+      <ion-avatar>
+        <img [src]="activityComment.profile.picture" [class]="'user-avatar avatar-' + activityComment.ownership"></img>
+      </ion-avatar>
+      <div [class]="'activity-comment activity-comment-' + activityComment.ownership">
+        <div class="activity-comment-content">{{activityComment.content}}</div>
+      </div>
+    </div>
+  </div>
+</ion-content>
+
+ 
+<ion-footer>
+  <ion-toolbar color="myapp" class="activity-comments-page-footer" position="bottom">
+    <textarea rows="3" cols="35"  [(ngModel)]="activityComment"  class="activity-comment-editor" placeholder="Type a activity-comment"></textarea>
+    <ion-buttons end>
+      <button ion-button icon-only *ngIf="activityComment" class="activity-comment-editor-button" (click)="sendActivityComment()">
+        <ion-icon name="send"></ion-icon>
+      </button>
+ 
+      <button ion-button icon-only *ngIf="!activityComment" class="activity-comment-editor-button">
+        <ion-icon name="mic"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>

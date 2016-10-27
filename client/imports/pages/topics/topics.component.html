@@ -4,7 +4,7 @@
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-buttons end>
-      <button ion-button icon-only class="add-topic-button" (click)="addTopic()">
+      <button ion-button icon-only class="add-topic-button" (click)="addNew()">
         <ion-icon ios="ios-create-outline" md="md-create"></ion-icon>
       </button>
     </ion-buttons>
@@ -19,10 +19,10 @@
 
   <ion-toolbar>
     <ion-segment [(ngModel)]="category">
-      <ion-segment-button value="topics">
+      <ion-segment-button value="topics"  (ionSelect)="selectTopics()">
         日本杂谈 
       </ion-segment-button>
-      <ion-segment-button value="communities">
+      <ion-segment-button value="activities" (ionSelect)="selectActivities()">
          社群
       </ion-segment-button>
       <ion-segment-button value="houses">
@@ -90,17 +90,62 @@
             </button>
           </ion-col>
           <ion-col left  text-left>
-            <div class="last-comment-time" *ngIf="topic.lastComment">最后评论:{{topic.lastComment.createdAt | amTimeAgo | chineseTimeAgo}}</div>
+            <div class="last-comment-time" *ngIf="topic.commentedAt">最后评论:{{topic.commentedAt | amTimeAgo | chineseTimeAgo}}</div>
           </ion-col>
         </ion-row>
 
       </ion-card>
     </ion-list>
   
-    <div *ngSwitchCase="'communities'" >
-      <div>
-        this is communities page.
-      </div>
+    <div *ngSwitchCase="'activities'" >
+      <ion-card *ngFor="let activity of activities | async">
+        <ion-row>
+          <ion-col>
+             <div>
+               <p class="topic-title">{{activity.title}}</ion-label>
+               <ion-row class="no-padding">
+                  <ion-item class="shrink-item">
+                    <ion-avatar>
+                      <img [src]="activity.profile.picture" class="top-user-avatar"></img>
+                    </ion-avatar>
+                  </ion-item>
+                  <p class="creator-info">{{activity.profile.name}} {{activity.createdAt | amTimeAgo | chineseTimeAgo}}</p>
+               </ion-row>
+             </div>
+          </ion-col>
+          <div class="float: right;">
+            <img [src]='getActivityStatusImage(activity)' class="topic-picture"></img>
+          </div>
+        </ion-row>
+      
+        <ion-card-content>
+          <button ion-item clear (click)="showActivityDetail(activity)">
+            <span >
+             <p class="activity-info"> <ion-icon name="people"  style="color: #4682b4"></ion-icon>    计划人数：{{activity.people}}名</p>
+             <p class="activity-info"> <ion-icon name="calendar"  style="color: #4682b4"></ion-icon>    开催日期：{{activity.day | date:'yyyy年M月d日'}}</p>
+            </span>
+          </button>
+        </ion-card-content>
+
+        <ion-row>
+          <ion-col>
+            <button ion-button clear small (click)="joinActivity(activity)">
+              <ion-icon name="person-add" style="color: #d03e84"></ion-icon>
+              <div>{{activity.joined}}</div>
+            </button>
+          </ion-col>
+          <ion-col>
+            <button ion-button clear small  (click)="showActivityComments(activity)">
+              <ion-icon name="text" style="color: #556b2f"></ion-icon>
+              <div>{{activity.commented}}</div>
+            </button>
+          </ion-col>
+          <ion-col left  text-left>
+            <div class="last-comment-time" *ngIf="activity.commentedAt">最后评论:{{activity.commentedAt | amTimeAgo | chineseTimeAgo}}</div>
+          </ion-col>
+        </ion-row>
+
+      </ion-card>
     </div>
 
     <div *ngSwitchCase="'houses'" >

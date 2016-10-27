@@ -5,7 +5,6 @@ import { TopicThumbeds } from '../../../both/collections/topic-thumbed.collectio
 import { TopicThumbed } from '../../../both/models/topic-thumbed.model';
  
 Meteor.publish('topic-thumbed', function(topicId: string): Mongo.Cursor<TopicThumbed> {
-  if (!this.userId) return;
   if (!topicId) return;
  
   return TopicThumbeds.collection.find({topicId});

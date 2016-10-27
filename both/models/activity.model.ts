@@ -1,19 +1,19 @@
 import { Profile } from "./profile.model";
  
-export interface Topic {
+export interface Activity {
   _id?: string;
   title?: string;
-  content?: string;
-  picture?: string;
-  pictureId?: string;
-  thumb?: string;
-  thumbId?: string;
+  status?: string;
+  day?: Date;
+  pepole?: number;
+  deadline?: Date;
+  description?: string;
   creatorId?: string,
   profile?: Profile;
   lastComment?: string;
   commented?: number;
   commentedAt?: Date;
-  thumbed?: number;
+  joined?: number;
   createdAt?: Date;
   sortedBy?: Date;
 }

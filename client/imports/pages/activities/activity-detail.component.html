@@ -1,0 +1,63 @@
+<ion-header>
+  <ion-navbar color="myapp" class="activity-detail-navbar">
+    <ion-title class="activity-title">{{barTitle}}</ion-title>
+ 
+    <ion-buttons end>
+      <button ion-button icon-only (click)="doShare()">
+        <ion-icon ios="ios-share-outline" md="md-share">
+      </ion-icon></button>
+      <button ion-button icon-only class="settings-button" (click)="showOptions()" *ngIf="showOptionsOrNot()"><ion-icon name="more"></ion-icon></button>
+    </ion-buttons>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="activity-detail-content">
+  <h1 class="card-title">
+    {{activity.title}}
+  </h1>
+
+  <ion-row class="no-padding">
+    <ion-item class="shrink-item">
+      <ion-avatar>
+        <img [src]="activity.profile.picture" class="user-avatar"></img>
+      </ion-avatar>
+    </ion-item>
+      <p>{{activity.profile.name}} {{activity.createdAt | amTimeAgo | chineseTimeAgo}}</p>
+  </ion-row>
+  
+  <ion-item>
+    <div class="activity-item"><ion-icon name="people"  style="color: #4682b4"></ion-icon>    计划人数</div>
+    <div class="activity-content"> {{activity.people}}名</div>
+  </ion-item>
+
+  <ion-item>
+    <div class="activity-item"><ion-icon name="calendar"  style="color: #4682b4"></ion-icon>    活动时间</div>
+    <div class="activity-content">{{activity.day | date:'yyyy年M月d日'}}</div>
+  </ion-item>
+
+  <ion-item>
+    <div class="activity-item"><ion-icon name="close-circle"  style="color: #4682b4"></ion-icon>    报名截止时间</div>
+    <div class="activity-content">{{activity.deadline | date:'yyyy年M月d日'}}</div>
+  </ion-item>
+
+  <ion-item>
+    <div class="activity-item"><ion-icon name="information-circle"  style="color: #4682b4"></ion-icon>    活动介绍</div>
+    <div class="activity-content">{{activity.description}}</div>
+  </ion-item>
+
+  <ion-item>
+    <button ion-button  icon-only clear (click)="joinActivity()" item-right>
+      <ion-icon name='person-add' item-right style="color: #d03e84"></ion-icon>
+    </button>
+    <ion-badge item-right>{{activity.joined}}</ion-badge>
+  </ion-item>
+
+  <ion-item>
+    <button ion-button icon-only clear (click)="showComments()" item-right>
+      <ion-icon name='text' item-right style="color: #556b2f"></ion-icon>
+    </button>
+    <ion-badge item-right>{{activity.commented}}</ion-badge></ion-icon>
+  </ion-item>
+
+</ion-content> 

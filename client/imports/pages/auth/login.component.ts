@@ -67,7 +67,8 @@ export class LoginComponent {
       email: this.username,
       profile: {
         name: this.username,
-        picture: gravatar
+        picture: gravatar,
+        admin: false
       }
     }, (e: Error) => {
       if (e) return this.handleCreateUserError(e);

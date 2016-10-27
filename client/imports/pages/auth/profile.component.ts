@@ -8,7 +8,7 @@ import { TabsContainerComponent } from '../tabs-container/tabs-container.compone
 import { Thumbs } from '../../../../both/collections/images.collection';
 import { Thumb } from '../../../../both/models/image.model';
 import { upload } from '../../../../both/methods/images.methods';
- 
+
 import template from './profile.component.html';
 import * as style from './profile.component.scss';
  
@@ -30,24 +30,23 @@ export class ProfileComponent implements OnInit {
   ) {}
  
   ngOnInit(): void {
-    const alert = this.alertCtrl.create({
-      title: '提醒',
-      message: '你需要登录才可以操作。',
-      buttons: ['了解']
-    });
-
     if(Meteor.user()) {
-      this.profile = Meteor.user().profile || {
+      this.profile = Meteor.user().profile
+    } else {
+      this.profile = {
         name: '',
         picture: 'assets/none.png'
       };
-    } else {
-      this.navCtrl.pop().then(() => {
-        alert.present();
-      });
     }
   }
- 
+  
+  ionViewCanEnter(): boolean {
+    if(!Meteor.user()) {
+      return false;
+    }
+    return true;
+  }
+
   done(): void {
     MeteorObservable.call('updateProfile', this.profile).subscribe({
       next: () => {
@@ -58,7 +57,7 @@ export class ProfileComponent implements OnInit {
       }
     });
   }
-
+  
   uploadPicture(files): void {
     if(files.length == 0) {
       return;

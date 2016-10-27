@@ -1,21 +1,27 @@
-.topic-detail-navbar {
+.activity-detail-navbar {
   .topic-title {
     line-height: 50px;
     float: center;
   }
 }
  
-.topic-detail-content {
-  .topic-content {
+.activity-detail-content {
+  .activity-content {
     text-align: left ;
     white-space: pre-wrap;
     word-wrap: break-word;
+  }
+
+  .activity-item:before {
+    content: "\A" ;
+    white-space: pre ;
   }
 
   .label-md {
     margin: 0px 0px 0px 0px !important;
     border: 0;
   }
+
   .label-ios {
     margin: 0px 0px 0px 0px !important;
     border: 0;
@@ -46,5 +52,10 @@
 
   .item-ios.item-block .item-inner {
     border-bottom: 0;
+  }
+
+  .activity-item {
+    font-weight: bold;
+    font-color: #000000;
   }
 }

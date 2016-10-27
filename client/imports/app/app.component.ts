@@ -14,6 +14,7 @@ export interface PageObj {
   component: any;
   icon: string;
   index?: number;
+  category?: string;
   logsOut?: boolean;
 }
 
@@ -29,14 +30,14 @@ export class AppComponent {
   // the left menu only works after login
   // the login page disables the left menu
   appPages: PageObj[] = [
-    { title: '日本杂谈', component: TabsContainerComponent,  index: 0, icon: 'paper' },
-    { title: '社群', component: TabsContainerComponent,  index: 1, icon: 'paper' },
-    { title: '住居', component: TabsContainerComponent,  index: 2, icon: 'paper' },
-    { title: '工作', component: TabsContainerComponent,  index: 3, icon: 'paper' }
+    { title: '日本杂谈', component: TabsContainerComponent,  index: 0, category: 'topics', icon: 'paper' },
+    { title: '社群', component: TabsContainerComponent,  index: 0, category: 'activities', icon: 'paper' },
+    { title: '住居', component: TabsContainerComponent,  index: 0, category: 'houses', icon: 'paper' },
+    { title: '工作', component: TabsContainerComponent,  index: 0, category: 'jobs', icon: 'paper' }
   ];
   loggedInPages: PageObj[] = [
-    { title: '我的收藏', component: TabsContainerComponent, icon: 'star' },
-    { title: '我的设定', component: ProfileComponent, icon: 'person' },
+    { title: '我的收藏', component: TabsContainerComponent, index: 1, icon: 'star' },
+    { title: '我的设定', component: TabsContainerComponent, index: 2, icon: 'person' },
     { title: '退出', component: TabsContainerComponent, icon: 'log-out', logsOut: true }
   ];
   loggedOutPages: PageObj[] = [
@@ -77,8 +78,12 @@ export class AppComponent {
     // the nav component was found using @ViewChild(Nav)
     // reset the nav to remove previous pages and only have this page
     // we wouldn't want the back button to show in this scenario
-    if (page.index) {
-      this.nav.setRoot(page.component, {tabIndex: page.index});
+    if (page.index || page.index == 0) {
+      if(page.category) {
+        this.nav.setRoot(page.component, {tabIndex: page.index, category: page.category});
+      } else {
+        this.nav.setRoot(page.component, {tabIndex: page.index});
+      }
 
     } else {
       this.nav.setRoot(page.component);

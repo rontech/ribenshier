@@ -1,0 +1,41 @@
+<ion-header>
+  <ion-toolbar color="myapp">
+    <ion-title>发布社群活动</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="viewCtrl.dismiss()"><ion-icon name="close"></ion-icon></button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+ 
+<ion-content class="new-activity">
+  <ion-list>
+    <ion-item>
+      <ion-label floating color="primary">标题</ion-label>
+      <ion-input [(ngModel)]="title"  name="title" required></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label floating color="primary">计划人数</ion-label>
+      <ion-input [(ngModel)]="people"  name="people" required></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label floating color="primary">活动时间</ion-label>
+      <ion-datetime displayFormat="YYYY年M月D日" [(ngModel)]="day" required></ion-datetime>
+    </ion-item>
+
+    <ion-item>
+      <ion-label floating color="primary">报名截止时间</ion-label>
+      <ion-datetime displayFormat="YYYY年M月D日" [(ngModel)]="deadline" required></ion-datetime>
+    </ion-item>
+    
+    <ion-item>
+      <ion-label floating color="primary">活动介绍</ion-label>
+      <ion-textarea rows="6"  [(ngModel)]="description"></ion-textarea>
+    </ion-item>
+    
+    <ion-item>
+      <button ion-button (click)="addActivity()" type="submit" color="favorite" block>发表活动</button>
+    </ion-item>
+  </ion-list>
+</ion-content>

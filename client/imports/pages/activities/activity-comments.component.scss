@@ -1,17 +1,17 @@
-.comments-page-navbar {
-  .topic-picture {
+.activity-comments-page-navbar {
+  .activity-picture {
     width: 50px;
     border-radius: 50%;
     float: left;
   }
  
-  .topic-title {
+  .activity-title {
     line-height: 50px;
     float: center;
   }
 }
  
-.comments-page-content {
+.activity-comments-page-content {
   background-color: #a9a9a9;
   background-image: url(/assets/chat-background.jpg);
 
@@ -19,11 +19,11 @@
     margin: 36px -15px 53px !important;
   }
  
-  .comments {
+  .activity-comments {
     height: 100%;
   }
  
-  .comment-wrapper {
+  .activity-comment-wrapper {
     margin-bottom: 9px;
  
     &::after {
@@ -33,14 +33,14 @@
     }
   }
  
-  .comment {
+  .activity-comment {
     display: inline-block;
     position: relative;
     max-width: 236px;
     border-radius: 7px;
     box-shadow: 0 1px 2px rgba(0, 0, 0, .15);
  
-    &.comment-mine {
+    &.activity-comment-mine {
       float: right;
       margin-right: 6px;
       background-color: #DCF8C6;
@@ -52,7 +52,7 @@
       }
     }
  
-    &.comment-other {
+    &.activity-comment-other {
       float: left;
       margin-left: 6px;
       background-color: #FFF;
@@ -64,7 +64,7 @@
       }
     }
  
-    &.comment-other::before, &.comment-mine::before {
+    &.activity-comment-other::before, &.activity-comment-mine::before {
       content: "";
       position: absolute;
       bottom: 3px;
@@ -75,7 +75,7 @@
       background-size: contain;
     }
  
-    .comment-content {
+    .activity-comment-content {
       padding: 5px 7px;
       word-wrap: break-word;
       white-space: pre-wrap;
@@ -105,7 +105,7 @@
     }
   }
 
-  .comment-timestamp {
+  .activity-comment-timestamp {
     font-size: 12px;
     color: gray;
     width: 100%;
@@ -123,17 +123,17 @@
   }
 }
 
-.comments-page-footer {
+.activity-comments-page-footer {
   padding-right: 0;
  
-  .comment-editor {
+  .activity-comment-editor {
     margin-left: 2px;
     padding-left: 5px;
     background: white;
     border-radius: 3px;
   }
  
-  .comment-editor-button {
+  .activity-comment-editor-button {
     box-shadow: none;
     width: 50px;
     height: 50px;

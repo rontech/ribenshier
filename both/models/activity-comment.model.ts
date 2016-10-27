@@ -1,8 +1,8 @@
-import { Profile } from "./profile.model";
-
-export interface Comment {
+ import { Profile } from "./profile.model";
+ 
+ export interface ActivityComment {
   _id?: string;
-  topicId?: string;
+  activityId?: string;
   senderId?: string;
   profile?: Profile;
   content?: string;

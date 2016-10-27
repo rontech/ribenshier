@@ -1,25 +1,22 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { NavParams, NavController, AlertController,PopoverController } from "ionic-angular";
 import { Meteor } from 'meteor/meteor';
-import { Topic } from "../../../../both/models/topic.model";
-import { Comments } from "../../../../both/collections/comments.collection";
+import { Activity } from "../../../../both/models/activity.model";
 import { Observable, Subscription } from "rxjs";
-import { Comment } from "../../../../both/models/comment.model";
-import template from "./topic-detail.component.html";
-import * as style from "./topic-detail.component.scss";
-import { TopicOptionsComponent } from './topic-options.component';
+import template from "./activity-detail.component.html";
+import * as style from "./activity-detail.component.scss";
+import { ActivityOptionsComponent } from './activity-options.component';
 import { MeteorObservable } from "meteor-rxjs";
-import { CommentsPage } from "../../pages/comments/comments-page.component";
  
 @Component({
-  selector: "topic-detail",
+  selector: "activity-detail",
   template,
   styles: [
     style.innerHTML
   ]
 })
-export class TopicDetail implements OnInit, OnDestroy {
-  private topic: Topic;
+export class ActivityDetail implements OnInit, OnDestroy {
+  private activity: Activity;
   private barTitle: string;
  
   constructor(
@@ -28,9 +25,9 @@ export class TopicDetail implements OnInit, OnDestroy {
     private popoverCtrl: PopoverController,
     private alertCtrl: AlertController
   ) {
-    this.topic = <Topic>navParams.get('topic');
-    this.barTitle = this.topic.title.slice(0, 12);
-    if (this.topic.title.length > 12) {
+    this.activity = <Activity>navParams.get('activity');
+    this.barTitle = this.activity.title.slice(0, 12);
+    if (this.activity.title.length > 12) {
       this.barTitle = this.barTitle + "...";
     }  
   }
@@ -42,8 +39,8 @@ export class TopicDetail implements OnInit, OnDestroy {
   }
 
   showOptions(): void {
-    const popover = this.popoverCtrl.create(TopicOptionsComponent, {
-      topic: this.topic
+    const popover = this.popoverCtrl.create(ActivityOptionsComponent, {
+      activity: this.activity
     }, {
       cssClass: 'options-popover'
     });
@@ -52,12 +49,12 @@ export class TopicDetail implements OnInit, OnDestroy {
   }
 
   showComments(): void {
-    this.navCtrl.parent.parent.push(CommentsPage, {topic: this.topic}); 
+    //this.navCtrl.push(CommentsPage, {activity: this.activity}); 
   }
 
-  thumbUp(): void {
-    MeteorObservable.call('thumbUp',
-                      this.topic._id,
+  joinActivity(): void {
+    MeteorObservable.call('joinActivity',
+                      this.activity._id,
                       Meteor.userId()
       ).subscribe({
       next: () => {
@@ -73,7 +70,7 @@ export class TopicDetail implements OnInit, OnDestroy {
       return false;
     }
     
-    if(this.topic.creatorId === Meteor.user()._id) {
+    if(this.activity.creatorId === Meteor.user()._id) {
       return true;
     }
 
@@ -94,5 +91,4 @@ export class TopicDetail implements OnInit, OnDestroy {
 
     alert.present();
   }
-
 }

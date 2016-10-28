@@ -27,7 +27,7 @@
  
 <ion-footer>
   <ion-toolbar color="myapp" class="activity-comments-page-footer" position="bottom">
-    <textarea rows="3" cols="35"  [(ngModel)]="activityComment"  class="activity-comment-editor" placeholder="Type a activity-comment"></textarea>
+    <textarea rows="3" cols="35"  [(ngModel)]="activityComment"  class="activity-comment-editor" placeholder="输入评论内容"></textarea>
     <ion-buttons end>
       <button ion-button icon-only *ngIf="activityComment" class="activity-comment-editor-button" (click)="sendActivityComment()">
         <ion-icon name="send"></ion-icon>

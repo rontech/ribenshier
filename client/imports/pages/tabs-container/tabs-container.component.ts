@@ -34,7 +34,6 @@ export class TabsContainerComponent {
     this.topicsRoot = TopicsComponent;
 
     if(navParams.data.category) {
-      console.log("category=", navParams.data.category);
       this.tabParams = {category: navParams.data.category};
     }
 

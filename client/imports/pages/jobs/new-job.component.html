@@ -1,0 +1,46 @@
+<ion-header>
+  <ion-toolbar color="myapp">
+    <ion-title>发布JOB信息</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="viewCtrl.dismiss()"><ion-icon name="close"></ion-icon></button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+ 
+<ion-content class="new-job">
+  <ion-list>
+    <ion-item>
+      <ion-label floating color="primary">标题</ion-label>
+      <ion-input [(ngModel)]="title"  name="title" required></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label floating color="primary">工作地点</ion-label>
+      <ion-input [(ngModel)]="location"  name="location" required></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label floating color="primary">职位</ion-label>
+      <ion-input [(ngModel)]="position"  name="position" required></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label floating color="primary">人数</ion-label>
+      <ion-input [(ngModel)]="people"  name="people" required></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label floating color="primary">开始时期</ion-label>
+      <ion-datetime displayFormat="YYYY年M月D日" [(ngModel)]="start" required></ion-datetime>
+    </ion-item>
+
+    <ion-item>
+      <ion-label floating color="primary">详细信息</ion-label>
+      <ion-textarea rows="6"  [(ngModel)]="description"></ion-textarea>
+    </ion-item>
+
+    <ion-item>
+      <button ion-button (click)="addJob()" type="submit" color="favorite" block>发布JOB信息</button>
+    </ion-item>
+  </ion-list>
+</ion-content>

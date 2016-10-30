@@ -13,6 +13,9 @@ import { House } from '../../../both/models/house.model';
 import { Houses } from '../../../both/collections/houses.collection';
 import { HouseComments } from '../../../both/collections/house-comments.collection';
 import { HousePictures } from '../../../both/collections/house-pictures.collection';
+import { Job } from '../../../both/models/job.model';
+import { Jobs } from '../../../both/collections/jobs.collection';
+import { JobComments } from '../../../both/collections/job-comments.collection';
 
 const nonEmptyString = Match.Where((str) => {
   check(str, String);
@@ -316,6 +319,75 @@ Meteor.methods({
 
     //commented incremant
     Houses.collection.update(houseId, {
+      $inc: {commented: 1},
+      $set: {commentedAt: dt, sortedBy: dt, lastComment: content}
+    });
+  },
+  addJob(title: string,
+          location: string,
+          position: string,
+           people: number,
+           start: Date,
+           description: string): void {
+    if (!this.userId) throw new Meteor.Error('unauthorized',
+      '你需要登录才可以操作。');
+ 
+    check(title, nonEmptyString);
+    check(location, nonEmptyString);
+    check(position, nonEmptyString);
+    check(description, nonEmptyString);
+ 
+    let dt = new Date();
+    const job = {
+      title: title,
+      location: location,
+      position: position,
+      people: people,
+      start: start,
+      description: description,
+      creatorId: this.userId, 
+      commented: 0,
+      createdAt: dt, 
+      sortedBy: dt
+    };
+ 
+    Jobs.collection.insert(job);
+  },
+  removeJob(jobId: string): void {
+    if (!this.userId) throw new Meteor.Error('unauthorized',
+      '你需要登录才可以操作。');
+ 
+    check(jobId, nonEmptyString);
+ 
+    let job = Jobs.collection.findOne(jobId);
+ 
+    if (!job) throw new Meteor.Error('job-not-exists',
+      '对象JOB不存在。');
+
+    JobComments.collection.remove({jobId});
+    Jobs.collection.remove(jobId);
+  },
+  addJobComment(jobId: string, content: string): void {
+    if (!this.userId) throw new Meteor.Error('unauthorized',
+      '你需要登录才可以操作。');
+    check(jobId, nonEmptyString);
+    check(content, nonEmptyString);
+
+    const job = Jobs.collection.findOne(jobId);
+ 
+    if (!job) throw new Meteor.Error('job-not-exists',
+      '对象JOB不存在。');
+ 
+    let dt = new Date();
+    JobComments.collection.insert({
+      jobId: jobId,
+      senderId: this.userId,
+      content: content,
+      createdAt: dt
+    });
+
+    //commented incremant
+    Jobs.collection.update(jobId, {
       $inc: {commented: 1},
       $set: {commentedAt: dt, sortedBy: dt, lastComment: content}
     });

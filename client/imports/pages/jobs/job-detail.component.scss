@@ -1,0 +1,65 @@
+.job-detail-navbar {
+  .topic-title {
+    line-height: 50px;
+    float: center;
+  }
+}
+ 
+.job-detail-content {
+  .card-title {
+    text-align: left;
+  }
+
+  .job-content {
+    text-align: left ;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+
+  .job-item:before {
+    content: "\A" ;
+    white-space: pre ;
+  }
+
+  .label-md {
+    margin: 0px 0px 0px 0px !important;
+    border: 0;
+  }
+
+  .label-ios {
+    margin: 0px 0px 0px 0px !important;
+    border: 0;
+  }
+
+  .user-avatar {
+    max-width: 25px;
+    max-height: 25px;
+  }
+ 
+  ion-avatar {
+    min-height: 25px;
+  }
+
+  .shrink-item {
+    padding: 0px !important;
+    min-height: 25px;
+    width: 30px;
+  }
+
+  .no-padding {
+    padding: 0px !important;
+  }
+
+  .item-md.item-block .item-inner {
+    border-bottom: 0;
+  }
+
+  .item-ios.item-block .item-inner {
+    border-bottom: 0;
+  }
+
+  .job-item {
+    font-weight: bold;
+    font-color: #000000;
+  }
+}

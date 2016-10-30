@@ -7,20 +7,25 @@ import { MomentModule } from 'angular2-moment';
 import { CommentsPage } from '../pages/topics/comments-page.component';
 import { ActivityCommentsPage } from '../pages/activities/activity-comments.component';
 import { HouseCommentsPage } from '../pages/houses/house-comments.component';
+import { JobCommentsPage } from '../pages/jobs/job-comments.component';
 import { LoginComponent } from '../pages/auth/login.component';
 import { ProfileComponent } from '../pages/auth/profile.component';
 import { NewTopicComponent } from '../pages/topics/new-topic.component';
 import { NewActivityComponent } from '../pages/activities/new-activity.component';
 import { NewHouseComponent } from '../pages/houses/new-house.component';
+import { NewJobComponent } from '../pages/jobs/new-job.component';
 import { CommentsOptionsComponent } from '../pages/topics/comments-options.component';
 import { ActivityCommentsOptionsComponent } from '../pages/activities/activity-comments-options.component';
 import { HouseCommentsOptionsComponent } from '../pages/houses/house-comments-options.component';
+import { JobCommentsOptionsComponent } from '../pages/jobs/job-comments-options.component';
 import { TopicDetail } from '../pages/topics/topic-detail.component';
 import { ActivityDetail } from '../pages/activities/activity-detail.component';
 import { HouseDetail } from '../pages/houses/house-detail.component';
+import { JobDetail } from '../pages/jobs/job-detail.component';
 import { TopicOptionsComponent } from '../pages/topics/topic-options.component';
 import { ActivityOptionsComponent } from '../pages/activities/activity-options.component';
 import { HouseOptionsComponent } from '../pages/houses/house-options.component';
+import { JobOptionsComponent } from '../pages/jobs/job-options.component';
 import { ChineseTimeAgoPipe } from '../filters/time.filter';
 import 'intl';
 import 'intl/locale-data/jsonp/en';
@@ -34,20 +39,25 @@ import 'intl/locale-data/jsonp/en';
     CommentsPage,
     ActivityCommentsPage,
     HouseCommentsPage,
+    JobCommentsPage,
     LoginComponent,
     ProfileComponent,
     NewTopicComponent,
     NewActivityComponent,
     NewHouseComponent,
+    NewJobComponent,
     CommentsOptionsComponent,
     ActivityCommentsOptionsComponent,
     HouseCommentsOptionsComponent,
+    JobCommentsOptionsComponent,
     TopicDetail,
     TopicOptionsComponent,
     ActivityDetail,
     ActivityOptionsComponent,
     HouseDetail,
     HouseOptionsComponent,
+    JobDetail,
+    JobOptionsComponent,
     ChineseTimeAgoPipe
   ],
   // Entry Components
@@ -58,20 +68,25 @@ import 'intl/locale-data/jsonp/en';
     CommentsPage,
     ActivityCommentsPage,
     HouseCommentsPage,
+    JobCommentsPage,
     LoginComponent,
     ProfileComponent,
     NewTopicComponent,
     NewActivityComponent,
     NewHouseComponent,
+    NewJobComponent,
     CommentsOptionsComponent,
     ActivityCommentsOptionsComponent,
     HouseCommentsOptionsComponent,
+    JobCommentsOptionsComponent,
     TopicDetail,
     TopicOptionsComponent,
     ActivityDetail,
     ActivityOptionsComponent,
     HouseDetail,
-    HouseOptionsComponent
+    HouseOptionsComponent,
+    JobDetail,
+    JobOptionsComponent
   ],
   // Providers
   providers: [

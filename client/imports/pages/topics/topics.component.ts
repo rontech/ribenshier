@@ -5,6 +5,7 @@ import { Topic } from '../../../../both/models/topic.model';
 import { Activity } from '../../../../both/models/activity.model';
 import { House } from '../../../../both/models/house.model';
 import { HousePicture } from '../../../../both/models/house-picture.model';
+import { Job } from '../../../../both/models/job.model';
 import { Meteor} from 'meteor/meteor';
 import { MeteorObservable } from 'meteor-rxjs';
 import * as style from './topics.component.scss';
@@ -12,16 +13,20 @@ import { Topics } from '../../../../both/collections/topics.collection';
 import { Activities } from '../../../../both/collections/activities.collection';
 import { Houses } from '../../../../both/collections/houses.collection';
 import { HousePictures } from '../../../../both/collections/house-pictures.collection';
+import { Jobs } from '../../../../both/collections/jobs.collection';
 import { NavParams, NavController, ModalController, AlertController, Content } from 'ionic-angular';
 import { NewTopicComponent } from './new-topic.component';
 import { NewActivityComponent } from '../activities/new-activity.component';
 import { NewHouseComponent } from '../houses/new-house.component';
+import { NewJobComponent } from '../jobs/new-job.component';
 import { TopicDetail } from '../topics/topic-detail.component';
 import { ActivityDetail } from '../activities/activity-detail.component';
 import { HouseDetail } from '../houses/house-detail.component';
+import { JobDetail } from '../jobs/job-detail.component';
 import { CommentsPage } from '../../pages/topics/comments-page.component';
 import { ActivityCommentsPage } from '../../pages/activities/activity-comments.component';
 import { HouseCommentsPage } from '../../pages/houses/house-comments.component';
+import { JobCommentsPage } from '../../pages/jobs/job-comments.component';
  
 @Component({
   selector: "topics",
@@ -34,9 +39,11 @@ export class TopicsComponent implements OnInit, OnDestroy {
   topics: Observable<Topic[]>;
   activities: Observable<Activity[]>;
   houses: Observable<House[]>;
+  jobs: Observable<Job[]>;
   topicsSub: Subscription;
   activitiesSub: Subscription;
   housesSub: Subscription;
+  jobsSub: Subscription;
   senderId: string;
   queryText: string;
   category: string = "topics";
@@ -58,6 +65,7 @@ export class TopicsComponent implements OnInit, OnDestroy {
     this.topicsSub = this.getTopicsSubscription();
     this.activitiesSub = this.getActivitiesSubscription();
     this.housesSub = this.getHousesSubscription();
+    this.jobsSub = this.getJobsSubscription();
   }
 
   ngOnDestroy() {
@@ -101,6 +109,7 @@ export class TopicsComponent implements OnInit, OnDestroy {
       } else if(this.category === "houses") {
         modal = this.modalCtrl.create(NewHouseComponent);
       } else if(this.category === "jobs") {
+        modal = this.modalCtrl.create(NewJobComponent);
       } else {
         modal = this.modalCtrl.create(NewTopicComponent);
       }
@@ -122,6 +131,10 @@ export class TopicsComponent implements OnInit, OnDestroy {
     this.navCtrl.push(HouseDetail, {house});
   }
 
+  showJobDetail(job) {
+    this.navCtrl.push(JobDetail, {job});
+  }
+
   showComments(topic): void {
     //use parent NavControll to hide the tab bar
     this.navCtrl.parent.parent.push(CommentsPage, {topic});
@@ -133,6 +146,10 @@ export class TopicsComponent implements OnInit, OnDestroy {
 
   showHouseComments(house): void {
     this.navCtrl.parent.parent.push(HouseCommentsPage, {house});
+  }
+
+  showJobComments(job): void {
+    this.navCtrl.parent.parent.push(JobCommentsPage, {job});
   }
 
   thumbUp(topic): void {
@@ -296,8 +313,23 @@ export class TopicsComponent implements OnInit, OnDestroy {
               });
             });
 
-            console.log("house=", houses);
             return houses;
+          }).zone();
+      });
+    });
+  }
+
+  private getJobsSubscription(): Subscription {
+    return  MeteorObservable.subscribe('jobs').subscribe(() => {
+      MeteorObservable.autorun().subscribe(() => {
+        this.jobs = Jobs
+          .find({}, { sort: { sortedBy: -1 } })
+          .map(jobs => {
+            jobs.forEach(job => {
+              const user = Meteor.users.findOne({_id: job.creatorId}, {fields: {profile: 1}});
+              job.profile = user.profile;
+            });
+            return jobs;
           }).zone();
       });
     });

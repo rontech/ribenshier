@@ -10,6 +10,8 @@ import './imports/publications/activity-comments.publication';
 import './imports/publications/houses.publication';
 import './imports/publications/house-comments.publication';
 import './imports/publications/house-pictures.publication';
+import './imports/publications/jobs.publication';
+import './imports/publications/job-comments.publication';
 
 const mainInstance = new Main();
 mainInstance.start();

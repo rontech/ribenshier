@@ -9,7 +9,7 @@ import template from "./topic-detail.component.html";
 import * as style from "./topic-detail.component.scss";
 import { TopicOptionsComponent } from './topic-options.component';
 import { MeteorObservable } from "meteor-rxjs";
-import { CommentsPage } from "../../pages/comments/comments-page.component";
+import { CommentsPage } from "../../pages/topics/comments-page.component";
  
 @Component({
   selector: "topic-detail",

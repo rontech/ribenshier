@@ -16,10 +16,10 @@ import { NavParams, NavController, ModalController, AlertController, Content } f
 import { NewTopicComponent } from './new-topic.component';
 import { NewActivityComponent } from '../activities/new-activity.component';
 import { NewHouseComponent } from '../houses/new-house.component';
-import { TopicDetail } from '../topic-detail/topic-detail.component';
+import { TopicDetail } from '../topics/topic-detail.component';
 import { ActivityDetail } from '../activities/activity-detail.component';
 import { HouseDetail } from '../houses/house-detail.component';
-import { CommentsPage } from '../../pages/comments/comments-page.component';
+import { CommentsPage } from '../../pages/topics/comments-page.component';
 import { ActivityCommentsPage } from '../../pages/activities/activity-comments.component';
 import { HouseCommentsPage } from '../../pages/houses/house-comments.component';
  

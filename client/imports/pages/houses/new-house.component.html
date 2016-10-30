@@ -1,0 +1,115 @@
+<ion-header>
+  <ion-toolbar color="myapp">
+    <ion-title>发布租赁／买卖房屋信息</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="viewCtrl.dismiss()"><ion-icon name="close"></ion-icon></button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+ 
+<ion-content class="new-house">
+  <ion-list>
+    <ion-item>
+      <ion-label floating color="primary">标题</ion-label>
+      <ion-input [(ngModel)]="title"  name="title" required></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label floating color="primary">目的</ion-label>
+      <ion-select [(ngModel)]="forRental">
+        <ion-option value="1" selected="true">出租</ion-option>
+        <ion-option value="0">出售</ion-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label floating color="primary">房屋类型</ion-label>
+      <ion-select [(ngModel)]="type">
+        <ion-option value="0" selected="true">マンション</ion-option>
+        <ion-option value="1">アパート</ion-option>
+        <ion-option value="2">一户建</ion-option>
+        <ion-option value="3">土地</ion-option>
+        <ion-option value="4">其它</ion-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label floating color="primary">不动产特点</ion-label>
+      <ion-textarea rows="6" [(ngModel)]="brief"  name="brief" required></ion-textarea>
+    </ion-item>
+
+    <ion-item>
+      <ion-label floating color="primary">房型(LDK,DK...etc)</ion-label>
+      <ion-input [(ngModel)]="floorPlan"  name="floorPlan" required></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label floating color="primary">面积(平米）</ion-label>
+      <ion-input [(ngModel)]="area"  name="area" required></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label floating color="primary">交通</ion-label>
+      <ion-input [(ngModel)]="access"  name="access" required></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label floating color="primary">价格(万円)</ion-label>
+      <ion-input [(ngModel)]="price"  name="price" required></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label floating color="primary">建成年数</ion-label>
+      <ion-input [(ngModel)]="built"  name="built" required></ion-input>
+    </ion-item>
+    
+    <ion-item>
+      <ion-label floating color="primary">详细信息</ion-label>
+      <ion-textarea rows="6"  [(ngModel)]="description"></ion-textarea>
+    </ion-item>
+
+    <ion-row>
+      <ion-item>
+        <label class="upload-label" for="picture_upload_main">
+          ＋上传主图片
+          <input type="file" id="picture_upload_main" style="display:none;" (change)="uploadPicture($event.target.files, 'main')"/>
+        <label>
+      </ion-item>
+
+      <ion-list>
+        <ion-item-sliding *ngFor="let thumb of thumbsMain | async" class="float: right;">
+          <button ion-item>
+            <img [src]= 'thumb.path'></img>
+          </button>
+          <ion-item-options>
+            <button ion-button color="danger" (click)="removePicture(thumb)">消除</button>
+          </ion-item-options>
+        </ion-item-sliding>
+      </ion-list>
+    </ion-row>
+
+    <ion-row>
+      <ion-item>
+        <label class="upload-label" for="picture_upload_sub">
+          ＋上传副图片(限3张）
+          <input type="file" id="picture_upload_sub" style="display:none;" (change)="uploadPicture($event.target.files, 'sub')"/>
+        <label>
+      </ion-item>
+
+      <ion-list>
+        <ion-item-sliding *ngFor="let thumb of thumbsSub | async" class="float: right;">
+          <button ion-item>
+            <img [src]= 'thumb.path'></img>
+          </button>
+          <ion-item-options>
+            <button ion-button color="danger" (click)="removePicture(thumb)">消除</button>
+          </ion-item-options>
+        </ion-item-sliding>
+      </ion-list>
+    </ion-row>
+    
+    <ion-item>
+      <button ion-button (click)="addHouse()" type="submit" color="favorite" block>发布房屋信息</button>
+    </ion-item>
+  </ion-list>
+</ion-content>

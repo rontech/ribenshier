@@ -1,13 +1,18 @@
 import { Meteor } from 'meteor/meteor';
-import { Topics } from "../../../both/collections/topics.collection";
-import { Comments } from "../../../both/collections/comments.collection";
-import { Thumbs, Images } from "../../../both/collections/images.collection";
-import { TopicThumbeds } from "../../../both/collections/topic-thumbed.collection";
+import { Topics } from '../../../both/collections/topics.collection';
+import { Comments } from '../../../both/collections/comments.collection';
+import { Thumbs, Images } from '../../../both/collections/images.collection';
+import { Thumb } from '../../../both/models/image.model';
+import { TopicThumbeds } from '../../../both/collections/topic-thumbed.collection';
 import { check, Match } from 'meteor/check';
 import { Profile } from '../../../both/models/profile.model';
-import { Activities } from "../../../both/collections/activities.collection";
-import { ActivityMembers } from "../../../both/collections/activity-members.collection";
-import { ActivityComments } from "../../../both/collections/activity-comments.collection";
+import { Activities } from '../../../both/collections/activities.collection';
+import { ActivityMembers } from '../../../both/collections/activity-members.collection';
+import { ActivityComments } from '../../../both/collections/activity-comments.collection';
+import { House } from '../../../both/models/house.model';
+import { Houses } from '../../../both/collections/houses.collection';
+import { HouseComments } from '../../../both/collections/house-comments.collection';
+import { HousePictures } from '../../../both/collections/house-pictures.collection';
 
 const nonEmptyString = Match.Where((str) => {
   check(str, String);
@@ -56,7 +61,7 @@ Meteor.methods({
       sortedBy: dt
     };
  
-    Topics.insert(topic);
+    Topics.collection.insert(topic);
   },
   removeTopic(topicId: string): void {
     if (!this.userId) throw new Meteor.Error('unauthorized',
@@ -69,11 +74,11 @@ Meteor.methods({
     if (!topic) throw new Meteor.Error('topic-not-exists',
       '对象主题不存在。');
 
-    if(topic.thumbId) Thumbs.remove({_id: topic.thumbId});
-    if(topic.pictureId) Images.remove({_id: topic.pictureId});
-    TopicThumbeds.remove({topicId}); 
-    Comments.remove({topicId});
-    Topics.remove(topicId);
+    if(topic.thumbId) Thumbs.collection.remove({_id: topic.thumbId});
+    if(topic.pictureId) Images.collection.remove({_id: topic.pictureId});
+    TopicThumbeds.collection.remove({topicId}); 
+    Comments.collection.remove({topicId});
+    Topics.collection.remove(topicId);
   },
   addComment(topicId: string, content: string): void {
     if (!this.userId) throw new Meteor.Error('unauthorized',
@@ -95,7 +100,7 @@ Meteor.methods({
     });
 
     //commented incremant
-    Topics.update(topicId, {
+    Topics.collection.update(topicId, {
       $inc: {commented: 1},
       $set: {commentedAt: dt, sortedBy: dt, lastComment: content}
     });
@@ -111,7 +116,7 @@ Meteor.methods({
       '你已经点过赞了！');
 
     //Thumbed increment
-    Topics.update(topicId, {
+    Topics.collection.update(topicId, {
       $inc: {thumbed: 1} 
     });
 
@@ -120,7 +125,7 @@ Meteor.methods({
       topicId: topicId,
       senderId: senderId
     };
-    TopicThumbeds.insert(thumbedInfo);
+    TopicThumbeds.collection.insert(thumbedInfo);
   },
   addActivity(title: string,
            people: number,
@@ -148,7 +153,7 @@ Meteor.methods({
       sortedBy: dt
     };
  
-    Activities.insert(activity);
+    Activities.collection.insert(activity);
   },
   removeActivity(activityId: string): void {
     if (!this.userId) throw new Meteor.Error('unauthorized',
@@ -161,9 +166,9 @@ Meteor.methods({
     if (!activity) throw new Meteor.Error('activity-not-exists',
       '删除对象不存在。');
 
-    //ActivityMembers.remove({activityId}); 
-    //ActivityComments.remove({activityId});
-    Activities.remove(activityId);
+    ActivityMembers.collection.remove({activityId}); 
+    ActivityComments.collection.remove({activityId});
+    Activities.collection.remove(activityId);
   },
   joinActivity(activityId: string, senderId: string): void {
     if (!this.userId) throw new Meteor.Error('unauthorized',
@@ -176,7 +181,7 @@ Meteor.methods({
       '你已经报过名了！');
 
     //Thumbed increment
-    Activities.update(activityId, {
+    Activities.collection.update(activityId, {
       $inc: {joined: 1} 
     });
 
@@ -185,7 +190,7 @@ Meteor.methods({
       activityId: activityId,
       senderId: senderId
     };
-    ActivityMembers.insert(memberInfo);
+    ActivityMembers.collection.insert(memberInfo);
   },
   addActivityComment(activityId: string, content: string): void {
     if (!this.userId) throw new Meteor.Error('unauthorized',
@@ -207,9 +212,112 @@ Meteor.methods({
     });
 
     //commented incremant
-    Activities.update(activityId, {
+    Activities.collection.update(activityId, {
       $inc: {commented: 1},
       $set: {commentedAt: dt, sortedBy: dt, lastComment: content}
     });
   },
+  addHouse(
+         title: string, forRental: boolean, type: string,
+         brief: string, floorPlan: string, area: number,
+         access: string, price: number,built: number,
+         pictureId: string, picture: string, thumbId: string,
+         thumb: string, description: string,
+         subPictureIdArray: Array<string>, 
+         subPictureArray: Array<string>,
+         subThumbIdArray: Array<string>, subThumbArray: Array<string>
+  ): void {
+    if (!this.userId) throw new Meteor.Error('unauthorized',
+      '你需要登录才可以操作。');
+ 
+    check(title, nonEmptyString);
+ 
+    let dt = new Date();
+    const house = {
+      title: title,
+      forRenatal: forRental,
+      creatorId: this.userId, 
+      type: type,
+      brief: brief,
+      floorPlan: floorPlan,
+      area: area,
+      access: access,
+      price: price,
+      built: built,
+      description: description,
+      pictureId: pictureId,
+      picture: picture,
+      thumbId: thumbId,
+      thumb: thumb ? thumb: 'assets/108x80.png',
+      commented: 0,
+      createdAt: dt, 
+      sortedBy: dt
+    };
+ 
+    let houseId = Houses.collection.insert(house); 
+   
+    for (let i = 0; i < subPictureIdArray.length; i++) {
+       let housePicture = {
+         houseId: houseId,
+         picture: subPictureArray[i],
+         pictureId: subPictureIdArray[i],
+         thumb: subThumbArray[i],
+         thumbId: subThumbIdArray[i],
+         createdAt: new Date()        
+       }
+       HousePictures.collection.insert(housePicture);
+    }
+   
+  },
+  removeHouse(houseId: string): void {
+    if (!this.userId) throw new Meteor.Error('unauthorized',
+      '你需要登录才可以操作。');
+ 
+    check(houseId, nonEmptyString);
+ 
+    let house = Houses.collection.findOne(houseId);
+ 
+    if (!house) throw new Meteor.Error('house-not-exists',
+      '对象物件不存在。');
+
+    if(house.thumbId) Thumbs.collection.remove({_id: house.thumbId});
+    if(house.pictureId) Images.collection.remove({_id: house.pictureId});
+    HousePictures.collection.remove({houseId}); 
+    HouseComments.collection.remove({houseId});
+    Houses.collection.remove(houseId);
+  },
+  removePicture(thumb: Thumb): void {
+    if (!this.userId) throw new Meteor.Error('unauthorized',
+      '你需要登录才可以操作。');
+
+    if(!thumb)  return;
+
+    if(thumb.originalId) Images.collection.remove({_id: thumb.originalId});
+    Thumbs.collection.remove(thumb._id);
+  },
+  addHouseComment(houseId: string, content: string): void {
+    if (!this.userId) throw new Meteor.Error('unauthorized',
+      '你需要登录才可以操作。');
+    check(houseId, nonEmptyString);
+    check(content, nonEmptyString);
+
+    const house = Houses.collection.findOne(houseId);
+ 
+    if (!house) throw new Meteor.Error('house-not-exists',
+      '对象主题不存在。');
+ 
+    let dt = new Date();
+    HouseComments.collection.insert({
+      houseId: houseId,
+      senderId: this.userId,
+      content: content,
+      createdAt: dt
+    });
+
+    //commented incremant
+    Houses.collection.update(houseId, {
+      $inc: {commented: 1},
+      $set: {commentedAt: dt, sortedBy: dt, lastComment: content}
+    });
+  }
 });

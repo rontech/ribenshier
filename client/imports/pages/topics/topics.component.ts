@@ -3,18 +3,25 @@ import template from './topics.component.html';
 import { Observable, Subscription } from 'rxjs';
 import { Topic } from '../../../../both/models/topic.model';
 import { Activity } from '../../../../both/models/activity.model';
+import { House } from '../../../../both/models/house.model';
+import { HousePicture } from '../../../../both/models/house-picture.model';
 import { Meteor} from 'meteor/meteor';
 import { MeteorObservable } from 'meteor-rxjs';
 import * as style from './topics.component.scss';
 import { Topics } from '../../../../both/collections/topics.collection';
 import { Activities } from '../../../../both/collections/activities.collection';
+import { Houses } from '../../../../both/collections/houses.collection';
+import { HousePictures } from '../../../../both/collections/house-pictures.collection';
 import { NavParams, NavController, ModalController, AlertController, Content } from 'ionic-angular';
 import { NewTopicComponent } from './new-topic.component';
 import { NewActivityComponent } from '../activities/new-activity.component';
+import { NewHouseComponent } from '../houses/new-house.component';
 import { TopicDetail } from '../topic-detail/topic-detail.component';
 import { ActivityDetail } from '../activities/activity-detail.component';
+import { HouseDetail } from '../houses/house-detail.component';
 import { CommentsPage } from '../../pages/comments/comments-page.component';
 import { ActivityCommentsPage } from '../../pages/activities/activity-comments.component';
+import { HouseCommentsPage } from '../../pages/houses/house-comments.component';
  
 @Component({
   selector: "topics",
@@ -26,8 +33,10 @@ import { ActivityCommentsPage } from '../../pages/activities/activity-comments.c
 export class TopicsComponent implements OnInit, OnDestroy {
   topics: Observable<Topic[]>;
   activities: Observable<Activity[]>;
+  houses: Observable<House[]>;
   topicsSub: Subscription;
   activitiesSub: Subscription;
+  housesSub: Subscription;
   senderId: string;
   queryText: string;
   category: string = "topics";
@@ -54,7 +63,7 @@ export class TopicsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.destroyTopicsSub();
+    this.destroySub();
   }
 
   ngAfterViewInit() {
@@ -91,6 +100,9 @@ export class TopicsComponent implements OnInit, OnDestroy {
       let modal;
       if(this.category === "activities") {
         modal = this.modalCtrl.create(NewActivityComponent);
+      } else if(this.category === "houses") {
+        modal = this.modalCtrl.create(NewHouseComponent);
+      } else if(this.category === "jobs") {
       } else {
         modal = this.modalCtrl.create(NewTopicComponent);
       }
@@ -108,6 +120,10 @@ export class TopicsComponent implements OnInit, OnDestroy {
     this.navCtrl.push(ActivityDetail, {activity});
   }
 
+  showHouseDetail(house) {
+    this.navCtrl.push(HouseDetail, {house});
+  }
+
   showComments(topic): void {
     //use parent NavControll to hide the tab bar
     this.navCtrl.parent.parent.push(CommentsPage, {topic});
@@ -115,6 +131,10 @@ export class TopicsComponent implements OnInit, OnDestroy {
   
   showActivityComments(activity): void {
     this.navCtrl.parent.parent.push(ActivityCommentsPage, {activity});
+  }
+
+  showHouseComments(house): void {
+    this.navCtrl.parent.parent.push(HouseCommentsPage, {house});
   }
 
   thumbUp(topic): void {
@@ -145,13 +165,18 @@ export class TopicsComponent implements OnInit, OnDestroy {
   }
 
   selectTopics() {
-    this.destroyActivitiesSub();
+    this.destroySub();
     this.topicsSub = this.getTopicsSubscription();
   }
 
   selectActivities() {
-    this.destroyTopicsSub();
+    this.destroySub();
     this.activitiesSub = this.getActivitiesSubscription();
+  }
+
+  selectHouses() {
+    this.destroySub();
+    this.housesSub = this.getHousesSubscription();
   }
 
   getActivityStatusImage(activity: Activity): string {
@@ -203,16 +228,22 @@ export class TopicsComponent implements OnInit, OnDestroy {
   }
 
   private destroyTopicsSub(): void {
+  }
+
+  private destroySub(): void {
     if (this.topicsSub) {
       this.topicsSub.unsubscribe();
       this.topicsSub = undefined;
     }
-  }
 
-  private destroyActivitiesSub(): void {
     if (this.activitiesSub) {
       this.activitiesSub.unsubscribe();
       this.activitiesSub = undefined;
+    }
+
+    if (this.housesSub) {
+      this.housesSub.unsubscribe();
+      this.housesSub = undefined;
     }
   }
 
@@ -221,19 +252,13 @@ export class TopicsComponent implements OnInit, OnDestroy {
       MeteorObservable.autorun().subscribe(() => {
         this.topics = Topics
           .find({}, { sort: { sortedBy: -1 } })
-          .mergeMap<Topic[]>(topics =>
-            Observable.combineLatest(
-              topics.map(topic =>
-                Meteor.users.find({_id: topic.creatorId}, {fields: {profile: 1}})
-                .map(user => {
-                  if(user) {
-                    topic.profile = user.profile;
-                  }
-                  return topic;
-                })
-              )
-            )
-          ).zone();
+          .map(topics => {
+            topics.forEach(topic => {
+              const user = Meteor.users.findOne({_id: topic.creatorId}, {fields: {profile: 1}});
+              topic.profile = user.profile;
+            });
+            return topics;
+          }).zone();
       });
     });
   }
@@ -243,19 +268,46 @@ export class TopicsComponent implements OnInit, OnDestroy {
       MeteorObservable.autorun().subscribe(() => {
         this.activities = Activities
           .find({}, { sort: { sortedBy: -1 } })
-          .mergeMap<Activity[]>(activities =>
-            Observable.combineLatest(
-              activities.map(activity =>
-                Meteor.users.find({_id: activity.creatorId}, {fields: {profile: 1}})
-                .map(user => {
-                  if(user) {
-                    activity.profile = user.profile;
-                  }
-                  return activity;
-                })
-              )
-            )
-          ).zone();
+          .map(activities => {
+            activities.forEach(activity => {
+              const user = Meteor.users.findOne({_id: activity.creatorId}, {fields: {profile: 1}});
+              activity.profile = user.profile;
+            });
+            return activities;
+          }).zone();
+      });
+    });
+  }
+
+  private getHousesSubscription(): Subscription {
+    return  MeteorObservable.subscribe('houses').subscribe(() => {
+      MeteorObservable.autorun().subscribe(() => {
+        this.houses = Houses
+          .find({})
+          .map(houses => {
+            houses.forEach(house => {
+              const user = Meteor.users.findOne({_id: house.creatorId}, {fields: {profile: 1}});
+              house.profile = user.profile;
+            });
+
+            return houses;
+          }).map(houses => {
+            houses.forEach(house => {
+              //HousePictures.find({houseId: house._id}, {fields: {picture: 1, thumb: 1}})
+              HousePictures.find({})
+              .map(housePictures => {
+                house.pictures = house.pictures || [];
+                house.thumbs = house.thumbs || [];
+                housePictures.forEach(obj => {
+                  house.pictures.push(obj.picture);
+                  house.thumbs.push(obj.thumb);
+                });
+              });
+            });
+
+            console.log("house=", houses);
+            return houses;
+          }).zone();
       });
     });
   }

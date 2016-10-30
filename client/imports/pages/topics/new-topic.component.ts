@@ -38,6 +38,9 @@ export class NewTopicComponent implements OnInit, OnDestroy {
  
   ngOnInit() {
   }
+
+  ngOnDestroy() {
+  }
  
   addTopic(): void {
     MeteorObservable.call('addTopic', 
@@ -93,9 +96,6 @@ export class NewTopicComponent implements OnInit, OnDestroy {
         loader.dismissAll();
         this.handleUploadError(e);
       });
-  }
-
-  ngOnDestroy() {
   }
 
   private updatePicture(): void {

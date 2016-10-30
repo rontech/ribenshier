@@ -1,0 +1,41 @@
+<ion-header>
+  <ion-navbar color="myapp" class="house-comments-page-navbar">
+    <ion-title class="house-title">{{title}}</ion-title>
+ 
+    <ion-buttons end>
+      <button ion-button icon-only class="settings-button" (click)="showOptions()" *ngIf="showOptionsOrNot()"><ion-icon name="more"></ion-icon></button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+ 
+<ion-content padding class="house-comments-page-content">
+  <div class="house-comments">
+    <div *ngFor="let houseComment of houseComments | async" class="house-comment-wrapper">
+    <!--
+      <div [class]="'house-comment-timestamp timestamp-' + houseComment.ownership">{{houseComment.createdAt | amDateFormat: 'H时m分'}}</div>
+      -->
+      <ion-avatar>
+        <img [src]="houseComment.profile.picture" [class]="'user-avatar avatar-' + houseComment.ownership"></img>
+      </ion-avatar>
+      <div [class]="'house-comment house-comment-' + houseComment.ownership">
+        <div class="house-comment-content">{{houseComment.content}}</div>
+      </div>
+    </div>
+  </div>
+</ion-content>
+
+ 
+<ion-footer>
+  <ion-toolbar color="myapp" class="house-comments-page-footer" position="bottom">
+    <textarea rows="3" cols="35"  [(ngModel)]="houseComment"  class="house-comment-editor" placeholder="输入评论内容"></textarea>
+    <ion-buttons end>
+      <button ion-button icon-only *ngIf="houseComment" class="house-comment-editor-button" (click)="sendHouseComment()">
+        <ion-icon name="send"></ion-icon>
+      </button>
+ 
+      <button ion-button icon-only *ngIf="!houseComment" class="house-comment-editor-button">
+        <ion-icon name="mic"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>

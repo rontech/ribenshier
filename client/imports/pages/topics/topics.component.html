@@ -25,7 +25,7 @@
       <ion-segment-button value="activities" (ionSelect)="selectActivities()">
          社群
       </ion-segment-button>
-      <ion-segment-button value="houses">
+      <ion-segment-button value="houses" (ionSelect)="selectHouses()">
          住居
       </ion-segment-button>
         <ion-segment-button value="jobs">
@@ -97,7 +97,7 @@
       </ion-card>
     </ion-list>
   
-    <div *ngSwitchCase="'activities'" >
+    <ion-list *ngSwitchCase="'activities'">
       <ion-card *ngFor="let activity of activities | async">
         <ion-row>
           <ion-col>
@@ -146,14 +146,53 @@
         </ion-row>
 
       </ion-card>
-    </div>
+    </ion-list>
 
-    <div *ngSwitchCase="'houses'" >
-      <div>
-        this is houses page.
-      </div>
-    </div>
 
+    <ion-list *ngSwitchCase="'houses'">
+      <ion-card *ngFor="let house of houses | async">
+        <ion-row>
+          <ion-col>
+             <div>
+               <p class="topic-title">{{house.title}}</ion-label>
+               <ion-row class="no-padding">
+                  <ion-item class="shrink-item">
+                    <ion-avatar>
+                      <img [src]="house.profile.picture" class="top-user-avatar"></img>
+                    </ion-avatar>
+                  </ion-item>
+                  <p class="creator-info">{{house.profile.name}} {{house.createdAt | amTimeAgo | chineseTimeAgo}}</p>
+               </ion-row>
+             </div>
+          </ion-col>
+          <div class="float: right;">
+            <img [src]='house.thumb' class="topic-picture"></img>
+          </div>
+        </ion-row>
+      
+        <ion-card-content>
+          <button ion-item clear (click)="showHouseDetail(house)">
+            <span>
+              <p class="topic-brief">{{house.brief.slice(0, 22)}}</p>
+              <p class="topic-brief">{{house.brief.slice(22, 44)}}...</p>
+            </span>
+          </buttoN>
+        </ion-card-content>
+
+        <ion-row>
+          <ion-col>
+            <button ion-button clear small  (click)="showHouseComments(house)">
+              <ion-icon name="text" style="color: #556b2f"></ion-icon>
+              <div>{{house.commented}}</div>
+            </button>
+          </ion-col>
+          <ion-col left  text-left>
+            <div class="last-comment-time" *ngIf="house.commentedAt">最后评论:{{house.commentedAt | amTimeAgo | chineseTimeAgo}}</div>
+          </ion-col>
+        </ion-row>
+
+      </ion-card>
+    </ion-list>
     <div *ngSwitchCase="'jobs'" >
       <div>
         this is jobs page.

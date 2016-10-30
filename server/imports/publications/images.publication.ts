@@ -9,6 +9,13 @@ Meteor.publish('thumbs', function(id: string) {
     originalId: id
   });
 });
+
+Meteor.publish('thumb-list', function(ids: string[]) {
+  return Thumbs.collection.find({
+    originalStore: 'images',
+    originalId: {$in: ids}
+  });
+});
  
 Meteor.publish('images', function() {
   return  Images.collection.find({});

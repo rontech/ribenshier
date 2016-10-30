@@ -14,6 +14,12 @@ export class ChineseTimeAgoPipe implements PipeTransform {
   transform(value: string): string {
     if(!value) return value;
     let exp = value.replace("a few seconds ago", "刚刚");
+    exp = exp.replace("a day ago", "昨天");
+    exp = exp.replace("a year ago", "去年");
+    exp = exp.replace("a month ago", "上个月");
+    exp = exp.replace("a year ago", "去年");
+    exp = exp.replace("2 days ago", "前天");
+    exp = exp.replace("2 years ago", "前年");
     exp = exp.replace("years", "年");
     exp = exp.replace("year", "年");
     exp = exp.replace("months", "月");

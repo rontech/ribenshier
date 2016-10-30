@@ -285,8 +285,7 @@ export class TopicsComponent implements OnInit, OnDestroy {
             return houses;
           }).map(houses => {
             houses.forEach(house => {
-              //HousePictures.find({houseId: house._id}, {fields: {picture: 1, thumb: 1}})
-              HousePictures.find({})
+              HousePictures.find({houseId: house._id}, {fields: {picture: 1, thumb: 1}})
               .map(housePictures => {
                 house.pictures = house.pictures || [];
                 house.thumbs = house.thumbs || [];

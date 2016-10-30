@@ -40,8 +40,8 @@
     <div class="house-content">{{house.description}}</div>
   </ion-item>
 
-  <ion-slides>
-    <ion-slide *ngFor="let picture of house.pictures">
+  <ion-slides [options]="mySlideOptions">
+    <ion-slide *ngFor="let picture of pictures | async">
       <img class="house-picture" [src]="picture.picture"/>
     </ion-slide>
   </ion-slides>

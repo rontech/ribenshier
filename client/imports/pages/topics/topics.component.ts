@@ -55,11 +55,9 @@ export class TopicsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.senderId = Meteor.userId();
     this.queryText = "";
-    if(this.category === "topics") {
-      this.topicsSub = this.getTopicsSubscription();
-    } else if(this.category === "activities") {
-      this.activitiesSub = this.getActivitiesSubscription();
-    }
+    this.topicsSub = this.getTopicsSubscription();
+    this.activitiesSub = this.getActivitiesSubscription();
+    this.housesSub = this.getHousesSubscription();
   }
 
   ngOnDestroy() {
@@ -165,18 +163,12 @@ export class TopicsComponent implements OnInit, OnDestroy {
   }
 
   selectTopics() {
-    this.destroySub();
-    this.topicsSub = this.getTopicsSubscription();
   }
 
   selectActivities() {
-    this.destroySub();
-    this.activitiesSub = this.getActivitiesSubscription();
   }
 
   selectHouses() {
-    this.destroySub();
-    this.housesSub = this.getHousesSubscription();
   }
 
   getActivityStatusImage(activity: Activity): string {

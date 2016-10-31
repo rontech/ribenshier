@@ -238,7 +238,7 @@ Meteor.methods({
     let dt = new Date();
     const house = {
       title: title,
-      forRenatal: forRental,
+      forRental: forRental,
       creatorId: this.userId, 
       type: type,
       brief: brief,

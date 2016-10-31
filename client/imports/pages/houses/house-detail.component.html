@@ -27,12 +27,31 @@
   </ion-row>
   
   <ion-item>
-    <div class="house-item"><ion-icon name="people"  style="color: #4682b4"></ion-icon>    部件特征</div>
-    <div class="house-content"> {{house.brief}}</div>
+    <div class="house-content">{{house.brief}}</div>
   </ion-item>
 
   <ion-item>
     <img class="house-picture" *ngIf="house.picture" [src]="house.picture"/>
+  </ion-item>
+
+  <ion-item>
+    <div class="house-item"><ion-icon name="flag"  style="color: #4682b4"></ion-icon>    部件类型</div>
+    <div class="house-content">{{getHouseType(house)}}</div>
+  </ion-item>
+  
+  <ion-item>
+    <div class="house-item"><ion-icon name="analytics"  style="color: #4682b4"></ion-icon>    房型・面积・年数</div>
+    <div class="house-content">{{house.floorPlan}} {{house.area}}平米 {{house.built}}年</div>
+  </ion-item>
+
+  <ion-item>
+    <div class="house-item"><ion-icon name="subway"  style="color: #4682b4"></ion-icon>    交通</div>
+    <div class="house-content">{{house.access}}</div>
+  </ion-item>
+
+  <ion-item>
+    <div class="house-item"><ion-icon name="cash"  style="color: #4682b4"></ion-icon>    租/售价格</div>
+    <div class="house-content">{{house.price}}万円</div>
   </ion-item>
 
   <ion-item>

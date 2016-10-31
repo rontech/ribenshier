@@ -268,9 +268,9 @@ export class TopicsComponent implements OnInit, OnDestroy {
               topic.profile = user.profile;
             });
             if(this.queryText && this.queryText.trim() != '') {
-              let text = this.queryText.toLowerCase();
-              return  topics.filter(topic => topic.title.toLowerCase().indexOf(text) > -1
-                                       || topic.content.toLowerCase().indexOf(text) > -1);
+              let text = this.queryText.trim();
+              return  topics.filter(topic => topic.title.indexOf(text) > -1
+                                       || topic.content.indexOf(text) > -1);
             } else {
               return topics;
             }
@@ -290,9 +290,9 @@ export class TopicsComponent implements OnInit, OnDestroy {
               activity.profile = user.profile;
             });
             if(this.queryText && this.queryText.trim() != '') {
-              let text = this.queryText.toLowerCase();
-              return  activities.filter(activity => activity.title.toLowerCase().indexOf(text) > -1
-                                       || activity.description.toLowerCase().indexOf(text) > -1);
+              let text = this.queryText.trim();
+              return  activities.filter(activity => activity.title.indexOf(text) > -1
+                                       || activity.description.indexOf(text) > -1);
             } else {
               return activities;
             }
@@ -313,9 +313,10 @@ export class TopicsComponent implements OnInit, OnDestroy {
             });
 
             if(this.queryText && this.queryText.trim() != '') {
-              let text = this.queryText.toLowerCase();
-              return  houses.filter(house => house.title.toLowerCase().indexOf(text) > -1
-                                       || house.description.toLowerCase().indexOf(text) > -1);
+              let text = this.queryText.trim();
+              return  houses.filter(house => house.title.indexOf(text) > -1
+                                       || house.description.indexOf(text) > -1
+                                       || house.brief.indexOf(text) > -1);
             } else {
               return houses;
             }
@@ -335,9 +336,9 @@ export class TopicsComponent implements OnInit, OnDestroy {
               job.profile = user.profile;
             });
             if(this.queryText && this.queryText.trim() != '') {
-              let text = this.queryText.toLowerCase();
-              return  jobs.filter(job => job.title.toLowerCase().indexOf(text) > -1
-                                       || job.description.toLowerCase().indexOf(text) > -1);
+              let text = this.queryText.trim();
+              return  jobs.filter(job => job.title.indexOf(text) > -1
+                                       || job.description.indexOf(text) > -1);
             } else {
               return jobs;
             }

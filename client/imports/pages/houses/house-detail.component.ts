@@ -27,6 +27,8 @@ export class HouseDetail implements OnInit, OnDestroy {
     loop: true,
     pager: true
   };
+  private rentalTypes = ["待租", "待售"];
+  private houseTypes = ["マンション",  "アパート", "一户建", "土地" ,"其它物件"];
  
   constructor(
     navParams: NavParams,
@@ -80,6 +82,10 @@ export class HouseDetail implements OnInit, OnDestroy {
       return true;
     }
     return false;
+  }
+
+  getHouseType(house): string {
+    return this.rentalTypes[parseInt(house.forRental)] + this.houseTypes[parseInt(house.type)]; 
   }
 
   private handleThumbUpError(e: Error): void {

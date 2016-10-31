@@ -71,7 +71,7 @@
           <button ion-item clear (click)="showDetail(topic)">
             <span>
               <p class="topic-brief">{{topic.content.slice(0, 22)}}</p>
-              <p class="topic-brief">{{topic.content.slice(22, 44)}}...</p>
+              <p class="topic-brief">{{topic.content.slice(22, 44)}} ...</p>
             </span>
           </buttoN>
         </ion-card-content>
@@ -121,8 +121,9 @@
         <ion-card-content>
           <button ion-item clear (click)="showActivityDetail(activity)">
             <span >
-             <p class="activity-info"> <ion-icon name="people"  style="color: #4682b4"></ion-icon>    计划人数：{{activity.people}}名</p>
-             <p class="activity-info"> <ion-icon name="calendar"  style="color: #4682b4"></ion-icon>    开催日期：{{activity.day | date:'yyyy年M月d日'}}</p>
+              <p class="activity-info"> 
+                <ion-icon name="bonfire"  style="color: #4682b4"></ion-icon>定员{{activity.people}}名 {{activity.day | date:'M月d日'}}发动 ...
+              </p>
             </span>
           </button>
         </ion-card-content>
@@ -173,6 +174,8 @@
         <ion-card-content>
           <button ion-item clear (click)="showHouseDetail(house)">
             <span>
+               <p class="house-info"> <ion-icon name="cube"  style="color: #4682b4"></ion-icon>
+               {{house.floorPlan}}/{{house.area}}平米/{{house.price}}万円</p>
               <p class="topic-brief">{{house.brief.slice(0, 22)}}</p>
               <p class="topic-brief">{{house.brief.slice(22, 44)}}...</p>
             </span>
@@ -215,8 +218,8 @@
         <ion-card-content>
           <button ion-item clear (click)="showJobDetail(job)">
             <span >
-             <p class="job-info"> <ion-icon name="people"  style="color: #4682b4"></ion-icon>    招聘职位：{{job.position}}名</p>
-             <p class="job-info"> <ion-icon name="calendar"  style="color: #4682b4"></ion-icon>    开始时期：{{job.start | date:'yyyy年M月d日'}}</p>
+             <p class="job-info">
+             <ion-icon name="boat"  style="color: #4682b4"></ion-icon> {{job.location}}  {{job.position}} {{job.people}}名 {{job.start | date:'M月d日'}}开始 ...</p>
             </span>
           </button>
         </ion-card-content>

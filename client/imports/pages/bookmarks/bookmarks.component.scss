@@ -1,0 +1,14 @@
+.bookmarks-page-content {
+  .bookmark-info {
+    float: left;
+    margin: 10px 0 0 20px;
+
+    .create-timestamp {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-size: 14px;
+      color: #9A9898;
+    }
+  }
+}

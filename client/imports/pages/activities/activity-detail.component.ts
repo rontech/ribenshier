@@ -7,6 +7,7 @@ import template from "./activity-detail.component.html";
 import * as style from "./activity-detail.component.scss";
 import { ActivityOptionsComponent } from './activity-options.component';
 import { MeteorObservable } from "meteor-rxjs";
+import { ActivityCommentsPage } from './activity-comments.component';
  
 @Component({
   selector: "activity-detail",
@@ -49,7 +50,7 @@ export class ActivityDetail implements OnInit, OnDestroy {
   }
 
   showComments(): void {
-    //this.navCtrl.push(CommentsPage, {activity: this.activity}); 
+    this.navCtrl.parent.parent.push(ActivityCommentsPage, {activity: this.activity}); 
   }
 
   joinActivity(): void {

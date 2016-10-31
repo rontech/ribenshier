@@ -16,6 +16,7 @@ import { HousePictures } from '../../../both/collections/house-pictures.collecti
 import { Job } from '../../../both/models/job.model';
 import { Jobs } from '../../../both/collections/jobs.collection';
 import { JobComments } from '../../../both/collections/job-comments.collection';
+import { Bookmarks } from '../../../both/collections/bookmarks.collection';
 
 const nonEmptyString = Match.Where((str) => {
   check(str, String);
@@ -391,5 +392,37 @@ Meteor.methods({
       $inc: {commented: 1},
       $set: {commentedAt: dt, sortedBy: dt, lastComment: content}
     });
+  },
+  addBookmark(id: string, type:string, title: string, createdAt: Date): void {
+    if (!this.userId) throw new Meteor.Error('unauthorized',
+      '你需要登录才可以操作。');
+    check(id, nonEmptyString);
+    check(title, nonEmptyString);
+
+    const book = Bookmarks.collection.findOne({senderId: this.userId, objId: id});
+    if (book) throw new Meteor.Error('already-bookmarked',
+      '你已经收藏了！');
+ 
+ 
+    Bookmarks.collection.insert({
+      objId: id,
+      title: title,
+      type: type,
+      senderId: this.userId,
+      createdAt: createdAt
+    });
+  },
+  removeBookmark(bookmarkId: string): void {
+    if (!this.userId) throw new Meteor.Error('unauthorized',
+      '你需要登录才可以操作。');
+ 
+    check(bookmarkId, nonEmptyString);
+ 
+    let bookmark = Bookmarks.collection.findOne(bookmarkId);
+ 
+    if (!bookmark) throw new Meteor.Error('bookmark-not-exists',
+      '收藏不存在。');
+
+    Bookmarks.collection.remove(bookmarkId);
   }
 });

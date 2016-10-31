@@ -1,6 +1,7 @@
 import { Component } from "@angular/core";
 import { TopicsComponent } from "../topics/topics.component";
 import { ProfileComponent } from "../auth/profile.component";
+import { BookmarksComponent } from "../bookmarks/bookmarks.component";
 import { NavParams, Events, AlertController } from 'ionic-angular';
 import { Meteor} from 'meteor/meteor';
 
@@ -9,7 +10,7 @@ import { Meteor} from 'meteor/meteor';
   template: `
   <ion-tabs [selectedIndex]="mySelectedIndex">
     <ion-tab [root]="topicsRoot" [rootParams]="tabParams" tabIcon="paper"></ion-tab>
-    <ion-tab [root]="favoritesRoot" (ionSelect)="authenticate()" [rootParams]="tabParams" tabIcon="star"></ion-tab>
+    <ion-tab [root]="favoritesRoot" (ionSelect)="authenticate()" [rootParams]="tabParams" tabIcon="bookmarks"></ion-tab>
     <ion-tab [root]="profileRoot" (ionSelect)="authenticate()" [rootParams]="tabParams" tabIcon="person"></ion-tab>
   </ion-tabs>
   `
@@ -26,6 +27,7 @@ export class TabsContainerComponent {
     private alertCtrl: AlertController) {
     if(Meteor.user()) {
       this.profileRoot = ProfileComponent;
+      this.favoritesRoot = BookmarksComponent;
     } else {
       this.profileRoot = TopicsComponent;
       this.favoritesRoot = TopicsComponent;

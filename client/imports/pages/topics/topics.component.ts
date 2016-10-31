@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Directive,ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import template from './topics.component.html';
 import { Observable, Subscription } from 'rxjs';
 import { Topic } from '../../../../both/models/topic.model';
@@ -45,7 +45,6 @@ export class TopicsComponent implements OnInit, OnDestroy {
   housesSub: Subscription;
   jobsSub: Subscription;
   queryText: string;
-  senderId: string;
   category: string = "topics";
   scroll_order: string[] = ["topics", "activities", "houses", "jobs"];
   @ViewChild(Content) content:Content;
@@ -61,7 +60,6 @@ export class TopicsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.queryText = "";
-    this.senderId = Meteor.userId();
     this.topicsSub = this.getTopicsSubscription();
     this.activitiesSub = this.getActivitiesSubscription();
     this.housesSub = this.getHousesSubscription();
@@ -182,7 +180,7 @@ export class TopicsComponent implements OnInit, OnDestroy {
   thumbUp(topic): void {
     MeteorObservable.call('thumbUp',
                       topic._id,
-                      this.senderId
+                      Meteor.userId()
       ).subscribe({
       next: () => {
       },
@@ -195,10 +193,26 @@ export class TopicsComponent implements OnInit, OnDestroy {
   joinActivity(activity): void {
     MeteorObservable.call('joinActivity',
                       activity._id,
-                      this.senderId
+                      Meteor.userId()
       ).subscribe({
       next: () => {
         this.handleSuccess("报名成功!");
+      },
+      error: (e: Error) => {
+        this.handleError(e);
+      }
+    });
+  }
+
+  addBookmark(obj, type): void {
+    MeteorObservable.call('addBookmark',
+                      obj._id,
+                      type,
+                      obj.title,
+                      obj.createdAt
+      ).subscribe({
+      next: () => {
+        this.handleSuccess("收藏成功!");
       },
       error: (e: Error) => {
         this.handleError(e);

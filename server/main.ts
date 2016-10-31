@@ -12,6 +12,7 @@ import './imports/publications/house-comments.publication';
 import './imports/publications/house-pictures.publication';
 import './imports/publications/jobs.publication';
 import './imports/publications/job-comments.publication';
+import './imports/publications/bookmarks.publication';
 
 const mainInstance = new Main();
 mainInstance.start();

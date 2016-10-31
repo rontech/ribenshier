@@ -36,7 +36,7 @@ export class AppComponent {
     { title: '工作', component: TabsContainerComponent,  index: 0, category: 'jobs', icon: 'paper' }
   ];
   loggedInPages: PageObj[] = [
-    { title: '我的收藏', component: TabsContainerComponent, index: 1, icon: 'star' },
+    { title: '我的收藏', component: TabsContainerComponent, index: 1, icon: 'bookmarks' },
     { title: '我的设定', component: TabsContainerComponent, index: 2, icon: 'person' },
     { title: '退出', component: TabsContainerComponent, icon: 'log-out', logsOut: true }
   ];

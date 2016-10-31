@@ -26,6 +26,7 @@ import { TopicOptionsComponent } from '../pages/topics/topic-options.component';
 import { ActivityOptionsComponent } from '../pages/activities/activity-options.component';
 import { HouseOptionsComponent } from '../pages/houses/house-options.component';
 import { JobOptionsComponent } from '../pages/jobs/job-options.component';
+import { BookmarksComponent } from '../pages/bookmarks/bookmarks.component';
 import { ChineseTimeAgoPipe } from '../filters/time.filter';
 import 'intl';
 import 'intl/locale-data/jsonp/en';
@@ -58,6 +59,7 @@ import 'intl/locale-data/jsonp/en';
     HouseOptionsComponent,
     JobDetail,
     JobOptionsComponent,
+    BookmarksComponent,
     ChineseTimeAgoPipe
   ],
   // Entry Components
@@ -86,7 +88,8 @@ import 'intl/locale-data/jsonp/en';
     HouseDetail,
     HouseOptionsComponent,
     JobDetail,
-    JobOptionsComponent
+    JobOptionsComponent,
+    BookmarksComponent
   ],
   // Providers
   providers: [

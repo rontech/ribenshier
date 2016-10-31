@@ -89,6 +89,11 @@
               <div>{{topic.commented}}</div>
             </button>
           </ion-col>
+          <ion-col>
+            <button ion-button clear small (click)="addBookmark(topic, 'topic')">
+              <ion-icon name="bookmark" style="color: #47266e"></ion-icon>
+            </button>
+          </ion-col>
           <ion-col left  text-left>
             <div class="last-comment-time" *ngIf="topic.commentedAt">最后评论:{{topic.commentedAt | amTimeAgo | chineseTimeAgo}}</div>
           </ion-col>
@@ -142,6 +147,11 @@
               <div>{{activity.commented}}</div>
             </button>
           </ion-col>
+          <ion-col>
+            <button ion-button clear small (click)="addBookmark(activity, 'activity')">
+              <ion-icon name="bookmark" style="color: #47266e"></ion-icon>
+            </button>
+          </ion-col>
           <ion-col left  text-left>
             <div class="last-comment-time" *ngIf="activity.commentedAt">最后评论:{{activity.commentedAt | amTimeAgo | chineseTimeAgo}}</div>
           </ion-col>
@@ -190,6 +200,11 @@
               <div>{{house.commented}}</div>
             </button>
           </ion-col>
+          <ion-col>
+            <button ion-button clear small (click)="addBookmark(house, 'house')">
+              <ion-icon name="bookmark" style="color: #47266e"></ion-icon>
+            </button>
+          </ion-col>
           <ion-col left  text-left>
             <div class="last-comment-time" *ngIf="house.commentedAt">最后评论:{{house.commentedAt | amTimeAgo | chineseTimeAgo}}</div>
           </ion-col>
@@ -230,6 +245,11 @@
             <button ion-button clear small  (click)="showJobComments(job)">
               <ion-icon name="text" style="color: #556b2f"></ion-icon>
               <div>{{job.commented}}</div>
+            </button>
+          </ion-col>
+          <ion-col>
+            <button ion-button clear small (click)="addBookmark(job, 'job')">
+              <ion-icon name="bookmark" style="color: #47266e"></ion-icon>
             </button>
           </ion-col>
           <ion-col left  text-left>

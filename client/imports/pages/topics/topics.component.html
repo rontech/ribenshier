@@ -11,21 +11,21 @@
     <ion-toolbar>
       <ion-searchbar color="primary"
                      [(ngModel)]="queryText"
-                     (ionInput)="updateSchedule()"
+                     (ionInput)="getItems($event)"
                      placeholder="Search">
       </ion-searchbar>
     </ion-toolbar>
   </ion-navbar>
 
   <ion-toolbar>
-    <ion-segment [(ngModel)]="category">
-      <ion-segment-button value="topics"  (ionSelect)="selectTopics()">
+    <ion-segment [(ngModel)]="category" (ionChange)="onSegmentChanged($event)">
+      <ion-segment-button value="topics">
         日本杂谈 
       </ion-segment-button>
-      <ion-segment-button value="activities" (ionSelect)="selectActivities()">
+      <ion-segment-button value="activities">
          社群
       </ion-segment-button>
-      <ion-segment-button value="houses" (ionSelect)="selectHouses()">
+      <ion-segment-button value="houses">
          住居
       </ion-segment-button>
         <ion-segment-button value="jobs">

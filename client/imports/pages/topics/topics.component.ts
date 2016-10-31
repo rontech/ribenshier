@@ -44,8 +44,8 @@ export class TopicsComponent implements OnInit, OnDestroy {
   activitiesSub: Subscription;
   housesSub: Subscription;
   jobsSub: Subscription;
-  senderId: string;
   queryText: string;
+  senderId: string;
   category: string = "topics";
   scroll_order: string[] = ["topics", "activities", "houses", "jobs"];
   @ViewChild(Content) content:Content;
@@ -60,8 +60,8 @@ export class TopicsComponent implements OnInit, OnDestroy {
     }
 
   ngOnInit() {
-    this.senderId = Meteor.userId();
     this.queryText = "";
+    this.senderId = Meteor.userId();
     this.topicsSub = this.getTopicsSubscription();
     this.activitiesSub = this.getActivitiesSubscription();
     this.housesSub = this.getHousesSubscription();
@@ -116,6 +116,33 @@ export class TopicsComponent implements OnInit, OnDestroy {
       modal.present();
     } else {
       alert.present();
+    }
+  }
+
+  getItems(ev: any) {
+    this.destroySub();
+    if(this.category === "activities") {
+      this.activitiesSub = this.getActivitiesSubscription();
+    } else if(this.category === "houses") {
+      this.housesSub = this.getHousesSubscription();
+    } else if(this.category === "jobs") {
+       this.jobsSub = this.getJobsSubscription();
+    } else {
+      this.topicsSub = this.getTopicsSubscription();
+    }
+  }
+
+  onSegmentChanged(ev: any) {
+    this.destroySub();
+    this.queryText = "";
+    if(this.category === "activities") {
+      this.activitiesSub = this.getActivitiesSubscription();
+    } else if(this.category === "houses") {
+      this.housesSub = this.getHousesSubscription();
+    } else if(this.category === "jobs") {
+       this.jobsSub = this.getJobsSubscription();
+    } else {
+      this.topicsSub = this.getTopicsSubscription();
     }
   }
 
@@ -179,15 +206,6 @@ export class TopicsComponent implements OnInit, OnDestroy {
     });
   }
 
-  selectTopics() {
-  }
-
-  selectActivities() {
-  }
-
-  selectHouses() {
-  }
-
   getActivityStatusImage(activity: Activity): string {
     //满员
     if(activity.status === "1") {
@@ -222,23 +240,6 @@ export class TopicsComponent implements OnInit, OnDestroy {
     return "assets/recruit.jpg";
   }
 
-  swipeLeft(ev) {
-    let ind = this.scroll_order.indexOf(this.category);
-    ind = ind - 1;
-    ind = ind < 0 ? 3: ind;
-    this.category = this.scroll_order[ind];
-  }
-
-  swipeRight(ev) {
-    let ind = this.scroll_order.indexOf(this.category);
-    ind = ind + 1;
-    ind = ind > 3 ? 0: ind;
-    this.category = this.scroll_order[ind];
-  }
-
-  private destroyTopicsSub(): void {
-  }
-
   private destroySub(): void {
     if (this.topicsSub) {
       this.topicsSub.unsubscribe();
@@ -266,7 +267,13 @@ export class TopicsComponent implements OnInit, OnDestroy {
               const user = Meteor.users.findOne({_id: topic.creatorId}, {fields: {profile: 1}});
               topic.profile = user.profile;
             });
-            return topics;
+            if(this.queryText && this.queryText.trim() != '') {
+              let text = this.queryText.toLowerCase();
+              return  topics.filter(topic => topic.title.toLowerCase().indexOf(text) > -1
+                                       || topic.content.toLowerCase().indexOf(text) > -1);
+            } else {
+              return topics;
+            }
           }).zone();
       });
     });
@@ -282,7 +289,13 @@ export class TopicsComponent implements OnInit, OnDestroy {
               const user = Meteor.users.findOne({_id: activity.creatorId}, {fields: {profile: 1}});
               activity.profile = user.profile;
             });
-            return activities;
+            if(this.queryText && this.queryText.trim() != '') {
+              let text = this.queryText.toLowerCase();
+              return  activities.filter(activity => activity.title.toLowerCase().indexOf(text) > -1
+                                       || activity.description.toLowerCase().indexOf(text) > -1);
+            } else {
+              return activities;
+            }
           }).zone();
       });
     });
@@ -299,21 +312,13 @@ export class TopicsComponent implements OnInit, OnDestroy {
               house.profile = user.profile;
             });
 
-            return houses;
-          }).map(houses => {
-            houses.forEach(house => {
-              HousePictures.find({houseId: house._id}, {fields: {picture: 1, thumb: 1}})
-              .map(housePictures => {
-                house.pictures = house.pictures || [];
-                house.thumbs = house.thumbs || [];
-                housePictures.forEach(obj => {
-                  house.pictures.push(obj.picture);
-                  house.thumbs.push(obj.thumb);
-                });
-              });
-            });
-
-            return houses;
+            if(this.queryText && this.queryText.trim() != '') {
+              let text = this.queryText.toLowerCase();
+              return  houses.filter(house => house.title.toLowerCase().indexOf(text) > -1
+                                       || house.description.toLowerCase().indexOf(text) > -1);
+            } else {
+              return houses;
+            }
           }).zone();
       });
     });
@@ -329,7 +334,13 @@ export class TopicsComponent implements OnInit, OnDestroy {
               const user = Meteor.users.findOne({_id: job.creatorId}, {fields: {profile: 1}});
               job.profile = user.profile;
             });
-            return jobs;
+            if(this.queryText && this.queryText.trim() != '') {
+              let text = this.queryText.toLowerCase();
+              return  jobs.filter(job => job.title.toLowerCase().indexOf(text) > -1
+                                       || job.description.toLowerCase().indexOf(text) > -1);
+            } else {
+              return jobs;
+            }
           }).zone();
       });
     });

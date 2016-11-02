@@ -24,3 +24,23 @@ Meteor.publishComposite('topics', function(): PublishCompositeConfig<Topic> {
     ]
   };
 });
+
+Meteor.publishComposite('topics-one', function(topicId: string): PublishCompositeConfig<Topic> {
+  return {
+    find: () => {
+      return Topics.collection.find({topicId});
+    },
+ 
+    children: [
+      <PublishCompositeConfig1<Topic, User>> {
+        find: (topic) => {
+          return Meteor.users.find({
+            _id: topic.creatorId
+          }, {
+            fields: {profile: 1}
+          });
+        }
+      }
+    ]
+  };
+});

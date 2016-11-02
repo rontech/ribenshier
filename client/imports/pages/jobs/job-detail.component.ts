@@ -8,6 +8,7 @@ import * as style from "./job-detail.component.scss";
 import { JobOptionsComponent } from './job-options.component';
 import { JobCommentsPage } from './job-comments.component';
 import { MeteorObservable } from "meteor-rxjs";
+import { Jobs } from "../../../../both/collections/jobs.collection";
  
 @Component({
   selector: "job-detail",
@@ -18,6 +19,7 @@ import { MeteorObservable } from "meteor-rxjs";
 })
 export class JobDetail implements OnInit, OnDestroy {
   private job: Job;
+  private jobId: string;
   private barTitle: string;
   private mySlideOptions = {
     initialSlide: 1,
@@ -32,13 +34,20 @@ export class JobDetail implements OnInit, OnDestroy {
     private alertCtrl: AlertController
   ) {
     this.job = <Job>navParams.get('job');
+    this.jobId = navParams.get('jobId');
+  }
+ 
+  ngOnInit() {
+    if(!this.job) {
+      this.job = Jobs.collection.findOne(this.jobId);
+      const user = Meteor.users.findOne({_id: this.job.creatorId}, {fields: {profile: 1}});
+      this.job.profile = user.profile;
+    }
+
     this.barTitle = this.job.title.slice(0, 12);
     if (this.job.title.length > 12) {
       this.barTitle = this.barTitle + "...";
     }  
-  }
- 
-  ngOnInit() {
   }
 
   ngOnDestroy() {

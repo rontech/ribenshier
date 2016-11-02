@@ -10,6 +10,7 @@ import { HouseOptionsComponent } from './house-options.component';
 import { HouseCommentsPage } from './house-comments.component';
 import { MeteorObservable } from "meteor-rxjs";
 import { HousePictures } from '../../../../both/collections/house-pictures.collection';
+import { Houses } from '../../../../both/collections/houses.collection';
  
 @Component({
   selector: "house-detail",
@@ -20,6 +21,7 @@ import { HousePictures } from '../../../../both/collections/house-pictures.colle
 })
 export class HouseDetail implements OnInit, OnDestroy {
   private house: House;
+  private houseId: string;
   private barTitle: string;
   private pictures: Observable<HousePicture[]>;
   private mySlideOptions = {
@@ -37,13 +39,21 @@ export class HouseDetail implements OnInit, OnDestroy {
     private alertCtrl: AlertController
   ) {
     this.house = <House>navParams.get('house');
+    this.houseId = navParams.get('houseId');
+  }
+ 
+  ngOnInit() {
+    if(!this.house) {
+      this.house = Houses.collection.findOne(this.houseId);
+      const user = Meteor.users.findOne({_id: this.house.creatorId}, {fields: {profile: 1}});
+      this.house.profile = user.profile;
+    }
+
     this.barTitle = this.house.title.slice(0, 12);
     if (this.house.title.length > 12) {
       this.barTitle = this.barTitle + "...";
     }  
-  }
- 
-  ngOnInit() {
+
     MeteorObservable.subscribe('house-pictures', this.house._id).subscribe(() => {
       MeteorObservable.autorun().subscribe(() => {
         this.pictures = HousePictures

@@ -1,13 +1,14 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
-import { NavParams, NavController, AlertController,PopoverController } from "ionic-angular";
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { NavParams, NavController, AlertController,PopoverController } from 'ionic-angular';
 import { Meteor } from 'meteor/meteor';
-import { Activity } from "../../../../both/models/activity.model";
-import { Observable, Subscription } from "rxjs";
-import template from "./activity-detail.component.html";
-import * as style from "./activity-detail.component.scss";
+import { Activity } from '../../../../both/models/activity.model';
+import { Observable, Subscription } from 'rxjs';
+import template from './activity-detail.component.html';
+import * as style from './activity-detail.component.scss';
 import { ActivityOptionsComponent } from './activity-options.component';
-import { MeteorObservable } from "meteor-rxjs";
+import { MeteorObservable } from 'meteor-rxjs';
 import { ActivityCommentsPage } from './activity-comments.component';
+import { Activities } from '../../../../both/collections/activities.collection';
  
 @Component({
   selector: "activity-detail",
@@ -18,6 +19,7 @@ import { ActivityCommentsPage } from './activity-comments.component';
 })
 export class ActivityDetail implements OnInit, OnDestroy {
   private activity: Activity;
+  private activityId: string;
   private barTitle: string;
  
   constructor(
@@ -27,13 +29,20 @@ export class ActivityDetail implements OnInit, OnDestroy {
     private alertCtrl: AlertController
   ) {
     this.activity = <Activity>navParams.get('activity');
+    this.activityId = navParams.get('activityId');
+  }
+ 
+  ngOnInit() {
+    if(!this.activity) {
+      this.activity = Activities.collection.findOne(this.activityId);
+      const user = Meteor.users.findOne({_id: this.activity.creatorId}, {fields: {profile: 1}});
+      this.activity.profile = user.profile;
+    }
+
     this.barTitle = this.activity.title.slice(0, 12);
     if (this.activity.title.length > 12) {
       this.barTitle = this.barTitle + "...";
     }  
-  }
- 
-  ngOnInit() {
   }
 
   ngOnDestroy() {

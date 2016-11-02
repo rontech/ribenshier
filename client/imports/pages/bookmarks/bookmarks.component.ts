@@ -37,10 +37,15 @@ export class BookmarksComponent implements OnInit, OnDestroy {
   }
 
   showDetail(bookmark): void {
-    this.navCtrl.push(TopicDetail, {topicId: bookmark.objId});
-    this.navCtrl.push(ActivityDetail, {activityId: bookmark.objId});
-    this.navCtrl.push(HouseDetail, {houseId: bookmark.objId});
-    this.navCtrl.push(JobDetail, {jobId: bookmark.objId});
+    if(bookmark.type === "topic") {
+      this.navCtrl.push(TopicDetail, {topicId: bookmark.objId});
+    } else if(bookmark.type === "activity") {
+      this.navCtrl.push(ActivityDetail, {activityId: bookmark.objId});
+    } else if(bookmark.type === "house") {
+      this.navCtrl.push(HouseDetail, {houseId: bookmark.objId});
+    } else if(bookmark.type === "job") {
+      this.navCtrl.push(JobDetail, {jobId: bookmark.objId});
+    }
   }
 
   removeBookmark(bookmark): void {

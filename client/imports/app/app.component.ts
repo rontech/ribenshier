@@ -63,7 +63,7 @@ export class AppComponent {
     this.listenToLoginEvents();
 
     //use envent to enable loggedIn menu
-    if(Meteor.user()) {
+    if(Meteor.userId()) {
       setTimeout(() => {
         this.events.publish('user:login');
       }, 1000);

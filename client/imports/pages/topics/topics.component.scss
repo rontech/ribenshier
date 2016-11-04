@@ -1,4 +1,13 @@
 .topics-page-content {
+  background-color: #d3d3d3;
+
+  .card-block {
+    width: 100%;
+    margin-left: 0px;
+    padding-left: 2px;
+    padding-right: 5px;
+  }
+
   .topic-title {
     float: left;
     padding: 0px;
@@ -77,6 +86,10 @@
     color: #8b4513;
     font-weight: bold;
   }
+
+  .icon-line {
+    background-color: #f5f5f5;
+  }
 }
  
 .options-popover {
@@ -112,21 +125,21 @@ ion-segment-button{
 }
 
 .segment-button:first-of-type {
-  border-radius: 60px;
+  border-radius: 20px;
   margin-left: 0px;
   height: 100%;
   width: 100%;
 }
 
 .segment-button:not(:first-of-type) {
-  border-radius: 60px;
+  border-radius: 20px;
   margin-left: 20px;
   height: 100%;
   width: 100%;
 }
 
 .segment-button:last-of-type {
-  border-radius: 60px;
+  border-radius: 20px;
   margin-right: 0px;
   margin-left: 20px;
   height: 100%;

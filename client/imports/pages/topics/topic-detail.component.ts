@@ -1,16 +1,17 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
-import { NavParams, NavController, AlertController,PopoverController } from "ionic-angular";
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { NavParams, NavController, AlertController,PopoverController } from 'ionic-angular';
 import { Meteor } from 'meteor/meteor';
-import { Topic } from "../../../../both/models/topic.model";
-import { Comments } from "../../../../both/collections/comments.collection";
-import { Topics } from "../../../../both/collections/topics.collection";
-import { Observable, Subscription } from "rxjs";
-import { Comment } from "../../../../both/models/comment.model";
-import template from "./topic-detail.component.html";
-import * as style from "./topic-detail.component.scss";
+import { Topic } from '../../../../both/models/topic.model';
+import { Comments } from '../../../../both/collections/comments.collection';
+import { Topics } from '../../../../both/collections/topics.collection';
+import { Observable, Subscription } from 'rxjs';
+import { Comment } from '../../../../both/models/comment.model';
+import template from './topic-detail.component.html';
+import * as style from './topic-detail.component.scss';
 import { TopicOptionsComponent } from './topic-options.component';
-import { MeteorObservable } from "meteor-rxjs";
-import { CommentsPage } from "../../pages/topics/comments-page.component";
+import { MeteorObservable } from 'meteor-rxjs';
+import { CommentsPage } from '../../pages/topics/comments-page.component';
+import { SocialSharing } from 'ionic-native';
  
 @Component({
   selector: "topic-detail",
@@ -92,6 +93,14 @@ export class TopicDetail implements OnInit, OnDestroy {
     return false;
   }
 
+  shareSocial() {
+    SocialSharing.share(this.topic.title, this.topic.title,  this.topic.picture,"http://192.168.11.11:3000/#/topic-detail/" + this.topic._id)
+    .then(()=>{
+    }).catch((e)=>{
+      console.log("e=", e);
+    })
+  }
+
   private handleThumbUpError(e: Error): void {
     console.error(e);
 
@@ -103,5 +112,4 @@ export class TopicDetail implements OnInit, OnDestroy {
 
     alert.present();
   }
-
 }

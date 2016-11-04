@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import template from './topics.component.html';
+import * as style from './topics.component.scss';
 import { Observable, Subscription } from 'rxjs';
 import { Topic } from '../../../../both/models/topic.model';
 import { Activity } from '../../../../both/models/activity.model';
@@ -8,7 +9,6 @@ import { HousePicture } from '../../../../both/models/house-picture.model';
 import { Job } from '../../../../both/models/job.model';
 import { Meteor} from 'meteor/meteor';
 import { MeteorObservable } from 'meteor-rxjs';
-import * as style from './topics.component.scss';
 import { Topics } from '../../../../both/collections/topics.collection';
 import { Activities } from '../../../../both/collections/activities.collection';
 import { Houses } from '../../../../both/collections/houses.collection';
@@ -144,37 +144,28 @@ export class TopicsComponent implements OnInit, OnDestroy {
     }
   }
 
-  showDetail(topic): void {
-    this.navCtrl.push(TopicDetail, {topic});
-  }
-
-  showActivityDetail(activity) {
-    this.navCtrl.push(ActivityDetail, {activity});
-  }
-
-  showHouseDetail(house) {
-    this.navCtrl.push(HouseDetail, {house});
-  }
-
-  showJobDetail(job) {
-    this.navCtrl.push(JobDetail, {job});
-  }
-
-  showComments(topic): void {
-    //use parent NavControll to hide the tab bar
-    this.navCtrl.parent.parent.push(CommentsPage, {topic});
+  showDetail(obj, type): void {
+    if (type === "topic") {
+      this.navCtrl.parent.parent.push(TopicDetail, {topicId: obj._id});
+    } else if(type ===  "activity") {
+      this.navCtrl.parent.parent.push(ActivityDetail, {activityId: obj._id});
+    } else if(type === "house") {
+      this.navCtrl.parent.parent.push(HouseDetail, {houseId: obj._id});
+    } else if(type === "job") {
+      this.navCtrl.parent.parent.push(JobDetail, {jobId: obj._id});
+    }
   }
   
-  showActivityComments(activity): void {
-    this.navCtrl.parent.parent.push(ActivityCommentsPage, {activity});
-  }
-
-  showHouseComments(house): void {
-    this.navCtrl.parent.parent.push(HouseCommentsPage, {house});
-  }
-
-  showJobComments(job): void {
-    this.navCtrl.parent.parent.push(JobCommentsPage, {job});
+  showComments(obj, type): void {
+    if (type === "topic") {
+      this.navCtrl.parent.parent.push(CommentsPage, {topic: obj});
+    } else if(type ===  "activity") {
+      this.navCtrl.parent.parent.push(ActivityCommentsPage, {activity: obj});
+    } else if(type === "house") {
+      this.navCtrl.parent.parent.push(HouseCommentsPage, {house: obj});
+    } else if(type === "job") {
+      this.navCtrl.parent.parent.push(JobCommentsPage, {job: obj});
+    }
   }
 
   thumbUp(topic): void {

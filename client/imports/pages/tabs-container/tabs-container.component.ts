@@ -59,12 +59,12 @@ export class TabsContainerComponent {
   listenToLoginEvents() {
     this.events.subscribe('user:login', () => {
       this.profileRoot = ProfileComponent;
-      //this.favoritesRoot = TopicsComponent;
+      this.favoritesRoot = BookmarksComponent;
     });
 
     this.events.subscribe('user:signup', () => {
       this.profileRoot = ProfileComponent;
-      //this.favoritesRoot = TopicsComponent;
+      this.favoritesRoot = BookmarksComponent;
     });
 
     this.events.subscribe('user:logout', () => {

@@ -96,7 +96,14 @@ import 'intl/locale-data/jsonp/en';
   ],
   // Modules
   imports: [
-    IonicModule.forRoot(AppComponent),
+    IonicModule.forRoot(AppComponent, {},  {
+     links: [
+      { component: TopicDetail, name: 'TopicDetail', segment: 'topic-detail/:topicId'},
+      { component: ActivityDetail, name: 'ActivityDetail', segment: 'activity-detail/:activityId'},
+      { component: HouseDetail, name: 'HouseDetail', segment: 'house-detail/:houseId'},
+      { component: JobDetail, name: 'JobDetail', segment: 'job-detail/:jobId'}
+    ]
+  }),
     MomentModule
   ],
   exports: [ChineseTimeAgoPipe],

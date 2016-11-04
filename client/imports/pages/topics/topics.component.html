@@ -1,13 +1,8 @@
 <ion-header>
-  <ion-navbar color="myapp" ng-show="flase">
+  <ion-navbar color="myapp">
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-buttons end>
-      <button ion-button icon-only class="add-topic-button" (click)="addNew()">
-        <ion-icon ios="ios-create-outline" md="md-create"></ion-icon>
-      </button>
-    </ion-buttons>
     <ion-toolbar>
       <ion-searchbar color="primary"
                      [(ngModel)]="queryText"
@@ -36,6 +31,10 @@
 </ion-header>
 
 <ion-content class="topics-page-content">
+  <ion-fab right bottom>
+    <button ion-fab mini (click)="addNew()" color="favorite"><ion-icon name="add"></ion-icon></button>
+  </ion-fab>
+
   <ion-refresher (ionRefresh)="doRefresh($event)">
     <ion-refresher-content
       pullingIcon="arrow-dropdown"
@@ -47,7 +46,7 @@
 
   <div [ngSwitch]="category">
     <ion-list *ngSwitchCase="'topics'">
-      <ion-card *ngFor="let topic of topics | async">
+      <ion-card *ngFor="let topic of topics | async" class="card-block">
         <ion-row>
           <ion-col>
              <div>
@@ -68,7 +67,7 @@
         </ion-row>
       
         <ion-card-content>
-          <button ion-item clear (click)="showDetail(topic)">
+          <button ion-item clear (click)="showDetail(topic, 'topic')">
             <span>
               <p class="topic-brief">{{topic.content.slice(0, 22)}}</p>
               <p class="topic-brief">{{topic.content.slice(22, 44)}} ...</p>
@@ -76,7 +75,7 @@
           </buttoN>
         </ion-card-content>
 
-        <ion-row>
+        <ion-row class="icon-line">
           <ion-col>
             <button ion-button clear small (click)="thumbUp(topic)">
               <ion-icon name="thumbs-up" style="color: #d03e84"></ion-icon>
@@ -84,7 +83,7 @@
             </button>
           </ion-col>
           <ion-col>
-            <button ion-button clear small  (click)="showComments(topic)">
+            <button ion-button clear small  (click)="showComments(topic, 'topic')">
               <ion-icon name="text" style="color: #556b2f"></ion-icon>
               <div>{{topic.commented}}</div>
             </button>
@@ -103,7 +102,7 @@
     </ion-list>
   
     <ion-list *ngSwitchCase="'activities'">
-      <ion-card *ngFor="let activity of activities | async">
+      <ion-card *ngFor="let activity of activities | async" class="card-block">
         <ion-row>
           <ion-col>
              <div>
@@ -124,7 +123,7 @@
         </ion-row>
       
         <ion-card-content>
-          <button ion-item clear (click)="showActivityDetail(activity)">
+          <button ion-item clear (click)="showDetail(activity, 'activity')">
             <span >
               <p class="activity-info"> 
                 <ion-icon name="bonfire"  style="color: #4682b4"></ion-icon>
@@ -134,7 +133,7 @@
           </button>
         </ion-card-content>
 
-        <ion-row>
+        <ion-row class="icon-line">
           <ion-col>
             <button ion-button clear small (click)="joinActivity(activity)">
               <ion-icon name="person-add" style="color: #d03e84"></ion-icon>
@@ -142,7 +141,7 @@
             </button>
           </ion-col>
           <ion-col>
-            <button ion-button clear small  (click)="showActivityComments(activity)">
+            <button ion-button clear small  (click)="showComments(activity, 'activity')">
               <ion-icon name="text" style="color: #556b2f"></ion-icon>
               <div>{{activity.commented}}</div>
             </button>
@@ -162,7 +161,7 @@
 
 
     <ion-list *ngSwitchCase="'houses'">
-      <ion-card *ngFor="let house of houses | async">
+      <ion-card *ngFor="let house of houses | async" class="card-block">
         <ion-row>
           <ion-col>
              <div>
@@ -183,7 +182,7 @@
         </ion-row>
       
         <ion-card-content>
-          <button ion-item clear (click)="showHouseDetail(house)">
+          <button ion-item clear (click)="showDetail(house, 'house')">
             <span>
                <p class="house-info"> <ion-icon name="cube"  style="color: #4682b4"></ion-icon>
                {{house.floorPlan}}・{{house.area}}平米・{{house.price}}万円</p>
@@ -193,9 +192,9 @@
           </buttoN>
         </ion-card-content>
 
-        <ion-row>
+        <ion-row class="icon-line">
           <ion-col>
-            <button ion-button clear small  (click)="showHouseComments(house)">
+            <button ion-button clear small  (click)="showComments(house, 'house')">
               <ion-icon name="text" style="color: #556b2f"></ion-icon>
               <div>{{house.commented}}</div>
             </button>
@@ -214,7 +213,7 @@
     </ion-list>
 
     <ion-list *ngSwitchCase="'jobs'">
-      <ion-card *ngFor="let job of jobs | async">
+      <ion-card *ngFor="let job of jobs | async" class="card-block">
         <ion-row>
           <ion-col>
              <div>
@@ -232,7 +231,7 @@
         </ion-row>
       
         <ion-card-content>
-          <button ion-item clear (click)="showJobDetail(job)">
+          <button ion-item clear (click)="showDetail(job, 'job')">
             <span >
              <p class="job-info">
              <ion-icon name="boat"  style="color: #4682b4"></ion-icon> {{job.location}}  {{job.position}} {{job.people}}名 {{job.start | date:'M月d日'}}开始 ...</p>
@@ -240,9 +239,9 @@
           </button>
         </ion-card-content>
 
-        <ion-row>
+        <ion-row class="icon-line">
           <ion-col>
-            <button ion-button clear small  (click)="showJobComments(job)">
+            <button ion-button clear small  (click)="showComments(job, 'job')">
               <ion-icon name="text" style="color: #556b2f"></ion-icon>
               <div>{{job.commented}}</div>
             </button>

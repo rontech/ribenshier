@@ -13,6 +13,14 @@
 </ion-header>
 
 <ion-content class="job-detail-content">
+  <ion-fab left bottom>
+    <button ion-fab mini color="dark"><ion-icon ios="ios-share-outline" md="md-share"></ion-icon></button>
+    <ion-fab-list side="top">
+      <button ion-fab><ion-icon name="logo-facebook" (click)="shareViaFacebook()"></ion-icon></button>
+      <button ion-fab><ion-icon name="chatbubbles" (click)="shareViaWechat()"></ion-icon></button>
+    </ion-fab-list>
+  </ion-fab>
+
   <div class="card-title"><h1>{{job.title}}</h1></div>
 
   <ion-row class="no-padding">

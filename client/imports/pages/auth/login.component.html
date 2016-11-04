@@ -27,10 +27,16 @@
     <ion-item>
       <ion-row responsive-sm>
         <ion-col>
-          <button ion-button (click)="login()" type="submit" color="favorite" block>登录</button>
+          <button ion-button (click)="login()" type="submit" color="favorite" icon-left block><ion-icon name="log-in"></ion-icon>登录</button>
         </ion-col>
         <ion-col>
-          <button ion-button (click)="createUser()" color="light" block>创建新用户</button>
+          <button ion-button (click)="createUser()" color="light" icon-left block><ion-icon name="add-circle"></ion-icon>创建新用户</button>
+        </ion-col>
+        <ion-col>
+          <button ion-button (click)="loginViaFacebook()" color="facebook" icon-left block><ion-icon name="logo-facebook"></ion-icon>Facebook登录</button>
+        </ion-col>
+        <ion-col>
+          <button ion-button (click)="loginViaWeChat()" color="wechat" icon-left block><ion-icon name="chatbubbles"></ion-icon>微信登录</button>
         </ion-col>
       </ion-row>
     </ion-item>

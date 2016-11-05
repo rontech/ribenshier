@@ -22,6 +22,29 @@ export class LoginComponent {
     private alertCtrl: AlertController,
     private events: Events
     ) {}
+
+  ionViewDidEnter() {
+    let js;
+    let fjs = document.getElementsByTagName("script")[0];
+    if (document.getElementById("facebook-jssdk")) return;
+    js = document.createElement("script");
+    js.id = "facebook-jssdk";
+    js.src = "//connect.facebook.net/ja_JP/sdk.js";
+    fjs.parentNode.insertBefore(js, fjs);
+
+    window.fbAsyncInit = () => {
+      FB.init({
+        appId      : '383813588676104',
+        status     : true,
+        xfbml      : true,
+        version    : 'v2.5'
+      });
+
+      FB.getLoginStatus((response) => {
+        this.statusChangeCallback(response);
+      });
+    };
+  }
  
   onInputKeypress({keyCode}: KeyboardEvent): void {
     if (keyCode == 13) {
@@ -74,6 +97,29 @@ export class LoginComponent {
       if (e) return this.handleCreateUserError(e);
       this.events.publish('user:signup');
       this.navCtrl.push(TabsContainerComponent);
+    });
+  }
+
+  loginViaFacebook(): void {
+    FB.login(function(response) {
+      this.statusChangeCallback(response);
+    }, {scope: 'public_profile,email'});
+  }
+
+  private statusChangeCallback(response): void {
+    if (response.status === 'connected') {
+      this.testAPI();
+    } else if (response.status === 'not_authorized') {
+      console.log("not_authorized");
+    } else {
+      console.log("no status");
+    }
+  }
+
+  private testAPI() {
+    console.log('Welcome!  Fetching your information.... ');
+    FB.api('/me', (response) => {
+      console.log('Successful login for: ' + response.name);
     });
   }
 

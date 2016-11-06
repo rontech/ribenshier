@@ -424,5 +424,8 @@ Meteor.methods({
       '收藏不存在。');
 
     Bookmarks.collection.remove(bookmarkId);
+  },
+  checkUserExists(username: string): boolean {
+    return Meteor.users.findOne({username: username}) ? true : false;
   }
 });

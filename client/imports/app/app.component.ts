@@ -74,6 +74,25 @@ export class AppComponent {
     }
   }
 
+  ionViewDidEnter() {
+    let js;
+    let fjs = document.getElementsByTagName("script")[0];
+    if (document.getElementById("facebook-jssdk")) return;
+    js = document.createElement("script");
+    js.id = "facebook-jssdk";
+    js.src = "//connect.facebook.net/ja_JP/sdk.js";
+    fjs.parentNode.insertBefore(js, fjs);
+
+    window.fbAsyncInit = () => {
+      FB.init({
+        appId      : '383813588676104',
+        status     : true,
+        xfbml      : true,
+        version    : 'v2.5'
+      });
+    };
+  }
+
   openPage(page: PageObj) {
     // the nav component was found using @ViewChild(Nav)
     // reset the nav to remove previous pages and only have this page
@@ -137,9 +156,14 @@ export class AppComponent {
   }
 
   private handleLogout(alert): void {
+    let user = Meteor.user();
     Meteor.logout((e: Error) => {
       alert.dismiss().then(() => {
         if (e) return this.handleError(e);
+        if(user.profile.via && user.profile.via === "facebook") {
+          FB.logout((response)  => {
+          });
+        }
 
         this.enableMenu(false);
         this.nav.setRoot(TabsContainerComponent, {}, {
@@ -153,7 +177,7 @@ export class AppComponent {
     console.error(e);
 
     const alert = this.alertCtrl.create({
-      title: 'Oops!',
+      title: '提醒',
       message: e.message,
       buttons: ['OK']
     });

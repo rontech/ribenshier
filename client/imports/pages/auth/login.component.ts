@@ -5,6 +5,7 @@ import { TabsContainerComponent } from '../tabs-container/tabs-container.compone
 import template from './login.component.html';
 import * as style from './login.component.scss';
 import * as Gravatar from 'gravatar';
+import { MeteorObservable } from "meteor-rxjs";
  
 @Component({
   selector: 'login',
@@ -39,43 +40,15 @@ export class LoginComponent {
         xfbml      : true,
         version    : 'v2.5'
       });
-
-      FB.getLoginStatus((response) => {
-        this.statusChangeCallback(response);
-      });
     };
   }
  
   onInputKeypress({keyCode}: KeyboardEvent): void {
     if (keyCode == 13) {
-      this.login();
+      this.loginCommon(this.username, this.password);
     }
   }
  
-  login(): void {
-    Meteor.loginWithPassword(
-      this.username,
-      this.password,
-      (e: Error) => {
-        if (e) return this.handleLoginError(e);
-        this.events.publish('user:login');
-        this.navCtrl.push(TabsContainerComponent);
-      }
-    );
-  }
- 
-  private handleLoginError(e: Error): void {
-    console.error(e);
-
-    const alert = this.alertCtrl.create({
-      title: '登录失败',
-      message: e.message,
-      buttons: ['了解']
-    });
-
-    alert.present();
-  }
-
   createUser(): void {
     let gravatar;
     try {
@@ -83,52 +56,85 @@ export class LoginComponent {
     } catch(e) {
       gravatar = "assets/none.png";
     }
+   
+    this.createUserCommon(this.username,
+           this.password, this.username,
+           gravatar, 'self');
+  }
 
+  loginViaFacebook(): void {
+    FB.login((response) => {
+      this.statusChangeCallback(response);
+    }, {scope: "public_profile,email"});
+  }
+
+  private statusChangeCallback(response): void {
+    if (response.status === "connected") {
+      this.fbLogin();
+    } else if (response.status === "not_authorized") {
+      this.handleError("提醒", "没有Facebook的许可。");
+    }
+  }
+
+  private fbLogin() {
+    FB.api("/me?fields=id, name, email, picture&locale=ja_JP", (response) => {
+      MeteorObservable.call('checkUserExists',
+                      response.email,
+        ).subscribe({
+        next: (checked) => {
+          if(checked) {
+            this.loginCommon(response.email, this.generatePassword(response.id));
+          } else {
+            this.createUserCommon(response.email,
+                 this.generatePassword(response.id), response.name,
+                 response.picture.data.url, "facebook");
+          }      
+        },
+        error: (e: Error) => {
+          console.log("e=", e);
+        }
+      });
+    });
+  }
+
+  private generatePassword(id): string {
+    return id.split("").reverse().join("");
+  }
+
+  private loginCommon(username, password): void {
+    Meteor.loginWithPassword(
+      username,
+      password,
+      (e: Error) => {
+        if (e) return this.handleError("登录失败", e.message);
+        this.events.publish('user:login');
+        this.navCtrl.push(TabsContainerComponent);
+      }
+    );
+  }
+
+  private createUserCommon(email, password, name, picture, via): void {
     Accounts.createUser({
-      username: this.username,
-      password: this.password,
-      email: this.username,
+      username: email,
+      password: password,
+      email: email,
       profile: {
-        name: this.username,
-        picture: gravatar,
-        admin: false
+        name: name,
+        picture: picture,
+        admin: false,
+        via: via
       }
     }, (e: Error) => {
-      if (e) return this.handleCreateUserError(e);
+      if (e) return this.handleError("创建用户失败", e.message);
       this.events.publish('user:signup');
       this.navCtrl.push(TabsContainerComponent);
     });
   }
 
-  loginViaFacebook(): void {
-    FB.login(function(response) {
-      this.statusChangeCallback(response);
-    }, {scope: 'public_profile,email'});
-  }
-
-  private statusChangeCallback(response): void {
-    if (response.status === 'connected') {
-      this.testAPI();
-    } else if (response.status === 'not_authorized') {
-      console.log("not_authorized");
-    } else {
-      console.log("no status");
-    }
-  }
-
-  private testAPI() {
-    console.log('Welcome!  Fetching your information.... ');
-    FB.api('/me', (response) => {
-      console.log('Successful login for: ' + response.name);
-    });
-  }
-
-  private handleCreateUserError(e: Error): void {
-    console.error(e);
-
+  private handleError(title, message): void {
     const alert = this.alertCtrl.create({
-      title: '创建用户失败',
-      message: e.message,
+      title: title,
+      message: message,
       buttons: ['了解']
     });
 

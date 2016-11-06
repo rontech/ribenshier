@@ -51,6 +51,25 @@ export class TopicDetail implements OnInit, OnDestroy {
   ngOnDestroy() {
   }
 
+  ionViewDidEnter() {
+    let js;
+    let fjs = document.getElementsByTagName("script")[0];
+    if (document.getElementById("facebook-jssdk")) return;
+    js = document.createElement("script");
+    js.id = "facebook-jssdk";
+    js.src = "//connect.facebook.net/ja_JP/sdk.js";
+    fjs.parentNode.insertBefore(js, fjs);
+
+    window.fbAsyncInit = () => {
+      FB.init({
+        appId      : '383813588676104',
+        status     : true,
+        xfbml      : true,
+        version    : 'v2.5'
+      });
+    };
+  }
+
   showOptions(): void {
     const popover = this.popoverCtrl.create(TopicOptionsComponent, {
       topic: this.topic
@@ -99,6 +118,14 @@ export class TopicDetail implements OnInit, OnDestroy {
     }).catch((e)=>{
       console.log("e=", e);
     })
+  }
+
+  shareViaFacebook(): void{
+    FB.ui({
+      method: 'share',
+      mobile_iframe: true,
+      href: 'http://www.ribenshier.com/#/topic-detail/' +  this.topic._id
+    }, (response) => {console.log("response=", response);});
   }
 
   private handleThumbUpError(e: Error): void {

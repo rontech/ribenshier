@@ -55,7 +55,7 @@
   <div [ngSwitch]="category">
     <ion-list *ngSwitchCase="'topics'">
       <ion-card *ngFor="let topic of topics | async" class="card-block">
-        <ion-row>
+        <ion-row class="topic-title-line">
           <ion-col>
              <div>
                <p class="topic-title">{{topic.title}}</ion-label>
@@ -111,7 +111,7 @@
   
     <ion-list *ngSwitchCase="'activities'">
       <ion-card *ngFor="let activity of activities | async" class="card-block">
-        <ion-row>
+        <ion-row class="activity-title-line">
           <ion-col>
              <div>
                <p class="topic-title">{{activity.title}}</ion-label>
@@ -126,7 +126,7 @@
              </div>
           </ion-col>
           <div class="float: right;">
-            <img [src]='getActivityStatusImage(activity)' class="topic-picture"></img>
+            <img [src]='getActivityStatusImage(activity)' class="activity-picture"></img>
           </div>
         </ion-row>
       
@@ -170,7 +170,7 @@
 
     <ion-list *ngSwitchCase="'houses'">
       <ion-card *ngFor="let house of houses | async" class="card-block">
-        <ion-row>
+        <ion-row class="house-title-line">
           <ion-col>
              <div>
                <p class="topic-title">{{house.title}}</ion-label>
@@ -185,7 +185,7 @@
              </div>
           </ion-col>
           <div class="float: right;">
-            <img [src]='house.thumb' class="topic-picture"></img>
+            <img [src]='house.thumb' class="house-picture"></img>
           </div>
         </ion-row>
       

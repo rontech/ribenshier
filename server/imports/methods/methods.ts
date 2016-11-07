@@ -393,7 +393,7 @@ Meteor.methods({
       $set: {commentedAt: dt, sortedBy: dt, lastComment: content}
     });
   },
-  addBookmark(id: string, type:string, title: string, createdAt: Date): void {
+  addBookmark(id: string, type:string, title: string, createdAt: Date, thumbnail: string): void {
     if (!this.userId) throw new Meteor.Error('unauthorized',
       '你需要登录才可以操作。');
     check(id, nonEmptyString);
@@ -403,12 +403,12 @@ Meteor.methods({
     if (book) throw new Meteor.Error('already-bookmarked',
       '你已经收藏了！');
  
- 
     Bookmarks.collection.insert({
       objId: id,
       title: title,
       type: type,
       senderId: this.userId,
+      thumbnail: thumbnail,
       createdAt: createdAt
     });
   },

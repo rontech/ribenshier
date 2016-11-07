@@ -11,13 +11,16 @@
   <ion-list class="bookmarks">
     <ion-item-sliding *ngFor="let bookmark of bookmarks | async" class="bookmark">
       <button ion-item (click)="showDetail(bookmark)">
+        <div class="bookmark-picture">
+          <img [src]="bookmark.thumbnail"/>
+        </div>
         <div class="bookmark-info">
-          <h2 class="bookmark-title">{{bookmark.title}}</h2>
+          <h2 class="bookmark-title">{{editTitle(bookmark.title)}}</h2>
           <p class="creat-timestamp">{{types[bookmark.type]}} --  {{bookmark.createdAt | amTimeAgo | chineseTimeAgo}}</p>
         </div>
       </button>
       <ion-item-options>
-        <button ion-button color="danger" (click)="removeBookmark(bookmark)">取消收藏</button>
+        <button ion-button icon-only color="danger" (click)="removeBookmark(bookmark)"><ion-icon name="trash"></ion-icon></button>
       </ion-item-options>
     </ion-item-sliding>
   </ion-list>

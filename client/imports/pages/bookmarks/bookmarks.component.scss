@@ -1,7 +1,13 @@
 .bookmarks-page-content {
+  .bookmark-picture {
+    float: left;
+    width: 36px;
+    margin: 0px;
+  }
+
   .bookmark-info {
     float: left;
-    margin: 10px 0 0 20px;
+    margin: 0px 0 0 20px;
 
     .create-timestamp {
       position: absolute;

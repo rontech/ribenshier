@@ -14,7 +14,7 @@ import { Activities } from '../../../../both/collections/activities.collection';
 import { Houses } from '../../../../both/collections/houses.collection';
 import { HousePictures } from '../../../../both/collections/house-pictures.collection';
 import { Jobs } from '../../../../both/collections/jobs.collection';
-import { NavParams, NavController, ModalController, AlertController, Content, Events } from 'ionic-angular';
+import { NavParams, NavController, ModalController, AlertController, Content, Events, Tabs } from 'ionic-angular';
 import { NewTopicComponent } from './new-topic.component';
 import { NewActivityComponent } from '../activities/new-activity.component';
 import { NewHouseComponent } from '../houses/new-house.component';
@@ -68,18 +68,19 @@ export class TopicsComponent implements OnInit, OnDestroy {
     this.activitiesSub = this.getActivitiesSubscription();
     this.housesSub = this.getHousesSubscription();
     this.jobsSub = this.getJobsSubscription();
-    if(Meteor.user()) {
-      this.user = Meteor.user();
-    } else {
-      this.user =undefined;
-    }
 
-    this.events.subscribe('top:refresh', () => {
-      if(Meteor.user()) {
-        this.user = Meteor.user();
-      } else {
-        this.user =undefined;
-      }
+    this.updateLoginStatus();
+
+    this.events.subscribe('user:login', () => {
+      this.updateLoginStatus();
+    });
+
+    this.events.subscribe('user:logout', () => {
+      this.updateLoginStatus();
+    });
+
+    this.events.subscribe('user:signup', () => {
+      this.updateLoginStatus();
     });
   }
 
@@ -201,11 +202,17 @@ export class TopicsComponent implements OnInit, OnDestroy {
   }
 
   addBookmark(obj, type): void {
+    let thumbnail;
+    if(obj.thumb) thumbnail = obj.thumb;
+    if(type === 'activity') thumbnail = this.getActivityStatusImage(obj);
+    if(type === 'job') thumbnail = 'assets/recurit-thumbnail.png';
+
     MeteorObservable.call('addBookmark',
                       obj._id,
                       type,
                       obj.title,
-                      obj.createdAt
+                      obj.createdAt,
+                      thumbnail
       ).subscribe({
       next: () => {
         this.handleSuccess('收藏成功!');
@@ -248,6 +255,14 @@ export class TopicsComponent implements OnInit, OnDestroy {
       }
     }
     return 'assets/recruit.jpg';
+  }
+  
+  private updateLoginStatus(): void {
+    if(Meteor.user()) {
+      this.user = Meteor.user();
+    } else {
+      this.user =undefined;
+    }
   }
 
   private destroySub(): void {

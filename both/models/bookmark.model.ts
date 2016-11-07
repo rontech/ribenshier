@@ -6,5 +6,6 @@ export interface Bookmark {
   type?: string;
   title?: string;
   senderId?: string,
+  thumbnail?: string
   createdAt?: Date;
 }

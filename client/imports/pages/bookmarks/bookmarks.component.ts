@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { NavController, AlertController } from 'ionic-angular';
+import { NavController, AlertController, Events } from 'ionic-angular';
 import template from './bookmarks.component.html';
 import * as style from './bookmarks.component.scss';
 import { Observable, Subscription } from 'rxjs';
@@ -25,11 +25,27 @@ export class BookmarksComponent implements OnInit, OnDestroy {
   types = { topic: '杂谈', activity: '社群', house: '住居', job: '工作'};
 
   constructor(
+    public events: Events,
     private navCtrl: NavController,
     private alertCtrl: AlertController) {}
 
   ngOnInit() {
     this.bookmarksSub = this.getBookmarksSubscription();
+
+    this.events.subscribe('user:login', () => {
+      this.destroySub();
+      this.bookmarksSub = this.getBookmarksSubscription();
+    });
+
+    this.events.subscribe('user:logout', () => {
+      this.destroySub();
+      this.bookmarksSub = this.getBookmarksSubscription();
+    });
+
+    this.events.subscribe('user:signup', () => {
+      this.destroySub();
+      this.bookmarksSub = this.getBookmarksSubscription();
+    });
   }
 
   ngOnDestroy() {
@@ -40,11 +56,11 @@ export class BookmarksComponent implements OnInit, OnDestroy {
     if(bookmark.type === 'topic') {
       this.navCtrl.push(TopicDetail, {topicId: bookmark.objId});
     } else if(bookmark.type === 'activity') {
-      this.navCtrl.push(ActivityDetail, {activityId: bookmark.objId});
+      this.navCtrl.parent.parent.push(ActivityDetail, {activityId: bookmark.objId});
     } else if(bookmark.type === 'house') {
-      this.navCtrl.push(HouseDetail, {houseId: bookmark.objId});
+      this.navCtrl.parent.parent.push(HouseDetail, {houseId: bookmark.objId});
     } else if(bookmark.type === 'job') {
-      this.navCtrl.push(JobDetail, {jobId: bookmark.objId});
+      this.navCtrl.parent.parent.push(JobDetail, {jobId: bookmark.objId});
     }
   }
 
@@ -60,6 +76,13 @@ export class BookmarksComponent implements OnInit, OnDestroy {
     });
   }
 
+  editTitle(title) {
+    let dispTitle = title.slice(0, 15);
+    if (title.length > 12) {
+      dispTitle += ' ...';
+    }
+    return dispTitle;
+  }
   private getBookmarksSubscription(): Subscription {
     return  MeteorObservable.subscribe('bookmarks', Meteor.userId()).subscribe(() => {
       MeteorObservable.autorun().subscribe(() => {

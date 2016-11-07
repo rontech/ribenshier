@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NavController, AlertController, LoadingController } from 'ionic-angular';
+import { NavController, AlertController, LoadingController, Events } from 'ionic-angular';
 import { Meteor } from 'meteor/meteor';
 import { Observable } from 'rxjs';
 import { MeteorObservable } from 'meteor-rxjs';
@@ -24,29 +24,28 @@ export class ProfileComponent implements OnInit {
   thumbs: Observable<Thumb[]>;
  
   constructor(
+    public events: Events,
     private navCtrl: NavController,
     private alertCtrl: AlertController,
     private loadingCtrl: LoadingController
   ) {}
  
   ngOnInit(): void {
-    if(Meteor.user()) {
-      this.profile = Meteor.user().profile
-    } else {
-      this.profile = {
-        name: '',
-        picture: 'assets/none.png'
-      };
-    }
+    this.loadProfile();
+
+    this.events.subscribe('user:login', () => {
+      this.loadProfile();
+    });
+
+    this.events.subscribe('user:logout', () => {
+      this.loadProfile();
+    });
+
+    this.events.subscribe('user:signup', () => {
+      this.loadProfile();
+    });
   }
   
-  ionViewCanEnter(): boolean {
-    if(!Meteor.user()) {
-      return false;
-    }
-    return true;
-  }
-
   done(): void {
     MeteorObservable.call('updateProfile', this.profile).subscribe({
       next: () => {
@@ -93,6 +92,17 @@ export class ProfileComponent implements OnInit {
         });
       });
     });
+  }
+
+  private loadProfile(): void {
+    if(Meteor.user()) {
+      this.profile = Meteor.user().profile
+    } else {
+      this.profile = {
+        name: '',
+        picture: 'assets/none.png'
+      };
+    }
   }
 
   private handleError(e: Error): void {

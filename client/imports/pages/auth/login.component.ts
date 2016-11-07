@@ -55,9 +55,7 @@ export class LoginComponent {
   }
 
   close(): void {
-    this.events.publish('top:refresh');
-    this.viewCtrl.dismiss().then(() => {
-    });
+    this.viewCtrl.dismiss();
   }
 
   createUser(): void {
@@ -119,7 +117,6 @@ export class LoginComponent {
       (e: Error) => {
         if (e) return this.handleError('登录失败', e.message);
         this.events.publish('user:login');
-        this.events.publish('top:refresh');
         this.viewCtrl.dismiss().then(() => {
         });
       }
@@ -140,7 +137,6 @@ export class LoginComponent {
     }, (e: Error) => {
       if (e) return this.handleError('创建用户失败', e.message);
       this.events.publish('user:signup');
-      this.events.publish('top:refresh');
       this.viewCtrl.dismiss().then(() => {
       });
     });

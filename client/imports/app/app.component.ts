@@ -31,7 +31,7 @@ export class AppComponent {
   // the left menu only works after login
   // the login page disables the left menu
   appPages: PageObj[] = [
-    { title: '日本杂谈', component: TabsContainerComponent,  index: 0, category: 'topics', icon: 'paper' },
+    { title: '杂谈', component: TabsContainerComponent,  index: 0, category: 'topics', icon: 'paper' },
     { title: '社群', component: TabsContainerComponent,  index: 0, category: 'activities', icon: 'paper' },
     { title: '住居', component: TabsContainerComponent,  index: 0, category: 'houses', icon: 'paper' },
     { title: '工作', component: TabsContainerComponent,  index: 0, category: 'jobs', icon: 'paper' }

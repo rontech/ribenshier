@@ -11,7 +11,7 @@ import { ActivityCommentsPage } from './activity-comments.component';
 import { Activities } from '../../../../both/collections/activities.collection';
  
 @Component({
-  selector: "activity-detail",
+  selector: 'activity-detail',
   template,
   styles: [
     style.innerHTML
@@ -41,7 +41,7 @@ export class ActivityDetail implements OnInit, OnDestroy {
 
     this.barTitle = this.activity.title.slice(0, 12);
     if (this.activity.title.length > 12) {
-      this.barTitle = this.barTitle + "...";
+      this.barTitle = this.barTitle + '...';
     }  
   }
 

@@ -1,10 +1,10 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
-import { NavController, ViewController, AlertController } from "ionic-angular";
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { NavController, ViewController, AlertController } from 'ionic-angular';
 import { Meteor } from 'meteor/meteor';
-import { Observable } from "rxjs";
+import { Observable } from 'rxjs';
 import template from './new-activity.component.html';
-import * as style from "./new-activity.component.scss";
-import { MeteorObservable } from "meteor-rxjs";
+import * as style from './new-activity.component.scss';
+import { MeteorObservable } from 'meteor-rxjs';
 
 import { Thumbs, Images } from '../../../../both/collections/images.collection';
 import { Thumb, Image } from '../../../../both/models/image.model';

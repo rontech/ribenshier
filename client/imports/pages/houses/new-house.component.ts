@@ -1,10 +1,10 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
-import { NavController, ViewController, AlertController, LoadingController } from "ionic-angular";
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { NavController, ViewController, AlertController, LoadingController } from 'ionic-angular';
 import { Meteor } from 'meteor/meteor';
-import { Observable } from "rxjs";
+import { Observable } from 'rxjs';
 import template from './new-house.component.html';
-import * as style from "./new-house.component.scss";
-import { MeteorObservable } from "meteor-rxjs";
+import * as style from './new-house.component.scss';
+import { MeteorObservable } from 'meteor-rxjs';
 
 import { Thumbs, Images } from '../../../../both/collections/images.collection';
 import { Thumb, Image } from '../../../../both/models/image.model';
@@ -66,7 +66,7 @@ export class NewHouseComponent implements OnInit, OnDestroy {
       },
       error: (e: Error) => {
         this.viewCtrl.dismiss().then(() => {
-          this.handleError(e, "发表失败");
+          this.handleError(e, '发表失败');
         });
       }
     }); 
@@ -77,12 +77,12 @@ export class NewHouseComponent implements OnInit, OnDestroy {
       return;
     }
    
-    if(type === "sub" && this.subPictureIds.length >= 3) {
-      this.handleError(new Error("你需要删掉已上载图片才可以继续上载。"), "上限超出");  
+    if(type === 'sub' && this.subPictureIds.length >= 3) {
+      this.handleError(new Error('你需要删掉已上载图片才可以继续上载。'), '上限超出');  
       return;
     }
 
-    if(type === "main" && this.pictureId) {
+    if(type === 'main' && this.pictureId) {
       Images.remove(this.pictureId);
       Thumbs.remove(this.thumbId);
       this.thumb = undefined;
@@ -92,7 +92,7 @@ export class NewHouseComponent implements OnInit, OnDestroy {
     }
 
     let loader = this.loadingCtrl.create({
-      content: "上载中...",
+      content: '上载中...',
       dismissOnPageChange: true
     });
 
@@ -100,7 +100,7 @@ export class NewHouseComponent implements OnInit, OnDestroy {
     upload(files[0])
       .then((result) => {
         loader.dismissAll();
-        if(type === "main") {
+        if(type === 'main') {
           this.picture = result.path;
           this.pictureId = result._id;
           this.updatePictureMain();
@@ -113,7 +113,7 @@ export class NewHouseComponent implements OnInit, OnDestroy {
         }
       }).catch((e) => {
         loader.dismissAll();
-        this.handleError(e, "图片上载失败");
+        this.handleError(e, '图片上载失败');
       });
   }
 
@@ -134,7 +134,7 @@ export class NewHouseComponent implements OnInit, OnDestroy {
         }
       },
       error: (e: Error) => {
-        this.handleError(e, "删除图片失败");
+        this.handleError(e, '删除图片失败');
       }
     }); 
     
@@ -162,8 +162,6 @@ export class NewHouseComponent implements OnInit, OnDestroy {
            originalStore: 'images',
             originalId: {$in: this.subPictureIds}
         }).map((thumbs: Thumb[]) => {
-          console.log("thumbs=", thumbs);
-          console.log("thumbs.length=", thumbs.length);
           thumbs.forEach(thumb => {
             if(this.subThumbIds.indexOf(thumb._id) < 0) {
               this.subThumbIds.push(thumb._id);

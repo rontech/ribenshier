@@ -1,9 +1,9 @@
 import { Component, ViewChild } from '@angular/core';
-import { Platform, Events, MenuController, Nav, AlertController } from "ionic-angular";
-import { StatusBar } from "ionic-native";
+import { Platform, Events, MenuController, Nav, AlertController } from 'ionic-angular';
+import { StatusBar } from 'ionic-native';
 import { Meteor } from 'meteor/meteor';
 import template from './app.component.html';
-import { TabsContainerComponent } from "../pages/tabs-container/tabs-container.component";
+import { TabsContainerComponent } from '../pages/tabs-container/tabs-container.component';
 import { LoginComponent } from '../pages/auth/login.component';
 import { ProfileComponent } from '../pages/auth/profile.component';
 import * as moment from 'moment';
@@ -50,7 +50,7 @@ export class AppComponent {
     public events: Events,
     private alertCtrl: AlertController
   ) {
-    moment.locale("zh-cn");
+    moment.locale('zh-cn');
 
     this.rootPage = TabsContainerComponent;
 
@@ -76,11 +76,11 @@ export class AppComponent {
 
   ionViewDidEnter() {
     let js;
-    let fjs = document.getElementsByTagName("script")[0];
-    if (document.getElementById("facebook-jssdk")) return;
-    js = document.createElement("script");
-    js.id = "facebook-jssdk";
-    js.src = "//connect.facebook.net/ja_JP/sdk.js";
+    let fjs = document.getElementsByTagName('script')[0];
+    if (document.getElementById('facebook-jssdk')) return;
+    js = document.createElement('script');
+    js.id = 'facebook-jssdk';
+    js.src = '//connect.facebook.net/ja_JP/sdk.js';
     fjs.parentNode.insertBefore(js, fjs);
 
     window.fbAsyncInit = () => {
@@ -160,7 +160,7 @@ export class AppComponent {
     Meteor.logout((e: Error) => {
       alert.dismiss().then(() => {
         if (e) return this.handleError(e);
-        if(user.profile.via && user.profile.via === "facebook") {
+        if(user.profile.via && user.profile.via === 'facebook') {
           FB.logout((response)  => {
           });
         }

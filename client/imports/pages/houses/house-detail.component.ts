@@ -1,19 +1,19 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
-import { NavParams, NavController, AlertController,PopoverController } from "ionic-angular";
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { NavParams, NavController, AlertController,PopoverController } from 'ionic-angular';
 import { Meteor } from 'meteor/meteor';
-import { House } from "../../../../both/models/house.model";
-import { HousePicture } from "../../../../both/models/house-picture.model";
-import { Observable, Subscription } from "rxjs";
-import template from "./house-detail.component.html";
-import * as style from "./house-detail.component.scss";
+import { House } from '../../../../both/models/house.model';
+import { HousePicture } from '../../../../both/models/house-picture.model';
+import { Observable, Subscription } from 'rxjs';
+import template from './house-detail.component.html';
+import * as style from './house-detail.component.scss';
 import { HouseOptionsComponent } from './house-options.component';
 import { HouseCommentsPage } from './house-comments.component';
-import { MeteorObservable } from "meteor-rxjs";
+import { MeteorObservable } from 'meteor-rxjs';
 import { HousePictures } from '../../../../both/collections/house-pictures.collection';
 import { Houses } from '../../../../both/collections/houses.collection';
  
 @Component({
-  selector: "house-detail",
+  selector: 'house-detail',
   template,
   styles: [
     style.innerHTML
@@ -29,8 +29,8 @@ export class HouseDetail implements OnInit, OnDestroy {
     loop: true,
     pager: true
   };
-  private rentalTypes = ["待租", "待售"];
-  private houseTypes = ["マンション",  "アパート", "一户建", "土地" ,"其它物件"];
+  private rentalTypes = ['待租', '待售'];
+  private houseTypes = ['マンション',  'アパート', '一户建', '土地' ,'其它物件'];
  
   constructor(
     navParams: NavParams,
@@ -51,7 +51,7 @@ export class HouseDetail implements OnInit, OnDestroy {
 
     this.barTitle = this.house.title.slice(0, 12);
     if (this.house.title.length > 12) {
-      this.barTitle = this.barTitle + "...";
+      this.barTitle = this.barTitle + '...';
     }  
 
     MeteorObservable.subscribe('house-pictures', this.house._id).subscribe(() => {

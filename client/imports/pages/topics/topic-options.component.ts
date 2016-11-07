@@ -3,7 +3,7 @@ import { NavParams, NavController, ViewController, AlertController } from 'ionic
 import { Meteor } from 'meteor/meteor';
 import { MeteorObservable } from 'meteor-rxjs';
 import template from './topic-options.component.html';
-import * as style from "./topic-options.component.scss";
+import * as style from './topic-options.component.scss';
 import { TabsContainerComponent } from '../tabs-container/tabs-container.component';
  
 @Component({

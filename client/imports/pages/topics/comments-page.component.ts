@@ -1,17 +1,17 @@
-import { Component, OnInit, OnDestroy, ViewChild } from "@angular/core";
-import { NavParams, PopoverController, AlertController, Content } from "ionic-angular";
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { NavParams, PopoverController, AlertController, Content } from 'ionic-angular';
 import { Meteor } from 'meteor/meteor';
-import { Topic } from "../../../../both/models/topic.model";
-import { Comments } from "../../../../both/collections/comments.collection";
-import { Observable, Subscription } from "rxjs";
-import { Comment } from "../../../../both/models/comment.model";
-import template from "./comments-page.component.html";
-import * as style from "./comments-page.component.scss";
+import { Topic } from '../../../../both/models/topic.model';
+import { Comments } from '../../../../both/collections/comments.collection';
+import { Observable, Subscription } from 'rxjs';
+import { Comment } from '../../../../both/models/comment.model';
+import template from './comments-page.component.html';
+import * as style from './comments-page.component.scss';
 import { CommentsOptionsComponent } from './comments-options.component';
-import { MeteorObservable } from "meteor-rxjs";
+import { MeteorObservable } from 'meteor-rxjs';
  
 @Component({
-  selector: "comments-page",
+  selector: 'comments-page',
   template,
   styles: [
     style.innerHTML
@@ -21,7 +21,7 @@ export class CommentsPage implements OnInit, OnDestroy {
   private selectedTopic: Topic;
   private title: string;
   private comments: Observable<Comment[]>;
-  private comment = "";
+  private comment = '';
   private autoScroller: Subscription;
   @ViewChild(Content) content:Content;
  
@@ -33,7 +33,7 @@ export class CommentsPage implements OnInit, OnDestroy {
     this.selectedTopic = <Topic>navParams.get('topic');
     this.title = this.selectedTopic.title.slice(0, 12);
     if (this.selectedTopic.title.length > 12) {
-      this.title = this.title + "...";
+      this.title = this.title + '...';
     }
   }
  
@@ -97,7 +97,7 @@ export class CommentsPage implements OnInit, OnDestroy {
 
     if(Meteor.user()) {
       MeteorObservable.call('addComment', this.selectedTopic._id, this.comment).zone().subscribe(() => {
-        this.comment = "";
+        this.comment = '';
         this.scroller.scrollTop = this.scroller.scrollHeight;
         this.content.scrollToBottom(300);//300ms animation speed
       });

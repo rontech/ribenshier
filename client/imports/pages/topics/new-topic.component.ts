@@ -1,10 +1,10 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
-import { NavController, ViewController, AlertController, LoadingController } from "ionic-angular";
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { NavController, ViewController, AlertController, LoadingController } from 'ionic-angular';
 import { Meteor } from 'meteor/meteor';
-import { Observable } from "rxjs";
+import { Observable } from 'rxjs';
 import template from './new-topic.component.html';
-import * as style from "./new-topic.component.scss";
-import { MeteorObservable } from "meteor-rxjs";
+import * as style from './new-topic.component.scss';
+import { MeteorObservable } from 'meteor-rxjs';
 
 import { Thumbs, Images } from '../../../../both/collections/images.collection';
 import { Thumb, Image } from '../../../../both/models/image.model';
@@ -81,7 +81,7 @@ export class NewTopicComponent implements OnInit, OnDestroy {
     }
    
     let loader = this.loadingCtrl.create({
-      content: "上载中...",
+      content: '上载中...',
       dismissOnPageChange: true
     });
 

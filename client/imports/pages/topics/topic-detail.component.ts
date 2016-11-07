@@ -14,7 +14,7 @@ import { CommentsPage } from '../../pages/topics/comments-page.component';
 import { SocialSharing } from 'ionic-native';
  
 @Component({
-  selector: "topic-detail",
+  selector: 'topic-detail',
   template,
   styles: [
     style.innerHTML
@@ -44,7 +44,7 @@ export class TopicDetail implements OnInit, OnDestroy {
 
     this.barTitle = this.topic.title.slice(0, 12);
     if (this.topic.title.length > 12) {
-      this.barTitle = this.barTitle + "...";
+      this.barTitle = this.barTitle + '...';
     }  
   }
 
@@ -53,11 +53,11 @@ export class TopicDetail implements OnInit, OnDestroy {
 
   ionViewDidEnter() {
     let js;
-    let fjs = document.getElementsByTagName("script")[0];
-    if (document.getElementById("facebook-jssdk")) return;
-    js = document.createElement("script");
-    js.id = "facebook-jssdk";
-    js.src = "//connect.facebook.net/ja_JP/sdk.js";
+    let fjs = document.getElementsByTagName('script')[0];
+    if (document.getElementById('facebook-jssdk')) return;
+    js = document.createElement('script');
+    js.id = 'facebook-jssdk';
+    js.src = '//connect.facebook.net/ja_JP/sdk.js';
     fjs.parentNode.insertBefore(js, fjs);
 
     window.fbAsyncInit = () => {
@@ -113,18 +113,18 @@ export class TopicDetail implements OnInit, OnDestroy {
   }
 
   shareSocial() {
-    SocialSharing.share(this.topic.title, this.topic.title,  this.topic.picture,"http://192.168.11.11:3000/#/topic-detail/" + this.topic._id)
+    SocialSharing.share(this.topic.title, this.topic.title,  this.topic.picture,'http://192.168.11.11:3000/#/topic-detail/' + this.topic._id)
     .then(()=>{
     }).catch((e)=>{
-      console.log("e=", e);
+      console.log('e=', e);
     })
   }
 
   shareViaFacebook(): void{
     FB.ui({
-      method: "share",
-      href: "http://www.ribenshier.com/#/topic-detail/" +  this.topic._id
-    }, (response) => {console.log("response=", response);});
+      method: 'share',
+      href: 'http://www.ribenshier.com/#/topic-detail/' +  this.topic._id
+    }, (response) => {console.log('response=', response);});
   }
 
   private handleThumbUpError(e: Error): void {

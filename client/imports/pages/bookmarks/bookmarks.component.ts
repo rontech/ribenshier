@@ -13,7 +13,7 @@ import { HouseDetail } from '../houses/house-detail.component';
 import { JobDetail } from '../jobs/job-detail.component';
  
 @Component({
-  selector: "bookmarks",
+  selector: 'bookmarks',
   template,
   styles: [
     style.innerHTML
@@ -37,13 +37,13 @@ export class BookmarksComponent implements OnInit, OnDestroy {
   }
 
   showDetail(bookmark): void {
-    if(bookmark.type === "topic") {
+    if(bookmark.type === 'topic') {
       this.navCtrl.push(TopicDetail, {topicId: bookmark.objId});
-    } else if(bookmark.type === "activity") {
+    } else if(bookmark.type === 'activity') {
       this.navCtrl.push(ActivityDetail, {activityId: bookmark.objId});
-    } else if(bookmark.type === "house") {
+    } else if(bookmark.type === 'house') {
       this.navCtrl.push(HouseDetail, {houseId: bookmark.objId});
-    } else if(bookmark.type === "job") {
+    } else if(bookmark.type === 'job') {
       this.navCtrl.push(JobDetail, {jobId: bookmark.objId});
     }
   }

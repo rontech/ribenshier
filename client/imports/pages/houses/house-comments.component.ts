@@ -11,7 +11,7 @@ import { HouseCommentsOptionsComponent } from './house-comments-options.componen
 import { MeteorObservable } from 'meteor-rxjs';
  
 @Component({
-  selector: "house-comments",
+  selector: 'house-comments',
   template,
   styles: [
     style.innerHTML
@@ -21,7 +21,7 @@ export class HouseCommentsPage implements OnInit, OnDestroy {
   private selectedHouse: House;
   private title: string;
   private houseComments: Observable<HouseComment[]>;
-  private houseComment = "";
+  private houseComment = '';
   private autoScroller: Subscription;
   @ViewChild(Content) content:Content;
  
@@ -33,7 +33,7 @@ export class HouseCommentsPage implements OnInit, OnDestroy {
     this.selectedHouse = <House>navParams.get('house');
     this.title = this.selectedHouse.title.slice(0, 12);
     if (this.selectedHouse.title.length > 12) {
-      this.title = this.title + "...";
+      this.title = this.title + '...';
     }
   }
  
@@ -97,7 +97,7 @@ export class HouseCommentsPage implements OnInit, OnDestroy {
 
     if(Meteor.user()) {
       MeteorObservable.call('addHouseComment', this.selectedHouse._id, this.houseComment).zone().subscribe(() => {
-        this.houseComment = "";
+        this.houseComment = '';
         this.scroller.scrollTop = this.scroller.scrollHeight;
         this.content.scrollToBottom(300);//300ms animation speed
       });

@@ -1,17 +1,17 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
-import { NavParams, NavController, AlertController,PopoverController } from "ionic-angular";
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { NavParams, NavController, AlertController,PopoverController } from 'ionic-angular';
 import { Meteor } from 'meteor/meteor';
-import { Job } from "../../../../both/models/job.model";
-import { Observable, Subscription } from "rxjs";
-import template from "./job-detail.component.html";
-import * as style from "./job-detail.component.scss";
+import { Job } from '../../../../both/models/job.model';
+import { Observable, Subscription } from 'rxjs';
+import template from './job-detail.component.html';
+import * as style from './job-detail.component.scss';
 import { JobOptionsComponent } from './job-options.component';
 import { JobCommentsPage } from './job-comments.component';
-import { MeteorObservable } from "meteor-rxjs";
-import { Jobs } from "../../../../both/collections/jobs.collection";
+import { MeteorObservable } from 'meteor-rxjs';
+import { Jobs } from '../../../../both/collections/jobs.collection';
  
 @Component({
-  selector: "job-detail",
+  selector: 'job-detail',
   template,
   styles: [
     style.innerHTML
@@ -46,7 +46,7 @@ export class JobDetail implements OnInit, OnDestroy {
 
     this.barTitle = this.job.title.slice(0, 12);
     if (this.job.title.length > 12) {
-      this.barTitle = this.barTitle + "...";
+      this.barTitle = this.barTitle + '...';
     }  
   }
 

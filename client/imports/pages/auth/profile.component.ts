@@ -64,7 +64,7 @@ export class ProfileComponent implements OnInit {
     }
 
     let loader = this.loadingCtrl.create({
-      content: "上载中...",
+      content: '上载中...',
       dismissOnPageChange: true
     });
 

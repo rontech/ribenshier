@@ -11,7 +11,7 @@ import { ActivityCommentsOptionsComponent } from './activity-comments-options.co
 import { MeteorObservable } from 'meteor-rxjs';
  
 @Component({
-  selector: "activity-comments",
+  selector: 'activity-comments',
   template,
   styles: [
     style.innerHTML
@@ -21,7 +21,7 @@ export class ActivityCommentsPage implements OnInit, OnDestroy {
   private selectedActivity: Activity;
   private title: string;
   private activityComments: Observable<ActivityComment[]>;
-  private activityComment = "";
+  private activityComment = '';
   private autoScroller: Subscription;
   @ViewChild(Content) content:Content;
  
@@ -33,7 +33,7 @@ export class ActivityCommentsPage implements OnInit, OnDestroy {
     this.selectedActivity = <Activity>navParams.get('activity');
     this.title = this.selectedActivity.title.slice(0, 12);
     if (this.selectedActivity.title.length > 12) {
-      this.title = this.title + "...";
+      this.title = this.title + '...';
     }
   }
  
@@ -97,7 +97,7 @@ export class ActivityCommentsPage implements OnInit, OnDestroy {
 
     if(Meteor.user()) {
       MeteorObservable.call('addActivityComment', this.selectedActivity._id, this.activityComment).zone().subscribe(() => {
-        this.activityComment = "";
+        this.activityComment = '';
         this.scroller.scrollTop = this.scroller.scrollHeight;
         this.content.scrollToBottom(300);//300ms animation speed
       });

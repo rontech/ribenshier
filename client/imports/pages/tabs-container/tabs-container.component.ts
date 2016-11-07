@@ -1,12 +1,12 @@
-import { Component } from "@angular/core";
-import { TopicsComponent } from "../topics/topics.component";
-import { ProfileComponent } from "../auth/profile.component";
-import { BookmarksComponent } from "../bookmarks/bookmarks.component";
+import { Component } from '@angular/core';
+import { TopicsComponent } from '../topics/topics.component';
+import { ProfileComponent } from '../auth/profile.component';
+import { BookmarksComponent } from '../bookmarks/bookmarks.component';
 import { NavParams, Events, AlertController } from 'ionic-angular';
 import { Meteor} from 'meteor/meteor';
 
 @Component({
-  selector: "tabs-container",
+  selector: 'tabs-container',
   template: `
   <ion-tabs [selectedIndex]="mySelectedIndex">
     <ion-tab [root]="topicsRoot" [rootParams]="tabParams" tabIcon="paper"></ion-tab>

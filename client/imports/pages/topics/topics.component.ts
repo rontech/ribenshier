@@ -31,7 +31,7 @@ import { User } from '../../../../both/models/user.model';
 import { LoginComponent } from '../../pages/auth/login.component';
  
 @Component({
-  selector: "topics",
+  selector: 'topics',
   template,
   styles: [
     style.innerHTML
@@ -47,8 +47,8 @@ export class TopicsComponent implements OnInit, OnDestroy {
   housesSub: Subscription;
   jobsSub: Subscription;
   queryText: string;
-  category: string = "topics";
-  scroll_order: string[] = ["topics", "activities", "houses", "jobs"];
+  category: string = 'topics';
+  scroll_order: string[] = ['topics', 'activities', 'houses', 'jobs'];
   user: User;
   @ViewChild(Content) content:Content;
 
@@ -59,11 +59,11 @@ export class TopicsComponent implements OnInit, OnDestroy {
     private modalCtrl: ModalController,
     private alertCtrl: AlertController
     ) {
-      this.category = navParams.get("category") || "topics";
+      this.category = navParams.get('category') || 'topics';
     }
 
   ngOnInit() {
-    this.queryText = "";
+    this.queryText = '';
     this.topicsSub = this.getTopicsSubscription();
     this.activitiesSub = this.getActivitiesSubscription();
     this.housesSub = this.getHousesSubscription();
@@ -102,11 +102,11 @@ export class TopicsComponent implements OnInit, OnDestroy {
 
     if(Meteor.user()) {
       let modal;
-      if(this.category === "activities") {
+      if(this.category === 'activities') {
         modal = this.modalCtrl.create(NewActivityComponent);
-      } else if(this.category === "houses") {
+      } else if(this.category === 'houses') {
         modal = this.modalCtrl.create(NewHouseComponent);
-      } else if(this.category === "jobs") {
+      } else if(this.category === 'jobs') {
         modal = this.modalCtrl.create(NewJobComponent);
       } else {
         modal = this.modalCtrl.create(NewTopicComponent);
@@ -124,11 +124,11 @@ export class TopicsComponent implements OnInit, OnDestroy {
 
   getItems(ev: any) {
     this.destroySub();
-    if(this.category === "activities") {
+    if(this.category === 'activities') {
       this.activitiesSub = this.getActivitiesSubscription();
-    } else if(this.category === "houses") {
+    } else if(this.category === 'houses') {
       this.housesSub = this.getHousesSubscription();
-    } else if(this.category === "jobs") {
+    } else if(this.category === 'jobs') {
        this.jobsSub = this.getJobsSubscription();
     } else {
       this.topicsSub = this.getTopicsSubscription();
@@ -137,12 +137,12 @@ export class TopicsComponent implements OnInit, OnDestroy {
 
   onSegmentChanged(ev: any) {
     this.destroySub();
-    this.queryText = "";
-    if(this.category === "activities") {
+    this.queryText = '';
+    if(this.category === 'activities') {
       this.activitiesSub = this.getActivitiesSubscription();
-    } else if(this.category === "houses") {
+    } else if(this.category === 'houses') {
       this.housesSub = this.getHousesSubscription();
-    } else if(this.category === "jobs") {
+    } else if(this.category === 'jobs') {
        this.jobsSub = this.getJobsSubscription();
     } else {
       this.topicsSub = this.getTopicsSubscription();
@@ -150,25 +150,25 @@ export class TopicsComponent implements OnInit, OnDestroy {
   }
 
   showDetail(obj, type): void {
-    if (type === "topic") {
+    if (type === 'topic') {
       this.navCtrl.parent.parent.push(TopicDetail, {topicId: obj._id});
-    } else if(type ===  "activity") {
+    } else if(type ===  'activity') {
       this.navCtrl.parent.parent.push(ActivityDetail, {activityId: obj._id});
-    } else if(type === "house") {
+    } else if(type === 'house') {
       this.navCtrl.parent.parent.push(HouseDetail, {houseId: obj._id});
-    } else if(type === "job") {
+    } else if(type === 'job') {
       this.navCtrl.parent.parent.push(JobDetail, {jobId: obj._id});
     }
   }
   
   showComments(obj, type): void {
-    if (type === "topic") {
+    if (type === 'topic') {
       this.navCtrl.parent.parent.push(CommentsPage, {topic: obj});
-    } else if(type ===  "activity") {
+    } else if(type ===  'activity') {
       this.navCtrl.parent.parent.push(ActivityCommentsPage, {activity: obj});
-    } else if(type === "house") {
+    } else if(type === 'house') {
       this.navCtrl.parent.parent.push(HouseCommentsPage, {house: obj});
-    } else if(type === "job") {
+    } else if(type === 'job') {
       this.navCtrl.parent.parent.push(JobCommentsPage, {job: obj});
     }
   }
@@ -192,7 +192,7 @@ export class TopicsComponent implements OnInit, OnDestroy {
                       Meteor.userId()
       ).subscribe({
       next: () => {
-        this.handleSuccess("报名成功!");
+        this.handleSuccess('报名成功!');
       },
       error: (e: Error) => {
         this.handleError(e);
@@ -208,7 +208,7 @@ export class TopicsComponent implements OnInit, OnDestroy {
                       obj.createdAt
       ).subscribe({
       next: () => {
-        this.handleSuccess("收藏成功!");
+        this.handleSuccess('收藏成功!');
       },
       error: (e: Error) => {
         this.handleError(e);
@@ -218,25 +218,25 @@ export class TopicsComponent implements OnInit, OnDestroy {
 
   getActivityStatusImage(activity: Activity): string {
     //满员
-    if(activity.status === "1") {
-      return "assets/full.jpg";
+    if(activity.status === '1') {
+      return 'assets/full.jpg';
     }
 
     //终止
-    if(activity.status === "-1") {
-      return "assets/cancel.jpg";
+    if(activity.status === '-1') {
+      return 'assets/cancel.jpg';
     }
 
     //过期
-    if(activity.status === "9") {
-      return "assets/outdated.png";
+    if(activity.status === '9') {
+      return 'assets/outdated.png';
     }
      
     if(activity.deadline) {
       let deadline;
       let now = new Date();
       let today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-      if(typeof activity.deadline === "string") {
+      if(typeof activity.deadline === 'string') {
         deadline = new Date(activity.deadline);
       } else {
         deadline = activity.deadline;
@@ -244,10 +244,10 @@ export class TopicsComponent implements OnInit, OnDestroy {
       
       if(today.getTime() > deadline.getTime()) {
         activity.status = '9';
-        return "assets/outdated.png";
+        return 'assets/outdated.png';
       }
     }
-    return "assets/recruit.jpg";
+    return 'assets/recruit.jpg';
   }
 
   private destroySub(): void {
@@ -358,7 +358,7 @@ export class TopicsComponent implements OnInit, OnDestroy {
   }
 
   private get navbar(): Element {
-    return document.getElementsByTagName("ion-navbar")[0];
+    return document.getElementsByTagName('ion-navbar')[0];
   }
   
   private handleError(e: Error): void {

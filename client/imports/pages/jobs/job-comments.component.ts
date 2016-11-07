@@ -11,7 +11,7 @@ import { JobCommentsOptionsComponent } from './job-comments-options.component';
 import { MeteorObservable } from 'meteor-rxjs';
  
 @Component({
-  selector: "job-comments",
+  selector: 'job-comments',
   template,
   styles: [
     style.innerHTML
@@ -21,7 +21,7 @@ export class JobCommentsPage implements OnInit, OnDestroy {
   private selectedJob: Job;
   private title: string;
   private jobComments: Observable<JobComment[]>;
-  private jobComment = "";
+  private jobComment = '';
   private autoScroller: Subscription;
   @ViewChild(Content) content:Content;
  
@@ -33,7 +33,7 @@ export class JobCommentsPage implements OnInit, OnDestroy {
     this.selectedJob = <Job>navParams.get('job');
     this.title = this.selectedJob.title.slice(0, 12);
     if (this.selectedJob.title.length > 12) {
-      this.title = this.title + "...";
+      this.title = this.title + '...';
     }
   }
  
@@ -97,7 +97,7 @@ export class JobCommentsPage implements OnInit, OnDestroy {
 
     if(Meteor.user()) {
       MeteorObservable.call('addJobComment', this.selectedJob._id, this.jobComment).zone().subscribe(() => {
-        this.jobComment = "";
+        this.jobComment = '';
         this.scroller.scrollTop = this.scroller.scrollHeight;
         this.content.scrollToBottom(300);//300ms animation speed
       });

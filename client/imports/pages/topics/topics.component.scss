@@ -1,3 +1,15 @@
+.topics-page-header {
+  ion-avatar {
+    min-height: 25px;
+  }
+
+  .profile-picture {
+    border-radius: 50%;
+    max-width: 30px;
+    max-height: 30px;
+  }
+}
+
 .topics-page-content {
   background-color: #d3d3d3;
 
@@ -36,6 +48,7 @@
   }
 
   .top-user-avatar {
+    border-radius: 50%;
     max-width: 20px;
     max-height: 20px;
   }

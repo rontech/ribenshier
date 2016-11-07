@@ -14,7 +14,7 @@ import { Activities } from '../../../../both/collections/activities.collection';
 import { Houses } from '../../../../both/collections/houses.collection';
 import { HousePictures } from '../../../../both/collections/house-pictures.collection';
 import { Jobs } from '../../../../both/collections/jobs.collection';
-import { NavParams, NavController, ModalController, AlertController, Content } from 'ionic-angular';
+import { NavParams, NavController, ModalController, AlertController, Content, Events } from 'ionic-angular';
 import { NewTopicComponent } from './new-topic.component';
 import { NewActivityComponent } from '../activities/new-activity.component';
 import { NewHouseComponent } from '../houses/new-house.component';
@@ -27,6 +27,8 @@ import { CommentsPage } from '../../pages/topics/comments-page.component';
 import { ActivityCommentsPage } from '../../pages/activities/activity-comments.component';
 import { HouseCommentsPage } from '../../pages/houses/house-comments.component';
 import { JobCommentsPage } from '../../pages/jobs/job-comments.component';
+import { User } from '../../../../both/models/user.model';
+import { LoginComponent } from '../../pages/auth/login.component';
  
 @Component({
   selector: "topics",
@@ -47,10 +49,12 @@ export class TopicsComponent implements OnInit, OnDestroy {
   queryText: string;
   category: string = "topics";
   scroll_order: string[] = ["topics", "activities", "houses", "jobs"];
+  user: User;
   @ViewChild(Content) content:Content;
 
   constructor(
-    navParams: NavParams,
+    public events: Events,
+    private navParams: NavParams,
     private navCtrl: NavController,
     private modalCtrl: ModalController,
     private alertCtrl: AlertController
@@ -64,27 +68,23 @@ export class TopicsComponent implements OnInit, OnDestroy {
     this.activitiesSub = this.getActivitiesSubscription();
     this.housesSub = this.getHousesSubscription();
     this.jobsSub = this.getJobsSubscription();
+    if(Meteor.user()) {
+      this.user = Meteor.user();
+    } else {
+      this.user =undefined;
+    }
+
+    this.events.subscribe('top:refresh', () => {
+      if(Meteor.user()) {
+        this.user = Meteor.user();
+      } else {
+        this.user =undefined;
+      }
+    });
   }
 
   ngOnDestroy() {
     this.destroySub();
-  }
-
-  ngAfterViewInit() {
-    /*
-    this.content.addScrollListener((ev) => {
-      let nav = this.navbar;
-      let hidden = nav.classList.contains("hidden-nav");
-
-      if(ev.target.scrollTop>60 && !hidden) {
-        nav.classList.add('hidden-nav');
-        this.content.resize();
-      } else if(ev.target.scrollTop<60 && hidden) {
-        nav.classList.remove('hidden-nav');
-        this.content.resize();
-      }
-    });
-    */
   }
 
   doRefresh(refresher): void {
@@ -115,6 +115,11 @@ export class TopicsComponent implements OnInit, OnDestroy {
     } else {
       alert.present();
     }
+  }
+  
+  login(): void {
+    let  modal = this.modalCtrl.create(LoginComponent);
+    modal.present();
   }
 
   getItems(ev: any) {

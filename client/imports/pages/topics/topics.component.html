@@ -1,8 +1,16 @@
-<ion-header>
+<ion-header class="topics-page-header">
   <ion-navbar color="myapp">
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
+    <ion-buttons end>
+      <ion-thumbnail *ngIf="user">
+        <img [src]="user.profile.picture" class="profile-picture"></img>
+      </ion-thumbnail>
+      <button *ngIf="!user" ion-button icon-only (click)="login()">
+        <ion-icon name="log-in"></ion-icon>
+      </button>
+    </ion-buttons>
     <ion-toolbar>
       <ion-searchbar color="primary"
                      [(ngModel)]="queryText"

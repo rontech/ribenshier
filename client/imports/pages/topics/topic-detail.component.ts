@@ -122,9 +122,8 @@ export class TopicDetail implements OnInit, OnDestroy {
 
   shareViaFacebook(): void{
     FB.ui({
-      method: 'share',
-      mobile_iframe: true,
-      href: 'http://www.ribenshier.com/#/topic-detail/' +  this.topic._id
+      method: "share",
+      href: "http://www.ribenshier.com/#/topic-detail/" +  this.topic._id
     }, (response) => {console.log("response=", response);});
   }
 

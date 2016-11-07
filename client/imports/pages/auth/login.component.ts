@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, AlertController, Events } from 'ionic-angular';
+import { NavController, AlertController, Events, ViewController } from 'ionic-angular';
 import { Accounts } from 'meteor/accounts-base';
 import { TabsContainerComponent } from '../tabs-container/tabs-container.component';
 import template from './login.component.html';
@@ -8,19 +8,20 @@ import * as Gravatar from 'gravatar';
 import { MeteorObservable } from "meteor-rxjs";
  
 @Component({
-  selector: 'login',
+  selector: "login",
   template,
   styles: [
     style.innerHTML
   ]
 })
 export class LoginComponent {
-  username = '';
-  password = '';
+  username = "";
+  password = "";
  
   constructor(
     private navCtrl: NavController,
     private alertCtrl: AlertController,
+     private viewCtrl: ViewController,
     private events: Events
     ) {}
 
@@ -35,10 +36,10 @@ export class LoginComponent {
 
     window.fbAsyncInit = () => {
       FB.init({
-        appId      : '383813588676104',
+        appId      : "383813588676104",
         status     : true,
         xfbml      : true,
-        version    : 'v2.5'
+        version    : "v2.5"
       });
     };
   }
@@ -48,18 +49,28 @@ export class LoginComponent {
       this.loginCommon(this.username, this.password);
     }
   }
- 
+
+ login(): void {
+   this.loginCommon(this.username, this.password);
+  }
+
+  close(): void {
+    this.viewCtrl.dismiss().then(() => {
+      this.events.publish("top:refresh");
+    });
+  }
+
   createUser(): void {
     let gravatar;
     try {
-      gravatar = Gravatar.url(this.username, {s: 100, d: 'monsterid'}, null);
+      gravatar = Gravatar.url(this.username, {s: 100, d: "monsterid"}, null);
     } catch(e) {
       gravatar = "assets/none.png";
     }
    
     this.createUserCommon(this.username,
            this.password, this.username,
-           gravatar, 'self');
+           gravatar, "self");
   }
 
   loginViaFacebook(): void {
@@ -107,8 +118,10 @@ export class LoginComponent {
       password,
       (e: Error) => {
         if (e) return this.handleError("登录失败", e.message);
-        this.events.publish('user:login');
-        this.navCtrl.push(TabsContainerComponent);
+        this.events.publish("user:login");
+        this.viewCtrl.dismiss().then(() => {
+          this.events.publish("top:refresh");
+        });
       }
     );
   }
@@ -126,8 +139,10 @@ export class LoginComponent {
       }
     }, (e: Error) => {
       if (e) return this.handleError("创建用户失败", e.message);
-      this.events.publish('user:signup');
-      this.navCtrl.push(TabsContainerComponent);
+      this.events.publish("user:signup");
+      this.viewCtrl.dismiss().then(() => {
+        this.events.publish("top:refresh");
+      });
     });
   }
 
@@ -135,7 +150,7 @@ export class LoginComponent {
     const alert = this.alertCtrl.create({
       title: title,
       message: message,
-      buttons: ['了解']
+      buttons: ["了解"]
     });
 
     alert.present();

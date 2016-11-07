@@ -1,5 +1,5 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { NavController, ViewController, AlertController, LoadingController } from 'ionic-angular';
+import { Component } from '@angular/core';
+import { NavController, ViewController, LoadingController } from 'ionic-angular';
 import { Meteor } from 'meteor/meteor';
 import { Observable } from 'rxjs';
 import template from './new-job.component.html';
@@ -9,6 +9,7 @@ import { MeteorObservable } from 'meteor-rxjs';
 import { Thumbs, Images } from '../../../../both/collections/images.collection';
 import { Thumb, Image } from '../../../../both/models/image.model';
 import { upload } from '../../../../both/methods/images.methods';
+import { UtilityService } from '../../services/utility.service';
  
 @Component({
   selector: 'new-job',
@@ -17,7 +18,7 @@ import { upload } from '../../../../both/methods/images.methods';
     style.innerHTML
   ]
 })
-export class NewJobComponent implements OnInit, OnDestroy {
+export class NewJobComponent {
   private title: string;
   private location: string;
   private position: string;
@@ -28,15 +29,9 @@ export class NewJobComponent implements OnInit, OnDestroy {
   constructor(
     private navCtrl: NavController, 
     private viewCtrl: ViewController,
-    private alertCtrl: AlertController,
-    private loadingCtrl: LoadingController
+    private loadingCtrl: LoadingController,
+    private utilSrv: UtilityService
   ) {}
- 
-  ngOnInit() {
-  }
-
-  ngOnDestroy() {
-  }
  
   addJob(): void {
     MeteorObservable.call('addJob', 
@@ -48,21 +43,9 @@ export class NewJobComponent implements OnInit, OnDestroy {
       },
       error: (e: Error) => {
         this.viewCtrl.dismiss().then(() => {
-          this.handleError(e, '发表失败');
+          this.utilSrv.alertDialog('发表失败', e.message);
         });
       }
     }); 
-  }
-
-  private handleError(e: Error, title: string): void {
-    console.error(e);
- 
-    const alert = this.alertCtrl.create({
-      title: title,
-      message: e.message,
-      buttons: ['了解']
-    });
- 
-    alert.present();
   }
 }

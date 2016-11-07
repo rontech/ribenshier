@@ -5,6 +5,7 @@ import { MeteorObservable } from 'meteor-rxjs';
 import template from './house-comments-options.component.html';
 import * as style from './house-comments-options.component.scss';
 import { TabsContainerComponent } from '../tabs-container/tabs-container.component';
+import { UtilityService } from '../../services/utility.service';
  
 @Component({
   selector: 'house-comments-options',
@@ -18,7 +19,8 @@ export class HouseCommentsOptionsComponent {
     private navCtrl: NavController, 
     private viewCtrl: ViewController,
     private alertCtrl: AlertController,
-    private params: NavParams
+    private params: NavParams,
+    private utilSrv: UtilityService
   ) {}
  
   remove(): void {
@@ -56,7 +58,7 @@ export class HouseCommentsOptionsComponent {
       },
       error: (e: Error) => {
         alert.dismiss().then(() => {
-          if (e) return this.handleError(e);
+          if (e) return this.utilSrv.alertDialog('提醒', e.message);
   
           this.navCtrl.setRoot(TabsContainerComponent, {}, {
             animate: true
@@ -64,17 +66,5 @@ export class HouseCommentsOptionsComponent {
         });
       }
     });
-  }
- 
-  private handleError(e: Error): void {
-    console.error(e);
- 
-    const alert = this.alertCtrl.create({
-      title: 'Oops!',
-      message: e.message,
-      buttons: ['OK']
-    });
- 
-    alert.present();
   }
 }

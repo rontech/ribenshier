@@ -28,6 +28,7 @@ import { HouseOptionsComponent } from '../pages/houses/house-options.component';
 import { JobOptionsComponent } from '../pages/jobs/job-options.component';
 import { BookmarksComponent } from '../pages/bookmarks/bookmarks.component';
 import { ChineseTimeAgoPipe } from '../filters/time.filter';
+import { UtilityService } from '../services/utility.service';
 import 'intl';
 import 'intl/locale-data/jsonp/en';
 
@@ -92,8 +93,7 @@ import 'intl/locale-data/jsonp/en';
     BookmarksComponent
   ],
   // Providers
-  providers: [
-  ],
+  providers: [ UtilityService ],
   // Modules
   imports: [
     IonicModule.forRoot(AppComponent, {},  {

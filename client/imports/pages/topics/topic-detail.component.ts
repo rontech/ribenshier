@@ -1,5 +1,5 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { NavParams, NavController, AlertController,PopoverController } from 'ionic-angular';
+import { Component, OnInit } from '@angular/core';
+import { NavParams, NavController, PopoverController } from 'ionic-angular';
 import { Meteor } from 'meteor/meteor';
 import { Topic } from '../../../../both/models/topic.model';
 import { Comments } from '../../../../both/collections/comments.collection';
@@ -12,6 +12,7 @@ import { TopicOptionsComponent } from './topic-options.component';
 import { MeteorObservable } from 'meteor-rxjs';
 import { CommentsPage } from '../../pages/topics/comments-page.component';
 import { SocialSharing } from 'ionic-native';
+import { UtilityService } from '../../services/utility.service';
  
 @Component({
   selector: 'topic-detail',
@@ -20,7 +21,7 @@ import { SocialSharing } from 'ionic-native';
     style.innerHTML
   ]
 })
-export class TopicDetail implements OnInit, OnDestroy {
+export class TopicDetail implements OnInit {
   private topic: Topic;
   private topicId: string;
   private barTitle: string;
@@ -29,26 +30,21 @@ export class TopicDetail implements OnInit, OnDestroy {
     navParams: NavParams,
     private navCtrl: NavController,
     private popoverCtrl: PopoverController,
-    private alertCtrl: AlertController
+    private utilSrv: UtilityService
   ) {
     this.topic = <Topic>navParams.get('topic');
     this.topicId = navParams.get('topicId');
   }
  
   ngOnInit() {
-    if(!this.topic) {
+    if(this.topic) {
+      this.barTitle = this.utilSrv.editTitle(this.topic.title, 12);
+    } else {
       this.topic = Topics.collection.findOne({_id: this.topicId});
       const user = Meteor.users.findOne({_id: this.topic.creatorId}, {fields: {profile: 1}});
       this.topic.profile = user.profile;
+      this.barTitle = this.utilSrv.editTitle(this.topic.title, 12);
     }
-
-    this.barTitle = this.topic.title.slice(0, 12);
-    if (this.topic.title.length > 12) {
-      this.barTitle = this.barTitle + '...';
-    }  
-  }
-
-  ngOnDestroy() {
   }
 
   ionViewDidEnter() {
@@ -92,7 +88,7 @@ export class TopicDetail implements OnInit, OnDestroy {
       next: () => {
       },
       error: (e: Error) => {
-        this.handleThumbUpError(e)
+        this.utilSrv.alertDialog('提醒', e.message);
       }
     });
   }
@@ -120,22 +116,10 @@ export class TopicDetail implements OnInit, OnDestroy {
     })
   }
 
-  shareViaFacebook(): void{
+  shareViaFacebook(): void {
     FB.ui({
       method: 'share',
       href: 'http://www.ribenshier.com/#/topic-detail/' +  this.topic._id
     }, (response) => {console.log('response=', response);});
-  }
-
-  private handleThumbUpError(e: Error): void {
-    console.error(e);
-
-    const alert = this.alertCtrl.create({
-      title: '提醒',
-      message: e.message,
-      buttons: ['了解']
-    });
-
-    alert.present();
   }
 }

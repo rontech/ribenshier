@@ -1,5 +1,5 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { NavParams, NavController, AlertController,PopoverController } from 'ionic-angular';
+import { Component, OnInit } from '@angular/core';
+import { NavParams, NavController, PopoverController } from 'ionic-angular';
 import { Meteor } from 'meteor/meteor';
 import { House } from '../../../../both/models/house.model';
 import { HousePicture } from '../../../../both/models/house-picture.model';
@@ -11,6 +11,7 @@ import { HouseCommentsPage } from './house-comments.component';
 import { MeteorObservable } from 'meteor-rxjs';
 import { HousePictures } from '../../../../both/collections/house-pictures.collection';
 import { Houses } from '../../../../both/collections/houses.collection';
+import { UtilityService } from '../../services/utility.service';
  
 @Component({
   selector: 'house-detail',
@@ -19,7 +20,7 @@ import { Houses } from '../../../../both/collections/houses.collection';
     style.innerHTML
   ]
 })
-export class HouseDetail implements OnInit, OnDestroy {
+export class HouseDetail implements OnInit {
   private house: House;
   private houseId: string;
   private barTitle: string;
@@ -36,23 +37,21 @@ export class HouseDetail implements OnInit, OnDestroy {
     navParams: NavParams,
     private navCtrl: NavController,
     private popoverCtrl: PopoverController,
-    private alertCtrl: AlertController
+    private utilSrv: UtilityService
   ) {
     this.house = <House>navParams.get('house');
     this.houseId = navParams.get('houseId');
   }
  
   ngOnInit() {
-    if(!this.house) {
+    if(this.house) {
+      this.barTitle = this.utilSrv.editTitle(this.house.title, 12);
+    } else {
       this.house = Houses.collection.findOne(this.houseId);
       const user = Meteor.users.findOne({_id: this.house.creatorId}, {fields: {profile: 1}});
       this.house.profile = user.profile;
+      this.barTitle = this.utilSrv.editTitle(this.house.title, 12);
     }
-
-    this.barTitle = this.house.title.slice(0, 12);
-    if (this.house.title.length > 12) {
-      this.barTitle = this.barTitle + '...';
-    }  
 
     MeteorObservable.subscribe('house-pictures', this.house._id).subscribe(() => {
       MeteorObservable.autorun().subscribe(() => {
@@ -60,9 +59,6 @@ export class HouseDetail implements OnInit, OnDestroy {
           .find({houseId: this.house._id}, {fields: {picture: 1, thumb: 1}}).zone();
       });
     });
-  }
-
-  ngOnDestroy() {
   }
 
   showOptions(): void {
@@ -96,17 +92,5 @@ export class HouseDetail implements OnInit, OnDestroy {
 
   getHouseType(house): string {
     return this.rentalTypes[parseInt(house.forRental)] + this.houseTypes[parseInt(house.type)]; 
-  }
-
-  private handleThumbUpError(e: Error): void {
-    console.error(e);
-
-    const alert = this.alertCtrl.create({
-      title: '提醒',
-      message: e.message,
-      buttons: ['了解']
-    });
-
-    alert.present();
   }
 }

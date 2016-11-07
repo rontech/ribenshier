@@ -1,5 +1,5 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { NavController, ViewController, AlertController } from 'ionic-angular';
+import { Component } from '@angular/core';
+import { NavController, ViewController } from 'ionic-angular';
 import { Meteor } from 'meteor/meteor';
 import { Observable } from 'rxjs';
 import template from './new-activity.component.html';
@@ -8,6 +8,7 @@ import { MeteorObservable } from 'meteor-rxjs';
 
 import { Thumbs, Images } from '../../../../both/collections/images.collection';
 import { Thumb, Image } from '../../../../both/models/image.model';
+import { UtilityService } from '../../services/utility.service';
  
 @Component({
   selector: 'new-activity',
@@ -16,7 +17,7 @@ import { Thumb, Image } from '../../../../both/models/image.model';
     style.innerHTML
   ]
 })
-export class NewActivityComponent implements OnInit, OnDestroy {
+export class NewActivityComponent {
   private title: string;
   private people: number;
   private day: Date;
@@ -26,14 +27,8 @@ export class NewActivityComponent implements OnInit, OnDestroy {
   constructor(
     private navCtrl: NavController, 
     private viewCtrl: ViewController,
-    private alertCtrl: AlertController
+    private utilSrv: UtilityService 
   ) {}
- 
-  ngOnInit() {
-  }
-
-  ngOnDestroy() {
-  }
  
   addActivity(): void {
     MeteorObservable.call('addActivity', 
@@ -48,21 +43,9 @@ export class NewActivityComponent implements OnInit, OnDestroy {
       },
       error: (e: Error) => {
         this.viewCtrl.dismiss().then(() => {
-          this.handleAddActivityError(e)
+          this.utilSrv.alertDialog('提醒', e.message)
         });
       }
     }); 
-  }
- 
-  private handleAddActivityError(e: Error): void {
-    console.error(e);
- 
-    const alert = this.alertCtrl.create({
-      title: '发表失败',
-      message: e.message,
-      buttons: ['了解']
-    });
- 
-    alert.present();
   }
 }

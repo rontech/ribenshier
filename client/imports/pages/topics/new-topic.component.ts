@@ -1,5 +1,5 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { NavController, ViewController, AlertController, LoadingController } from 'ionic-angular';
+import { Component } from '@angular/core';
+import { NavController, ViewController, LoadingController } from 'ionic-angular';
 import { Meteor } from 'meteor/meteor';
 import { Observable } from 'rxjs';
 import template from './new-topic.component.html';
@@ -9,6 +9,7 @@ import { MeteorObservable } from 'meteor-rxjs';
 import { Thumbs, Images } from '../../../../both/collections/images.collection';
 import { Thumb, Image } from '../../../../both/models/image.model';
 import { upload } from '../../../../both/methods/images.methods';
+import { UtilityService } from '../../services/utility.service';
  
 @Component({
   selector: 'new-topic',
@@ -17,7 +18,7 @@ import { upload } from '../../../../both/methods/images.methods';
     style.innerHTML
   ]
 })
-export class NewTopicComponent implements OnInit, OnDestroy {
+export class NewTopicComponent {
   thumbs: Observable<Thumb[]>;
   private senderId: string;
   private title: string;
@@ -30,16 +31,10 @@ export class NewTopicComponent implements OnInit, OnDestroy {
   constructor(
     private navCtrl: NavController, 
     private viewCtrl: ViewController,
-    private alertCtrl: AlertController,
-    private loadingCtrl: LoadingController
+    private loadingCtrl: LoadingController,
+    private utilSrv: UtilityService
   ) {
     this.senderId = Meteor.userId();
-  }
- 
-  ngOnInit() {
-  }
-
-  ngOnDestroy() {
   }
  
   addTopic(): void {
@@ -57,24 +52,12 @@ export class NewTopicComponent implements OnInit, OnDestroy {
       },
       error: (e: Error) => {
         this.viewCtrl.dismiss().then(() => {
-          this.handleAddTopicError(e)
+          this.utilSrv.alertDialog('发表失败', e.message);
         });
       }
     }); 
   }
  
-  private handleAddTopicError(e: Error): void {
-    console.error(e);
- 
-    const alert = this.alertCtrl.create({
-      title: '发表失败',
-      message: e.message,
-      buttons: ['了解']
-    });
- 
-    alert.present();
-  }
-
   uploadPicture(files): void {
     if(files.length == 0) {
       return;
@@ -94,7 +77,7 @@ export class NewTopicComponent implements OnInit, OnDestroy {
         this.updatePicture();
       }).catch((e) => {
         loader.dismissAll();
-        this.handleUploadError(e);
+        this.utilSrv.alertDialog('图片上载失败', e.message);
       });
   }
 
@@ -111,17 +94,5 @@ export class NewTopicComponent implements OnInit, OnDestroy {
         });
       });
     });
-  }
-
-  private handleUploadError(e: Error): void {
-    console.error(e);
- 
-    const alert = this.alertCtrl.create({
-      title: '图片上载失败',
-      message: e.message,
-      buttons: ['了解']
-    });
- 
-    alert.present(); 
   }
 }

@@ -1,5 +1,5 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { NavParams, NavController, AlertController,PopoverController } from 'ionic-angular';
+import { Component, OnInit } from '@angular/core';
+import { NavParams, NavController, PopoverController } from 'ionic-angular';
 import { Meteor } from 'meteor/meteor';
 import { Job } from '../../../../both/models/job.model';
 import { Observable, Subscription } from 'rxjs';
@@ -9,6 +9,7 @@ import { JobOptionsComponent } from './job-options.component';
 import { JobCommentsPage } from './job-comments.component';
 import { MeteorObservable } from 'meteor-rxjs';
 import { Jobs } from '../../../../both/collections/jobs.collection';
+import { UtilityService } from '../../services/utility.service';
  
 @Component({
   selector: 'job-detail',
@@ -17,7 +18,7 @@ import { Jobs } from '../../../../both/collections/jobs.collection';
     style.innerHTML
   ]
 })
-export class JobDetail implements OnInit, OnDestroy {
+export class JobDetail implements OnInit {
   private job: Job;
   private jobId: string;
   private barTitle: string;
@@ -31,26 +32,21 @@ export class JobDetail implements OnInit, OnDestroy {
     navParams: NavParams,
     private navCtrl: NavController,
     private popoverCtrl: PopoverController,
-    private alertCtrl: AlertController
+    private utilSrv: UtilityService
   ) {
     this.job = <Job>navParams.get('job');
     this.jobId = navParams.get('jobId');
   }
  
   ngOnInit() {
-    if(!this.job) {
+    if(this.job) {
+      this.barTitle = this.utilSrv.editTitle(this.job.title, 12);
+    } else {
       this.job = Jobs.collection.findOne(this.jobId);
       const user = Meteor.users.findOne({_id: this.job.creatorId}, {fields: {profile: 1}});
       this.job.profile = user.profile;
+      this.barTitle = this.utilSrv.editTitle(this.job.title, 12);
     }
-
-    this.barTitle = this.job.title.slice(0, 12);
-    if (this.job.title.length > 12) {
-      this.barTitle = this.barTitle + '...';
-    }  
-  }
-
-  ngOnDestroy() {
   }
 
   showOptions(): void {
@@ -80,17 +76,5 @@ export class JobDetail implements OnInit, OnDestroy {
       return true;
     }
     return false;
-  }
-
-  private handleThumbUpError(e: Error): void {
-    console.error(e);
-
-    const alert = this.alertCtrl.create({
-      title: '提醒',
-      message: e.message,
-      buttons: ['了解']
-    });
-
-    alert.present();
   }
 }

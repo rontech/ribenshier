@@ -8,6 +8,7 @@ import { LoginComponent } from '../pages/auth/login.component';
 import { ProfileComponent } from '../pages/auth/profile.component';
 import * as moment from 'moment';
 import { ChineseTimeAgoPipe } from '../filters/time.filter';
+import { UtilityService } from '../services/utility.service';
 
 export interface PageObj {
   title: string;
@@ -48,7 +49,8 @@ export class AppComponent {
     platform: Platform,
     public menu: MenuController,
     public events: Events,
-    private alertCtrl: AlertController
+    private alertCtrl: AlertController,
+    private utilSrv: UtilityService
   ) {
     moment.locale('zh-cn');
 
@@ -159,7 +161,7 @@ export class AppComponent {
     let user = Meteor.user();
     Meteor.logout((e: Error) => {
       alert.dismiss().then(() => {
-        if (e) return this.handleError(e);
+        if (e) return this.utilSrv.alertDialog('提醒', e.message);
         if(user.profile.via && user.profile.via === 'facebook') {
           FB.logout((response)  => {
           });
@@ -171,17 +173,5 @@ export class AppComponent {
         });
       });
     });
-  }
-
-  private handleError(e: Error): void {
-    console.error(e);
-
-    const alert = this.alertCtrl.create({
-      title: '提醒',
-      message: e.message,
-      buttons: ['OK']
-    });
-
-    alert.present();
   }
 }

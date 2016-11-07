@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { NavController, AlertController, Events } from 'ionic-angular';
+import { NavController, Events } from 'ionic-angular';
 import template from './bookmarks.component.html';
 import * as style from './bookmarks.component.scss';
 import { Observable, Subscription } from 'rxjs';
@@ -11,6 +11,7 @@ import { TopicDetail } from '../topics/topic-detail.component';
 import { ActivityDetail } from '../activities/activity-detail.component';
 import { HouseDetail } from '../houses/house-detail.component';
 import { JobDetail } from '../jobs/job-detail.component';
+import { UtilityService } from '../../services/utility.service';
  
 @Component({
   selector: 'bookmarks',
@@ -27,7 +28,8 @@ export class BookmarksComponent implements OnInit, OnDestroy {
   constructor(
     public events: Events,
     private navCtrl: NavController,
-    private alertCtrl: AlertController) {}
+    private utilSrv: UtilityService
+    ) {}
 
   ngOnInit() {
     this.bookmarksSub = this.getBookmarksSubscription();
@@ -71,18 +73,15 @@ export class BookmarksComponent implements OnInit, OnDestroy {
       next: () => {
       },
       error: (e: Error) => {
-        this.handleError(e);
+        this.utilSrv.alertDialog('提醒', e.message);
       }
     });
   }
 
-  editTitle(title) {
-    let dispTitle = title.slice(0, 15);
-    if (title.length > 12) {
-      dispTitle += ' ...';
-    }
-    return dispTitle;
+  editTitle(title): string {
+    return this.utilSrv.editTitle(title, 15);
   }
+
   private getBookmarksSubscription(): Subscription {
     return  MeteorObservable.subscribe('bookmarks', Meteor.userId()).subscribe(() => {
       MeteorObservable.autorun().subscribe(() => {
@@ -100,18 +99,6 @@ export class BookmarksComponent implements OnInit, OnDestroy {
       this.bookmarksSub.unsubscribe();
       this.bookmarksSub = undefined;
     }
-  }
-
-  private handleError(e: Error): void {
-    console.error(e);
-
-    const alert = this.alertCtrl.create({
-      title: '提醒',
-      message: e.message,
-      buttons: ['了解']
-    });
-
-    alert.present();
   }
 }
 

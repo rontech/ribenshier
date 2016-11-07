@@ -2,19 +2,19 @@ import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import template from './topics.component.html';
 import * as style from './topics.component.scss';
 import { Observable, Subscription } from 'rxjs';
-import { Topic } from '../../../../both/models/topic.model';
-import { Activity } from '../../../../both/models/activity.model';
-import { House } from '../../../../both/models/house.model';
-import { HousePicture } from '../../../../both/models/house-picture.model';
-import { Job } from '../../../../both/models/job.model';
 import { Meteor} from 'meteor/meteor';
 import { MeteorObservable } from 'meteor-rxjs';
 import { Topics } from '../../../../both/collections/topics.collection';
+import { Topic } from '../../../../both/models/topic.model';
 import { Activities } from '../../../../both/collections/activities.collection';
+import { Activity } from '../../../../both/models/activity.model';
 import { Houses } from '../../../../both/collections/houses.collection';
+import { House } from '../../../../both/models/house.model';
 import { HousePictures } from '../../../../both/collections/house-pictures.collection';
+import { HousePicture } from '../../../../both/models/house-picture.model';
 import { Jobs } from '../../../../both/collections/jobs.collection';
-import { NavParams, NavController, ModalController, AlertController, Content, Events, Tabs } from 'ionic-angular';
+import { Job } from '../../../../both/models/job.model';
+import { NavParams, NavController, ModalController,  Content, Events, Tabs } from 'ionic-angular';
 import { NewTopicComponent } from './new-topic.component';
 import { NewActivityComponent } from '../activities/new-activity.component';
 import { NewHouseComponent } from '../houses/new-house.component';
@@ -29,6 +29,7 @@ import { HouseCommentsPage } from '../../pages/houses/house-comments.component';
 import { JobCommentsPage } from '../../pages/jobs/job-comments.component';
 import { User } from '../../../../both/models/user.model';
 import { LoginComponent } from '../../pages/auth/login.component';
+import { UtilityService } from '../../services/utility.service';
  
 @Component({
   selector: 'topics',
@@ -57,7 +58,7 @@ export class TopicsComponent implements OnInit, OnDestroy {
     private navParams: NavParams,
     private navCtrl: NavController,
     private modalCtrl: ModalController,
-    private alertCtrl: AlertController
+    private utilSrv: UtilityService
     ) {
       this.category = navParams.get('category') || 'topics';
     }
@@ -95,12 +96,6 @@ export class TopicsComponent implements OnInit, OnDestroy {
   }
 
   addNew(): void {
-    const alert = this.alertCtrl.create({
-      title: '提醒',
-      message: '你需要登录才可以发表。',
-      buttons: ['了解']
-    });
-
     if(Meteor.user()) {
       let modal;
       if(this.category === 'activities') {
@@ -114,7 +109,7 @@ export class TopicsComponent implements OnInit, OnDestroy {
       }
       modal.present();
     } else {
-      alert.present();
+      this.utilSrv.alertDialog('提醒', '你需要登录才可以发表。');
     }
   }
   
@@ -182,7 +177,7 @@ export class TopicsComponent implements OnInit, OnDestroy {
       next: () => {
       },
       error: (e: Error) => {
-        this.handleError(e);
+        this.utilSrv.alertDialog('提醒', e.message);
       }
     });
   }
@@ -193,10 +188,10 @@ export class TopicsComponent implements OnInit, OnDestroy {
                       Meteor.userId()
       ).subscribe({
       next: () => {
-        this.handleSuccess('报名成功!');
+        this.utilSrv.alertDialog('信息', '报名成功!');
       },
       error: (e: Error) => {
-        this.handleError(e);
+        this.utilSrv.alertDialog('提醒', e.message);
       }
     });
   }
@@ -215,10 +210,10 @@ export class TopicsComponent implements OnInit, OnDestroy {
                       thumbnail
       ).subscribe({
       next: () => {
-        this.handleSuccess('收藏成功!');
+        this.utilSrv.alertDialog('信息', '收藏成功!');
       },
       error: (e: Error) => {
-        this.handleError(e);
+        this.utilSrv.alertDialog('提醒', e.message);
       }
     });
   }
@@ -374,27 +369,5 @@ export class TopicsComponent implements OnInit, OnDestroy {
 
   private get navbar(): Element {
     return document.getElementsByTagName('ion-navbar')[0];
-  }
-  
-  private handleError(e: Error): void {
-    console.error(e);
-
-    const alert = this.alertCtrl.create({
-      title: '提醒',
-      message: e.message,
-      buttons: ['了解']
-    });
-
-    alert.present();
-  }
-
-  private handleSuccess(msg): void {
-    const alert = this.alertCtrl.create({
-      title: '信息',
-      message: msg,
-      buttons: ['了解']
-    });
-
-    alert.present();
   }
 }

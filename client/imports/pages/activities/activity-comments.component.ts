@@ -9,6 +9,7 @@ import template from './activity-comments.component.html';
 import * as style from './activity-comments.component.scss';
 import { ActivityCommentsOptionsComponent } from './activity-comments-options.component';
 import { MeteorObservable } from 'meteor-rxjs';
+import { UtilityService } from '../../services/utility.service';
  
 @Component({
   selector: 'activity-comments',
@@ -28,13 +29,10 @@ export class ActivityCommentsPage implements OnInit, OnDestroy {
   constructor(
     navParams: NavParams,
     private popoverCtrl: PopoverController,
-    private alertCtrl: AlertController
+    private utilSrv: UtilityService
   ) {
     this.selectedActivity = <Activity>navParams.get('activity');
-    this.title = this.selectedActivity.title.slice(0, 12);
-    if (this.selectedActivity.title.length > 12) {
-      this.title = this.title + '...';
-    }
+    this.title = this.utilSrv.editTitle(this.selectedActivity.title, 12);
   }
  
   ngOnInit() {
@@ -89,12 +87,6 @@ export class ActivityCommentsPage implements OnInit, OnDestroy {
   }
  
   sendActivityComment(): void {
-    const alert = this.alertCtrl.create({
-      title: '提醒',
-      message: '你需要登录才可以评论。',
-      buttons: ['了解']
-    });
-
     if(Meteor.user()) {
       MeteorObservable.call('addActivityComment', this.selectedActivity._id, this.activityComment).zone().subscribe(() => {
         this.activityComment = '';
@@ -102,7 +94,7 @@ export class ActivityCommentsPage implements OnInit, OnDestroy {
         this.content.scrollToBottom(300);//300ms animation speed
       });
     } else {
-      alert.present();
+      this.utilSrv.alertDialog('提醒', '你需要登录才可以评论。');
     }
   }
 

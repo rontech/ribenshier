@@ -1,5 +1,5 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { NavParams, NavController, AlertController,PopoverController } from 'ionic-angular';
+import { Component, OnInit } from '@angular/core';
+import { NavParams, NavController, PopoverController } from 'ionic-angular';
 import { Meteor } from 'meteor/meteor';
 import { Activity } from '../../../../both/models/activity.model';
 import { Observable, Subscription } from 'rxjs';
@@ -9,6 +9,7 @@ import { ActivityOptionsComponent } from './activity-options.component';
 import { MeteorObservable } from 'meteor-rxjs';
 import { ActivityCommentsPage } from './activity-comments.component';
 import { Activities } from '../../../../both/collections/activities.collection';
+import { UtilityService } from '../../services/utility.service';
  
 @Component({
   selector: 'activity-detail',
@@ -17,7 +18,7 @@ import { Activities } from '../../../../both/collections/activities.collection';
     style.innerHTML
   ]
 })
-export class ActivityDetail implements OnInit, OnDestroy {
+export class ActivityDetail implements OnInit {
   private activity: Activity;
   private activityId: string;
   private barTitle: string;
@@ -26,26 +27,21 @@ export class ActivityDetail implements OnInit, OnDestroy {
     navParams: NavParams,
     private navCtrl: NavController,
     private popoverCtrl: PopoverController,
-    private alertCtrl: AlertController
+    private utilSrv: UtilityService
   ) {
     this.activity = <Activity>navParams.get('activity');
     this.activityId = navParams.get('activityId');
   }
  
   ngOnInit() {
-    if(!this.activity) {
+    if(this.activity) {
+      this.barTitle = this.utilSrv.editTitle(this.activity.title, 12);
+    } else {
       this.activity = Activities.collection.findOne(this.activityId);
       const user = Meteor.users.findOne({_id: this.activity.creatorId}, {fields: {profile: 1}});
       this.activity.profile = user.profile;
+      this.barTitle = this.utilSrv.editTitle(this.activity.title, 12);
     }
-
-    this.barTitle = this.activity.title.slice(0, 12);
-    if (this.activity.title.length > 12) {
-      this.barTitle = this.barTitle + '...';
-    }  
-  }
-
-  ngOnDestroy() {
   }
 
   showOptions(): void {
@@ -70,7 +66,7 @@ export class ActivityDetail implements OnInit, OnDestroy {
       next: () => {
       },
       error: (e: Error) => {
-        this.handleThumbUpError(e)
+        this.utilSrv.alertDialog('提醒', e.message);
       }
     });
   }
@@ -88,17 +84,5 @@ export class ActivityDetail implements OnInit, OnDestroy {
       return true;
     }
     return false;
-  }
-
-  private handleThumbUpError(e: Error): void {
-    console.error(e);
-
-    const alert = this.alertCtrl.create({
-      title: '提醒',
-      message: e.message,
-      buttons: ['了解']
-    });
-
-    alert.present();
   }
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { NavParams, PopoverController, AlertController, Content } from 'ionic-angular';
+import { NavParams, PopoverController, Content } from 'ionic-angular';
 import { Meteor } from 'meteor/meteor';
 import { House } from '../../../../both/models/house.model';
 import { HouseComments } from '../../../../both/collections/house-comments.collection';
@@ -9,6 +9,7 @@ import template from './house-comments.component.html';
 import * as style from './house-comments.component.scss';
 import { HouseCommentsOptionsComponent } from './house-comments-options.component';
 import { MeteorObservable } from 'meteor-rxjs';
+import { UtilityService } from '../../services/utility.service';
  
 @Component({
   selector: 'house-comments',
@@ -28,13 +29,10 @@ export class HouseCommentsPage implements OnInit, OnDestroy {
   constructor(
     navParams: NavParams,
     private popoverCtrl: PopoverController,
-    private alertCtrl: AlertController
+    private utilSrv: UtilityService
   ) {
     this.selectedHouse = <House>navParams.get('house');
-    this.title = this.selectedHouse.title.slice(0, 12);
-    if (this.selectedHouse.title.length > 12) {
-      this.title = this.title + '...';
-    }
+    this.title = this.utilSrv.editTitle(this.selectedHouse.title, 12);
   }
  
   ngOnInit() {
@@ -89,12 +87,6 @@ export class HouseCommentsPage implements OnInit, OnDestroy {
   }
  
   sendHouseComment(): void {
-    const alert = this.alertCtrl.create({
-      title: '提醒',
-      message: '你需要登录才可以评论。',
-      buttons: ['了解']
-    });
-
     if(Meteor.user()) {
       MeteorObservable.call('addHouseComment', this.selectedHouse._id, this.houseComment).zone().subscribe(() => {
         this.houseComment = '';
@@ -102,7 +94,7 @@ export class HouseCommentsPage implements OnInit, OnDestroy {
         this.content.scrollToBottom(300);//300ms animation speed
       });
     } else {
-      alert.present();
+      this.utilSrv.alertDialog('提醒', '你需要登录才可以评论。');
     }
   }
 

@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { NavParams, PopoverController, AlertController, Content } from 'ionic-angular';
+import { NavParams, PopoverController, Content } from 'ionic-angular';
 import { Meteor } from 'meteor/meteor';
 import { Job } from '../../../../both/models/job.model';
 import { JobComments } from '../../../../both/collections/job-comments.collection';
@@ -9,6 +9,7 @@ import template from './job-comments.component.html';
 import * as style from './job-comments.component.scss';
 import { JobCommentsOptionsComponent } from './job-comments-options.component';
 import { MeteorObservable } from 'meteor-rxjs';
+import { UtilityService } from '../../services/utility.service';
  
 @Component({
   selector: 'job-comments',
@@ -28,13 +29,10 @@ export class JobCommentsPage implements OnInit, OnDestroy {
   constructor(
     navParams: NavParams,
     private popoverCtrl: PopoverController,
-    private alertCtrl: AlertController
+    private utilSrv: UtilityService
   ) {
     this.selectedJob = <Job>navParams.get('job');
-    this.title = this.selectedJob.title.slice(0, 12);
-    if (this.selectedJob.title.length > 12) {
-      this.title = this.title + '...';
-    }
+    this.title = this.utilSrv.editTitle(this.selectedJob.title, 12);
   }
  
   ngOnInit() {
@@ -89,12 +87,6 @@ export class JobCommentsPage implements OnInit, OnDestroy {
   }
  
   sendJobComment(): void {
-    const alert = this.alertCtrl.create({
-      title: '提醒',
-      message: '你需要登录才可以评论。',
-      buttons: ['了解']
-    });
-
     if(Meteor.user()) {
       MeteorObservable.call('addJobComment', this.selectedJob._id, this.jobComment).zone().subscribe(() => {
         this.jobComment = '';
@@ -102,7 +94,7 @@ export class JobCommentsPage implements OnInit, OnDestroy {
         this.content.scrollToBottom(300);//300ms animation speed
       });
     } else {
-      alert.present();
+      this.utilSrv.alertDialog('提醒', '你需要登录才可以评论。');
     }
   }
 

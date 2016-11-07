@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { NavParams, PopoverController, AlertController, Content } from 'ionic-angular';
+import { NavParams, PopoverController, Content } from 'ionic-angular';
 import { Meteor } from 'meteor/meteor';
 import { Topic } from '../../../../both/models/topic.model';
 import { Comments } from '../../../../both/collections/comments.collection';
@@ -9,6 +9,7 @@ import template from './comments-page.component.html';
 import * as style from './comments-page.component.scss';
 import { CommentsOptionsComponent } from './comments-options.component';
 import { MeteorObservable } from 'meteor-rxjs';
+import { UtilityService } from '../../services/utility.service';
  
 @Component({
   selector: 'comments-page',
@@ -28,13 +29,10 @@ export class CommentsPage implements OnInit, OnDestroy {
   constructor(
     navParams: NavParams,
     private popoverCtrl: PopoverController,
-    private alertCtrl: AlertController
+    private utilSrv: UtilityService
   ) {
     this.selectedTopic = <Topic>navParams.get('topic');
-    this.title = this.selectedTopic.title.slice(0, 12);
-    if (this.selectedTopic.title.length > 12) {
-      this.title = this.title + '...';
-    }
+    this.title = this.utilSrv.editTitle(this.selectedTopic.title, 12);
   }
  
   ngOnInit() {
@@ -89,12 +87,6 @@ export class CommentsPage implements OnInit, OnDestroy {
   }
  
   sendComment(): void {
-    const alert = this.alertCtrl.create({
-      title: '提醒',
-      message: '你需要登录才可以评论。',
-      buttons: ['了解']
-    });
-
     if(Meteor.user()) {
       MeteorObservable.call('addComment', this.selectedTopic._id, this.comment).zone().subscribe(() => {
         this.comment = '';
@@ -102,7 +94,7 @@ export class CommentsPage implements OnInit, OnDestroy {
         this.content.scrollToBottom(300);//300ms animation speed
       });
     } else {
-      alert.present();
+      this.utilSrv.alertDialog('提醒', '你需要登录才可以评论。');
     }
   }
 

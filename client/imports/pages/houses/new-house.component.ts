@@ -1,5 +1,5 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { NavController, ViewController, AlertController, LoadingController } from 'ionic-angular';
+import { Component } from '@angular/core';
+import { NavController, ViewController, LoadingController } from 'ionic-angular';
 import { Meteor } from 'meteor/meteor';
 import { Observable } from 'rxjs';
 import template from './new-house.component.html';
@@ -9,6 +9,7 @@ import { MeteorObservable } from 'meteor-rxjs';
 import { Thumbs, Images } from '../../../../both/collections/images.collection';
 import { Thumb, Image } from '../../../../both/models/image.model';
 import { upload } from '../../../../both/methods/images.methods';
+import { UtilityService } from '../../services/utility.service';
  
 @Component({
   selector: 'new-house',
@@ -17,7 +18,7 @@ import { upload } from '../../../../both/methods/images.methods';
     style.innerHTML
   ]
 })
-export class NewHouseComponent implements OnInit, OnDestroy {
+export class NewHouseComponent {
   private title: string;
   private forRental: boolean;
   private type: string;
@@ -42,15 +43,9 @@ export class NewHouseComponent implements OnInit, OnDestroy {
   constructor(
     private navCtrl: NavController, 
     private viewCtrl: ViewController,
-    private alertCtrl: AlertController,
-    private loadingCtrl: LoadingController
+    private loadingCtrl: LoadingController,
+    private utilSrv: UtilityService
   ) {}
- 
-  ngOnInit() {
-  }
-
-  ngOnDestroy() {
-  }
  
   addHouse(): void {
     MeteorObservable.call('addHouse', 
@@ -66,7 +61,7 @@ export class NewHouseComponent implements OnInit, OnDestroy {
       },
       error: (e: Error) => {
         this.viewCtrl.dismiss().then(() => {
-          this.handleError(e, '发表失败');
+          this.utilSrv.alertDialog('发表失败', e.message);
         });
       }
     }); 
@@ -78,7 +73,7 @@ export class NewHouseComponent implements OnInit, OnDestroy {
     }
    
     if(type === 'sub' && this.subPictureIds.length >= 3) {
-      this.handleError(new Error('你需要删掉已上载图片才可以继续上载。'), '上限超出');  
+      this.utilSrv.alertDialog('上限超出', '你需要删掉已上载图片才可以继续上载。');
       return;
     }
 
@@ -113,7 +108,7 @@ export class NewHouseComponent implements OnInit, OnDestroy {
         }
       }).catch((e) => {
         loader.dismissAll();
-        this.handleError(e, '图片上载失败');
+        this.utilSrv.alertDialog('图片上载失败', e.message);  
       });
   }
 
@@ -134,7 +129,7 @@ export class NewHouseComponent implements OnInit, OnDestroy {
         }
       },
       error: (e: Error) => {
-        this.handleError(e, '删除图片失败');
+        this.utilSrv.alertDialog('删除图片失败', e.message);  
       }
     }); 
     
@@ -172,17 +167,5 @@ export class NewHouseComponent implements OnInit, OnDestroy {
         });
       });
     });
-  }
-
-  private handleError(e: Error, title: string): void {
-    console.error(e);
- 
-    const alert = this.alertCtrl.create({
-      title: title,
-      message: e.message,
-      buttons: ['了解']
-    });
- 
-    alert.present();
   }
 }

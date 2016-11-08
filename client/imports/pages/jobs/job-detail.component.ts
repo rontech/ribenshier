@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NavParams, NavController, PopoverController } from 'ionic-angular';
 import { Meteor } from 'meteor/meteor';
 import { Job } from '../../../../both/models/job.model';
-import { Observable, Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 import template from './job-detail.component.html';
 import * as style from './job-detail.component.scss';
 import { JobOptionsComponent } from './job-options.component';
@@ -34,19 +34,14 @@ export class JobDetail implements OnInit {
     private popoverCtrl: PopoverController,
     private utilSrv: UtilityService
   ) {
-    this.job = <Job>navParams.get('job');
     this.jobId = navParams.get('jobId');
   }
  
   ngOnInit() {
-    if(this.job) {
-      this.barTitle = this.utilSrv.editTitle(this.job.title, 12);
-    } else {
-      this.job = Jobs.collection.findOne(this.jobId);
-      const user = Meteor.users.findOne({_id: this.job.creatorId}, {fields: {profile: 1}});
-      this.job.profile = user.profile;
-      this.barTitle = this.utilSrv.editTitle(this.job.title, 12);
-    }
+    this.job = Jobs.findOne(this.jobId);
+    const user = Meteor.users.findOne({_id: this.job.creatorId}, {fields: {profile: 1}});
+    this.job.profile = user.profile;
+    this.barTitle = this.utilSrv.editTitle(this.job.title, 12);
   }
 
   showOptions(): void {

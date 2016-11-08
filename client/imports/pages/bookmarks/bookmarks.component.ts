@@ -1,8 +1,8 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NavController, Events } from 'ionic-angular';
 import template from './bookmarks.component.html';
 import * as style from './bookmarks.component.scss';
-import { Observable, Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Meteor} from 'meteor/meteor';
 import { MeteorObservable } from 'meteor-rxjs';
 import { Bookmark } from '../../../../both/models/bookmark.model';
@@ -20,9 +20,8 @@ import { UtilityService } from '../../services/utility.service';
     style.innerHTML
   ]
 })
-export class BookmarksComponent implements OnInit, OnDestroy {
+export class BookmarksComponent implements OnInit {
   bookmarks: Observable<Bookmark[]>;
-  bookmarksSub: Subscription;
   types = { topic: '杂谈', activity: '社群', house: '住居', job: '工作'};
 
   constructor(
@@ -32,26 +31,19 @@ export class BookmarksComponent implements OnInit, OnDestroy {
     ) {}
 
   ngOnInit() {
-    this.bookmarksSub = this.getBookmarksSubscription();
+    this.subBookmarks();
 
     this.events.subscribe('user:login', () => {
-      this.destroySub();
-      this.bookmarksSub = this.getBookmarksSubscription();
+      this.subBookmarks();
     });
 
     this.events.subscribe('user:logout', () => {
-      this.destroySub();
-      this.bookmarksSub = this.getBookmarksSubscription();
+      this.subBookmarks();
     });
 
     this.events.subscribe('user:signup', () => {
-      this.destroySub();
-      this.bookmarksSub = this.getBookmarksSubscription();
+      this.subBookmarks();
     });
-  }
-
-  ngOnDestroy() {
-    this.destroySub();
   }
 
   showDetail(bookmark): void {
@@ -82,8 +74,8 @@ export class BookmarksComponent implements OnInit, OnDestroy {
     return this.utilSrv.editTitle(title, 15);
   }
 
-  private getBookmarksSubscription(): Subscription {
-    return  MeteorObservable.subscribe('bookmarks', Meteor.userId()).subscribe(() => {
+  private subBookmarks(): void {
+    MeteorObservable.subscribe('bookmarks', Meteor.userId()).subscribe(() => {
       MeteorObservable.autorun().subscribe(() => {
         this.bookmarks = Bookmarks 
           .find({senderId: Meteor.userId()}, { sort: { createdAt: -1 } })
@@ -92,13 +84,6 @@ export class BookmarksComponent implements OnInit, OnDestroy {
           }).zone();
       });
     });
-  }
-
-  private destroySub(): void {
-    if (this.bookmarksSub) {
-      this.bookmarksSub.unsubscribe();
-      this.bookmarksSub = undefined;
-    }
   }
 }
 

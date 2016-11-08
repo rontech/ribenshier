@@ -3,7 +3,7 @@ import { NavParams, NavController, PopoverController } from 'ionic-angular';
 import { Meteor } from 'meteor/meteor';
 import { House } from '../../../../both/models/house.model';
 import { HousePicture } from '../../../../both/models/house-picture.model';
-import { Observable, Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 import template from './house-detail.component.html';
 import * as style from './house-detail.component.scss';
 import { HouseOptionsComponent } from './house-options.component';
@@ -12,6 +12,7 @@ import { MeteorObservable } from 'meteor-rxjs';
 import { HousePictures } from '../../../../both/collections/house-pictures.collection';
 import { Houses } from '../../../../both/collections/houses.collection';
 import { UtilityService } from '../../services/utility.service';
+import { Users } from '../../../../both/collections/users.collection';
  
 @Component({
   selector: 'house-detail',
@@ -39,28 +40,23 @@ export class HouseDetail implements OnInit {
     private popoverCtrl: PopoverController,
     private utilSrv: UtilityService
   ) {
-    this.house = <House>navParams.get('house');
     this.houseId = navParams.get('houseId');
   }
  
   ngOnInit() {
-    if(this.house) {
-      this.barTitle = this.utilSrv.editTitle(this.house.title, 12);
-    } else {
-      this.house = Houses.collection.findOne(this.houseId);
-      const user = Meteor.users.findOne({_id: this.house.creatorId}, {fields: {profile: 1}});
-      this.house.profile = user.profile;
-      this.barTitle = this.utilSrv.editTitle(this.house.title, 12);
-    }
+    this.house = Houses.findOne(this.houseId);
+    const user = Users.findOne({_id: this.house.creatorId}, {fields: {profile: 1}});
+    this.house.profile = user.profile;
+    this.barTitle = this.utilSrv.editTitle(this.house.title, 12);
 
-    MeteorObservable.subscribe('house-pictures', this.house._id).subscribe(() => {
-      MeteorObservable.autorun().subscribe(() => {
+    MeteorObservable.subscribe('house-pictures', this.houseId).subscribe(() => {
+       MeteorObservable.autorun().subscribe(() => {
         this.pictures = HousePictures
-          .find({houseId: this.house._id}, {fields: {picture: 1, thumb: 1}}).zone();
+          .find({houseId: this.houseId}, {fields: {picture: 1, thumb: 1}}).zone();
       });
     });
   }
-
+  
   showOptions(): void {
     const popover = this.popoverCtrl.create(HouseOptionsComponent, {
       house: this.house

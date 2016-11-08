@@ -8,6 +8,7 @@ import { TabsContainerComponent } from '../tabs-container/tabs-container.compone
 import { Thumbs } from '../../../../both/collections/images.collection';
 import { Thumb } from '../../../../both/models/image.model';
 import { upload } from '../../../../both/methods/images.methods';
+import { UtilityService } from '../../services/utility.service';
 
 import template from './profile.component.html';
 import * as style from './profile.component.scss';
@@ -26,8 +27,8 @@ export class ProfileComponent implements OnInit {
   constructor(
     public events: Events,
     private navCtrl: NavController,
-    private alertCtrl: AlertController,
-    private loadingCtrl: LoadingController
+    private loadingCtrl: LoadingController,
+    private utilSrv: UtilityService
   ) {}
  
   ngOnInit(): void {
@@ -52,7 +53,7 @@ export class ProfileComponent implements OnInit {
         this.navCtrl.push(TabsContainerComponent);
       },
       error(e: Error) {
-        this.handleError(e);
+        this.utilSrv.alertDialog('提醒', e.message);
       }
     });
   }
@@ -75,7 +76,7 @@ export class ProfileComponent implements OnInit {
         this.updatePicture(this.profile.pictureId);
       }).catch((e) => {
         loader.dismissAll();
-        this.handleUploadError(e);
+        this.utilSrv.alertDialog('图片上载失败', e.message);
       });
   } 
 
@@ -103,29 +104,5 @@ export class ProfileComponent implements OnInit {
         picture: 'assets/none.png'
       };
     }
-  }
-
-  private handleError(e: Error): void {
-    console.error(e);
- 
-    const alert = this.alertCtrl.create({
-      title: 'Oops!',
-      message: e.message,
-      buttons: ['OK']
-    });
- 
-    alert.present();
-  }
-
-  private handleUploadError(e: Error): void {
-    console.error(e);
-
-    const alert = this.alertCtrl.create({
-      title: '图片上载失败',
-      message: e.message,
-      buttons: ['了解']
-    });
-
-    alert.present();
   }
 }

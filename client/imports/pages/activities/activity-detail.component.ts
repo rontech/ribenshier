@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NavParams, NavController, PopoverController } from 'ionic-angular';
 import { Meteor } from 'meteor/meteor';
 import { Activity } from '../../../../both/models/activity.model';
-import { Observable, Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 import template from './activity-detail.component.html';
 import * as style from './activity-detail.component.scss';
 import { ActivityOptionsComponent } from './activity-options.component';
@@ -29,19 +29,14 @@ export class ActivityDetail implements OnInit {
     private popoverCtrl: PopoverController,
     private utilSrv: UtilityService
   ) {
-    this.activity = <Activity>navParams.get('activity');
     this.activityId = navParams.get('activityId');
   }
  
   ngOnInit() {
-    if(this.activity) {
-      this.barTitle = this.utilSrv.editTitle(this.activity.title, 12);
-    } else {
-      this.activity = Activities.collection.findOne(this.activityId);
-      const user = Meteor.users.findOne({_id: this.activity.creatorId}, {fields: {profile: 1}});
-      this.activity.profile = user.profile;
-      this.barTitle = this.utilSrv.editTitle(this.activity.title, 12);
-    }
+    this.activity = Activities.findOne(this.activityId);
+    const user = Meteor.users.findOne({_id: this.activity.creatorId}, {fields: {profile: 1}});
+    this.activity.profile = user.profile;
+    this.barTitle = this.utilSrv.editTitle(this.activity.title, 12);
   }
 
   showOptions(): void {

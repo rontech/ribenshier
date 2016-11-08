@@ -1,7 +1,7 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import template from './topics.component.html';
 import * as style from './topics.component.scss';
-import { Observable, Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Meteor} from 'meteor/meteor';
 import { MeteorObservable } from 'meteor-rxjs';
 import { Topics } from '../../../../both/collections/topics.collection';
@@ -38,15 +38,11 @@ import { UtilityService } from '../../services/utility.service';
     style.innerHTML
   ]
 })
-export class TopicsComponent implements OnInit, OnDestroy {
+export class TopicsComponent implements OnInit {
   topics: Observable<Topic[]>;
   activities: Observable<Activity[]>;
   houses: Observable<House[]>;
   jobs: Observable<Job[]>;
-  topicsSub: Subscription;
-  activitiesSub: Subscription;
-  housesSub: Subscription;
-  jobsSub: Subscription;
   queryText: string;
   category: string = 'topics';
   scroll_order: string[] = ['topics', 'activities', 'houses', 'jobs'];
@@ -65,10 +61,10 @@ export class TopicsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.queryText = '';
-    this.topicsSub = this.getTopicsSubscription();
-    this.activitiesSub = this.getActivitiesSubscription();
-    this.housesSub = this.getHousesSubscription();
-    this.jobsSub = this.getJobsSubscription();
+    this.subTopics();
+    this.subActivities();
+    this.subHouses();
+    this.subJobs();
 
     this.updateLoginStatus();
 
@@ -83,10 +79,6 @@ export class TopicsComponent implements OnInit, OnDestroy {
     this.events.subscribe('user:signup', () => {
       this.updateLoginStatus();
     });
-  }
-
-  ngOnDestroy() {
-    this.destroySub();
   }
 
   doRefresh(refresher): void {
@@ -119,30 +111,19 @@ export class TopicsComponent implements OnInit, OnDestroy {
   }
 
   getItems(ev: any) {
-    this.destroySub();
     if(this.category === 'activities') {
-      this.activitiesSub = this.getActivitiesSubscription();
+      this.subActivities();
     } else if(this.category === 'houses') {
-      this.housesSub = this.getHousesSubscription();
+      this.subHouses();
     } else if(this.category === 'jobs') {
-       this.jobsSub = this.getJobsSubscription();
+      this.subJobs();
     } else {
-      this.topicsSub = this.getTopicsSubscription();
+      this.subTopics();
     }
   }
 
   onSegmentChanged(ev: any) {
-    this.destroySub();
     this.queryText = '';
-    if(this.category === 'activities') {
-      this.activitiesSub = this.getActivitiesSubscription();
-    } else if(this.category === 'houses') {
-      this.housesSub = this.getHousesSubscription();
-    } else if(this.category === 'jobs') {
-       this.jobsSub = this.getJobsSubscription();
-    } else {
-      this.topicsSub = this.getTopicsSubscription();
-    }
   }
 
   showDetail(obj, type): void {
@@ -260,25 +241,8 @@ export class TopicsComponent implements OnInit, OnDestroy {
     }
   }
 
-  private destroySub(): void {
-    if (this.topicsSub) {
-      this.topicsSub.unsubscribe();
-      this.topicsSub = undefined;
-    }
-
-    if (this.activitiesSub) {
-      this.activitiesSub.unsubscribe();
-      this.activitiesSub = undefined;
-    }
-
-    if (this.housesSub) {
-      this.housesSub.unsubscribe();
-      this.housesSub = undefined;
-    }
-  }
-
-  private getTopicsSubscription(): Subscription {
-    return  MeteorObservable.subscribe('topics').subscribe(() => {
+  private subTopics(): void {
+    MeteorObservable.subscribe('topics').subscribe(() => {
       MeteorObservable.autorun().subscribe(() => {
         this.topics = Topics
           .find({}, { sort: { sortedBy: -1 } })
@@ -299,8 +263,8 @@ export class TopicsComponent implements OnInit, OnDestroy {
     });
   }
 
-  private getActivitiesSubscription(): Subscription {
-    return  MeteorObservable.subscribe('activities').subscribe(() => {
+  private subActivities(): void {
+    MeteorObservable.subscribe('activities').subscribe(() => {
       MeteorObservable.autorun().subscribe(() => {
         this.activities = Activities
           .find({}, { sort: { sortedBy: -1 } })
@@ -321,8 +285,8 @@ export class TopicsComponent implements OnInit, OnDestroy {
     });
   }
 
-  private getHousesSubscription(): Subscription {
-    return  MeteorObservable.subscribe('houses').subscribe(() => {
+  private subHouses(): void {
+    MeteorObservable.subscribe('houses').subscribe(() => {
       MeteorObservable.autorun().subscribe(() => {
         this.houses = Houses
           .find({})
@@ -345,8 +309,8 @@ export class TopicsComponent implements OnInit, OnDestroy {
     });
   }
 
-  private getJobsSubscription(): Subscription {
-    return  MeteorObservable.subscribe('jobs').subscribe(() => {
+  private subJobs(): void {
+    MeteorObservable.subscribe('jobs').subscribe(() => {
       MeteorObservable.autorun().subscribe(() => {
         this.jobs = Jobs
           .find({}, { sort: { sortedBy: -1 } })

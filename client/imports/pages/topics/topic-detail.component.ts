@@ -4,7 +4,7 @@ import { Meteor } from 'meteor/meteor';
 import { Topic } from '../../../../both/models/topic.model';
 import { Comments } from '../../../../both/collections/comments.collection';
 import { Topics } from '../../../../both/collections/topics.collection';
-import { Observable, Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Comment } from '../../../../both/models/comment.model';
 import template from './topic-detail.component.html';
 import * as style from './topic-detail.component.scss';
@@ -32,19 +32,14 @@ export class TopicDetail implements OnInit {
     private popoverCtrl: PopoverController,
     private utilSrv: UtilityService
   ) {
-    this.topic = <Topic>navParams.get('topic');
     this.topicId = navParams.get('topicId');
   }
  
   ngOnInit() {
-    if(this.topic) {
-      this.barTitle = this.utilSrv.editTitle(this.topic.title, 12);
-    } else {
-      this.topic = Topics.collection.findOne({_id: this.topicId});
-      const user = Meteor.users.findOne({_id: this.topic.creatorId}, {fields: {profile: 1}});
-      this.topic.profile = user.profile;
-      this.barTitle = this.utilSrv.editTitle(this.topic.title, 12);
-    }
+    this.topic = Topics.findOne({_id: this.topicId});
+    const user = Meteor.users.findOne({_id: this.topic.creatorId}, {fields: {profile: 1}});
+    this.topic.profile = user.profile;
+    this.barTitle = this.utilSrv.editTitle(this.topic.title, 12);
   }
 
   ionViewDidEnter() {

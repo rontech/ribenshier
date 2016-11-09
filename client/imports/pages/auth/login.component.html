@@ -2,7 +2,7 @@
   <ion-navbar color="myapp">
     <ion-title>登录</ion-title>
     <ion-buttons end>
-      <button ion-button icon-only (click)="close()"><ion-icon name="close"></ion-icon></button>
+      <button ion-button icon-only (click)="viewCtrl.dismiss()"><ion-icon name="close"></ion-icon></button>
     </ion-buttons>
   </ion-navbar>
 </ion-header>
@@ -15,33 +15,45 @@
   </div>
 
   <ion-list>
-    <ion-item>
-      <ion-label floating color="primary">邮件</ion-label>
-      <ion-input [(ngModel)]="username"  name="username" type="email"  spellcheck="false" autocapitalize="off" required>
-      </ion-input>
-    </ion-item>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <ion-item>
+        <ion-label floating color="primary">邮件</ion-label>
+        <ion-input formControlName="username"  name="username" type="email" required></ion-input>
+      </ion-item>
+       
+      <div *ngIf="username.hasError('required') && username.touched" class="error-hint">邮件不能为空!</div>
+      <div *ngIf="username.hasError('incorrectMailFormat') && username.touched" class="error-hint">邮件格式错误!</div>
 
-    <ion-item>
-      <ion-label floating color="primary">密码</ion-label>
-      <ion-input [(ngModel)]="password" name="password" type="password"  (keypress)="onInputKeypress($event)"  required>
-      </ion-input>
-    </ion-item>
+      <ion-item>
+        <ion-label floating color="primary">密码</ion-label>
+        <ion-input formControlName="password" name="password" type="password"  (keypress)="onInputKeypress($event)"  required>
+        </ion-input>
+      </ion-item>
+      
+      <div *ngIf="password.hasError('required') && password.touched" class="error-hint">密码不能为空!</div>
+      <div  *ngIf="password.hasError('minlength') && password.touched" class="error-hint">
+        密码长度不能低于6位!
+      </div>
+      <div  *ngIf="password.hasError('maxlength') && password.touched" class="error-hint">
+        密码长度最长20位!
+      </div>
 
-    <ion-item>
-      <ion-row responsive-sm>
-        <ion-col>
-          <button ion-button (click)="login()" type="submit" color="favorite" icon-left block><ion-icon name="log-in"></ion-icon>登录</button>
-        </ion-col>
-        <ion-col>
-          <button ion-button (click)="createUser()" color="light" icon-left block><ion-icon name="add-circle"></ion-icon>创建新用户</button>
-        </ion-col>
-        <ion-col>
-          <button ion-button (click)="loginViaFacebook()" color="facebook" icon-left block><ion-icon name="logo-facebook"></ion-icon>Facebook登录</button>
-        </ion-col>
-        <ion-col>
-          <button ion-button (click)="loginViaWeChat()" color="wechat" icon-left block><ion-icon name="chatbubbles"></ion-icon>微信登录</button>
-        </ion-col>
-      </ion-row>
-    </ion-item>
+      <ion-item>
+        <ion-row responsive-sm>
+          <ion-col>
+            <button ion-button type="submit" name="login" color="favorite" icon-left [disabled]="!loginForm.valid" block><ion-icon name="log-in"></ion-icon>登录</button>
+          </ion-col>
+          <ion-col>
+            <button ion-button type="submit" name="create" color="light" icon-left [disabled]="!loginForm.valid" block><ion-icon name="add-circle"></ion-icon>创建新用户</button>
+          </ion-col>
+          <ion-col>
+            <button ion-button (click)="loginViaFacebook()" color="facebook" icon-left block><ion-icon name="logo-facebook"></ion-icon>Facebook登录</button>
+          </ion-col>
+          <ion-col>
+            <button ion-button (click)="loginViaWeChat()" color="wechat" icon-left block><ion-icon name="chatbubbles"></ion-icon>微信登录</button>
+          </ion-col>
+        </ion-row>
+      </ion-item>
+    </form>
   </ion-list>
 </ion-content>

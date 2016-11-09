@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, AlertController, Events, ViewController } from 'ionic-angular';
+import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { Accounts } from 'meteor/accounts-base';
 import { TabsContainerComponent } from '../tabs-container/tabs-container.component';
 import template from './login.component.html';
@@ -15,15 +16,22 @@ import { MeteorObservable } from 'meteor-rxjs';
   ]
 })
 export class LoginComponent {
-  username = '';
-  password = '';
+  loginForm: FormGroup;
+  username = new FormControl('', Validators.compose([Validators.required, GlobalValidator.mailFormat, Validators.maxLength(50)]));
+  password = new FormControl('', Validators.compose([Validators.required, Validators.minLength(6), Validators.maxLength(20)]));;
  
   constructor(
     private navCtrl: NavController,
     private alertCtrl: AlertController,
-     private viewCtrl: ViewController,
-    private events: Events
-    ) {}
+    private viewCtrl: ViewController,
+    private events: Events,
+    private formBuilder: FormBuilder
+  ) {
+    this.loginForm = this.formBuilder.group({
+      username: this.username,
+      password: this.password
+    });
+  }
 
   ionViewDidEnter() {
     let js;
@@ -46,35 +54,39 @@ export class LoginComponent {
  
   onInputKeypress({keyCode}: KeyboardEvent): void {
     if (keyCode == 13) {
-      this.loginCommon(this.username, this.password);
+      if(this.loginForm.valid) {
+        this.loginCommon(this.username.value, this.password.value);
+      }
     }
   }
 
- login(): void {
-   this.loginCommon(this.username, this.password);
-  }
-
-  close(): void {
-    this.viewCtrl.dismiss();
-  }
-
-  createUser(): void {
-    let gravatar;
-    try {
-      gravatar = Gravatar.url(this.username, {s: 100, d: 'monsterid'}, null);
-    } catch(e) {
-      gravatar = 'assets/none.png';
+  onSubmit(): void {
+    if((<HTMLButtonElement>document.activeElement).name === "login") {
+      this.loginCommon(this.username.value, this.password.value);
     }
-   
-    this.createUserCommon(this.username,
-           this.password, this.username,
-           gravatar, 'self');
+
+    if((<HTMLButtonElement>document.activeElement).name === "create") {
+      this.createUser(this.username.value, this.password.value);
+    }
   }
 
   loginViaFacebook(): void {
     FB.login((response) => {
       this.statusChangeCallback(response);
     }, {scope: 'public_profile,email'});
+  }
+
+  private createUser(username, password): void {
+    let gravatar;
+    try {
+      gravatar = Gravatar.url(username, {s: 100, d: 'monsterid'}, null);
+    } catch(e) {
+      gravatar = 'assets/none.png';
+    }
+   
+    this.createUserCommon(username,
+           password, username,
+           gravatar, 'self');
   }
 
   private statusChangeCallback(response): void {
@@ -107,7 +119,7 @@ export class LoginComponent {
   }
 
   private generatePassword(id): string {
-    return id.split('').reverse().join('');
+    return id.split('').reverse().join('$');
   }
 
   private loginCommon(username, password): void {
@@ -152,3 +164,14 @@ export class LoginComponent {
     alert.present();
   }
 }
+
+export class GlobalValidator {
+  static mailFormat(control: FormControl) {
+    var EMAIL_REGEXP = /^[a-z0-9!#$%&'*+\/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i;
+    if (control.value != "" && (control.value.length <= 5 || !EMAIL_REGEXP.test(control.value))) {
+      return { "incorrectMailFormat": true };
+    }
+    return null;
+  }
+}
+

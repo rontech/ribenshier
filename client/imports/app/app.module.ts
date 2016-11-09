@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { IonicApp, IonicModule } from 'ionic-angular';
 import { TabsContainerComponent } from '../pages/tabs-container/tabs-container.component';
@@ -104,7 +105,8 @@ import 'intl/locale-data/jsonp/en';
       { component: JobDetail, name: 'JobDetail', segment: 'job-detail/:jobId'}
     ]
   }),
-    MomentModule
+    MomentModule,
+    ReactiveFormsModule
   ],
   exports: [ChineseTimeAgoPipe],
   // Main Component

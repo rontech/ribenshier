@@ -10,6 +10,7 @@ import { ActivityCommentsPage } from '../pages/activities/activity-comments.comp
 import { HouseCommentsPage } from '../pages/houses/house-comments.component';
 import { JobCommentsPage } from '../pages/jobs/job-comments.component';
 import { LoginComponent } from '../pages/auth/login.component';
+import { NewUserComponent } from '../pages/auth/new-user.component';
 import { ProfileComponent } from '../pages/auth/profile.component';
 import { NewTopicComponent } from '../pages/topics/new-topic.component';
 import { NewActivityComponent } from '../pages/activities/new-activity.component';
@@ -44,6 +45,7 @@ import 'intl/locale-data/jsonp/en';
     HouseCommentsPage,
     JobCommentsPage,
     LoginComponent,
+    NewUserComponent,
     ProfileComponent,
     NewTopicComponent,
     NewActivityComponent,
@@ -74,6 +76,7 @@ import 'intl/locale-data/jsonp/en';
     HouseCommentsPage,
     JobCommentsPage,
     LoginComponent,
+    NewUserComponent,
     ProfileComponent,
     NewTopicComponent,
     NewActivityComponent,

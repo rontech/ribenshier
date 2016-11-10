@@ -8,6 +8,7 @@
 </ion-header>
 
 <ion-content class="bookmarks-page-content">
+  <div *ngIf="!utilSrv.isLoggedIn()">你需要登录才可以查看收藏。</div>
   <ion-list class="bookmarks">
     <ion-item-sliding *ngFor="let bookmark of bookmarks | async" class="bookmark">
       <button ion-item (click)="showDetail(bookmark)">

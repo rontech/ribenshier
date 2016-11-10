@@ -168,9 +168,7 @@ export class AppComponent {
         }
 
         this.enableMenu(false);
-        this.nav.setRoot(TabsContainerComponent, {}, {
-          animate: true
-        });
+        this.events.publish('user:logout');
       });
     });
   }

@@ -1,21 +1,21 @@
 <ion-header>
   <ion-navbar color="myapp">
-    <ion-title>登录</ion-title>
+    <ion-title>注册</ion-title>
     <ion-buttons end>
       <button ion-button icon-only (click)="viewCtrl.dismiss()"><ion-icon name="close"></ion-icon></button>
-    </ion-buttons>
+    </ion-buttons> 
   </ion-navbar>
 </ion-header>
 
 <ion-content padding class="login-page-content">
   <div class="instructions">
     <div>
-     请输入邮件地址和密码 
+      注册新用户
     </div>
   </div>
 
   <ion-list>
-    <form [formGroup]="loginForm">
+    <form [formGroup]="newUserForm">
       <ion-item>
         <ion-label floating color="primary">邮件</ion-label>
         <ion-input formControlName="username"  name="username" type="email" required></ion-input>
@@ -26,7 +26,7 @@
 
       <ion-item>
         <ion-label floating color="primary">密码</ion-label>
-        <ion-input formControlName="password" name="password" type="password"  (keypress)="onInputKeypress($event)"  required>
+        <ion-input formControlName="password" name="password" type="password" required>
         </ion-input>
       </ion-item>
       
@@ -39,29 +39,17 @@
       </div>
 
       <ion-item>
-        <ion-row responsive-sm>
-          <ion-col>
-            <button ion-button type="submit" (click)="login()" color="favorite" icon-left [disabled]="!loginForm.valid" block><ion-icon name="log-in"></ion-icon>登录</button>
-          </ion-col>
+        <ion-label floating color="primary">密码确认</ion-label>
+        <ion-input formControlName="passwordConfirm" name="passwordConfirm" type="password"  (keypress)="onInputKeypress($event)"  required>
+        </ion-input>
+      </ion-item>
 
-          <ion-col>
-            <ion-row>
-              <button ion-item name="forgot" right>
-                <div><a>忘记密码？</a></div>
-              </button>
-              <button ion-item name="create" (click)="newUser()" left>
-                <div><a>新用户注册</a></div>
-              </button>
-            </ion-row>
-          </ion-col>
-          
-          <ion-col>
-            <button ion-button (click)="loginViaFacebook()" color="facebook" icon-left block><ion-icon name="logo-facebook"></ion-icon>Facebook登录</button>
-          </ion-col>
-          <ion-col>
-            <button ion-button (click)="loginViaWeChat()" color="wechat" icon-left block><ion-icon name="chatbubbles"></ion-icon>微信登录</button>
-          </ion-col>
-        </ion-row>
+      <div  *ngIf="newUserForm.hasError('notMatch') && passwordConfirm.touched" class="error-hint">
+        输入的确认密码不一致!
+      </div>
+
+      <ion-item>
+         <button ion-button type="submit" (click)="create()" color="light" icon-left [disabled]="!newUserForm.valid" block><ion-icon name="add-circle"></ion-icon>注册用户</button>
       </ion-item>
     </form>
   </ion-list>

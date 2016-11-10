@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
-import { NavController, AlertController, Events, ViewController } from 'ionic-angular';
+import { NavController, Events, ViewController, LoadingController } from 'ionic-angular';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { Accounts } from 'meteor/accounts-base';
-import { TabsContainerComponent } from '../tabs-container/tabs-container.component';
 import template from './login.component.html';
 import * as style from './login.component.scss';
-import * as Gravatar from 'gravatar';
 import { MeteorObservable } from 'meteor-rxjs';
+import { UtilityService } from '../../services/utility.service';
+import { NewUserComponent } from './new-user.component'
  
 @Component({
   selector: 'login',
@@ -17,23 +17,66 @@ import { MeteorObservable } from 'meteor-rxjs';
 })
 export class LoginComponent {
   loginForm: FormGroup;
-  username = new FormControl('', Validators.compose([Validators.required, GlobalValidator.mailFormat, Validators.maxLength(50)]));
-  password = new FormControl('', Validators.compose([Validators.required, Validators.minLength(6), Validators.maxLength(20)]));;
+  username = new FormControl('', Validators.compose([
+                                 Validators.required,
+                                 GlobalValidator.mailFormat,
+                                 Validators.maxLength(50)]));
+  password = new FormControl('', Validators.compose([
+                                 Validators.required,
+                                 Validators.minLength(6),
+                                 Validators.maxLength(20)]));;
  
   constructor(
     private navCtrl: NavController,
-    private alertCtrl: AlertController,
     private viewCtrl: ViewController,
     private events: Events,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private loadingCtrl: LoadingController,
+    private utilSrv: UtilityService
   ) {
     this.loginForm = this.formBuilder.group({
       username: this.username,
       password: this.password
     });
   }
+ 
+  onInputKeypress({keyCode}: KeyboardEvent): void {
+    if (keyCode == 13) {
+      if(this.loginForm.valid) {
+        this.loginCommon(this.username.value, this.password.value);
+      }
+    }
+  }
 
-  ionViewDidEnter() {
+  login(): void {
+    if(this.loginForm.valid) {
+      this.loginCommon(this.username.value, this.password.value);
+    }
+  }
+
+  newUser(): void {
+    this.navCtrl.push(NewUserComponent);
+  }
+
+  loginViaFacebook(): void {
+    this.initFB();
+
+    let loader = this.loadingCtrl.create({
+      content: '连接服务器...',
+      dismissOnPageChange: true
+    });
+
+    loader.present();
+
+    setTimeout(() => {
+      loader.dismissAll();
+      FB.login((response) => {
+        this.statusChangeCallback(response);
+      }, {scope: 'public_profile,email'});
+    }, 3000);
+  }
+
+  private initFB() {
     let js;
     let fjs = document.getElementsByTagName('script')[0];
     if (document.getElementById('facebook-jssdk')) return;
@@ -51,49 +94,12 @@ export class LoginComponent {
       });
     };
   }
- 
-  onInputKeypress({keyCode}: KeyboardEvent): void {
-    if (keyCode == 13) {
-      if(this.loginForm.valid) {
-        this.loginCommon(this.username.value, this.password.value);
-      }
-    }
-  }
-
-  onSubmit(): void {
-    if((<HTMLButtonElement>document.activeElement).name === "login") {
-      this.loginCommon(this.username.value, this.password.value);
-    }
-
-    if((<HTMLButtonElement>document.activeElement).name === "create") {
-      this.createUser(this.username.value, this.password.value);
-    }
-  }
-
-  loginViaFacebook(): void {
-    FB.login((response) => {
-      this.statusChangeCallback(response);
-    }, {scope: 'public_profile,email'});
-  }
-
-  private createUser(username, password): void {
-    let gravatar;
-    try {
-      gravatar = Gravatar.url(username, {s: 100, d: 'monsterid'}, null);
-    } catch(e) {
-      gravatar = 'assets/none.png';
-    }
-   
-    this.createUserCommon(username,
-           password, username,
-           gravatar, 'self');
-  }
 
   private statusChangeCallback(response): void {
     if (response.status === 'connected') {
       this.fbLogin();
     } else if (response.status === 'not_authorized') {
-      this.handleError('提醒', '没有Facebook的许可。');
+      this.utilSrv.alertDialog('提醒', '没有Facebook的许可。');
     }
   }
 
@@ -106,7 +112,7 @@ export class LoginComponent {
           if(checked) {
             this.loginCommon(response.email, this.generatePassword(response.id));
           } else {
-            this.createUserCommon(response.email,
+            this.createUser(response.email,
                  this.generatePassword(response.id), response.name,
                  response.picture.data.url, 'facebook');
           }      
@@ -127,41 +133,20 @@ export class LoginComponent {
       username,
       password,
       (e: Error) => {
-        if (e) return this.handleError('登录失败', e.message);
+        if (e) return this.utilSrv.alertDialog('登录失败', e.message);
         this.events.publish('user:login');
-        this.viewCtrl.dismiss().then(() => {
-        });
+        this.viewCtrl.dismiss();
       }
     );
   }
 
-  private createUserCommon(email, password, name, picture, via): void {
-    Accounts.createUser({
-      username: email,
-      password: password,
-      email: email,
-      profile: {
-        name: name,
-        picture: picture,
-        admin: false,
-        via: via
-      }
-    }, (e: Error) => {
-      if (e) return this.handleError('创建用户失败', e.message);
+  private createUser(email, password, name, picture, via): void {
+    this.utilSrv.createUser(email, password, name, picture, via, 
+     (e: Error) => {
+      if (e) return this.utilSrv.alertDialog('创建用户失败', e.message);
       this.events.publish('user:signup');
-      this.viewCtrl.dismiss().then(() => {
-      });
+      this.viewCtrl.dismiss();
     });
-  }
-
-  private handleError(title, message): void {
-    const alert = this.alertCtrl.create({
-      title: title,
-      message: message,
-      buttons: ['了解']
-    });
-
-    alert.present();
   }
 }
 

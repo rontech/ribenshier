@@ -11,9 +11,9 @@
 </ion-header>
  
 <ion-content class="profile-page-content">
-  <div *ngFor="let thumb of thumbs | async">
-  </div>
-  <div class="profile-picture">
+  <div *ngIf="!utilSrv.isLoggedIn()">你需要登录才可以操作。</div>
+  <div *ngFor="let thumb of thumbs | async"></div>
+  <div *ngIf="utilSrv.isLoggedIn()" class="profile-picture">
     <img [src]="profile.picture" />
     <label class="upload-label" for="picture_upload">
       <ion-icon name="create"></ion-icon>
@@ -21,7 +21,7 @@
     </label>
   </div>
 
-  <ion-item class="profile-name">
+  <ion-item *ngIf="utilSrv.isLoggedIn()" class="profile-name">
     <ion-label stacked>昵称</ion-label>
     <ion-input [(ngModel)]="profile.name" placeholder="修改你的昵称"></ion-input>
   </ion-item>

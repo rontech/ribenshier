@@ -48,6 +48,10 @@ export class ProfileComponent implements OnInit {
   }
   
   done(): void {
+    if(!this.utilSrv.authenticate()) {
+      return;
+    }
+
     MeteorObservable.call('updateProfile', this.profile).subscribe({
       next: () => {
         this.navCtrl.push(TabsContainerComponent);
@@ -59,6 +63,10 @@ export class ProfileComponent implements OnInit {
   }
   
   uploadPicture(files): void {
+    if(!this.utilSrv.authenticate()) {
+      return;
+    }
+
     if(files.length == 0) {
       return;
     }

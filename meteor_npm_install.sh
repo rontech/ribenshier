@@ -6,7 +6,7 @@ if [ -d /opt/ribenshier/.demeteorized/bundle/programs/server ]; then
   npm install source-map-support --save
   npm install gravatar4node --save
   npm install --save gravatar
-r npm install --save intl
+  npm install --save intl
   popd
 else
   echo "please run demeteorizer"

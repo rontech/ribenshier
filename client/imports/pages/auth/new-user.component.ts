@@ -1,12 +1,9 @@
 import { Component } from '@angular/core';
 import { NavController, Events, ViewController } from 'ionic-angular';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
-import { Accounts } from 'meteor/accounts-base';
-import { TabsContainerComponent } from '../tabs-container/tabs-container.component';
 import template from './new-user.component.html';
 import * as style from './new-user.component.scss';
 import * as Gravatar from 'gravatar';
-import { MeteorObservable } from 'meteor-rxjs';
 import { UtilityService } from '../../services/utility.service';
 import { GlobalValidator } from './login.component';
  
@@ -71,10 +68,7 @@ export class NewUserComponent {
        (e: Error) => {
           if (e) return this.utilSrv.alertDialog('创建用户失败', e.message);
           this.events.publish('user:signup');
-          let firstViewCtrl = this.navCtrl.first();
-          this.navCtrl.remove(firstViewCtrl.index).then(() => {
-            this.viewCtrl.dismiss();
-          });
+          this.viewCtrl.dismiss();
     });
   }
 

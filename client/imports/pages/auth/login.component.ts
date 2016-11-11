@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
 import { NavController, Events, ViewController, LoadingController } from 'ionic-angular';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
-import { Accounts } from 'meteor/accounts-base';
 import template from './login.component.html';
 import * as style from './login.component.scss';
 import { MeteorObservable } from 'meteor-rxjs';
 import { UtilityService } from '../../services/utility.service';
 import { NewUserComponent } from './new-user.component'
+import { ResetPasswordComponent } from './reset-password.component'
  
 @Component({
   selector: 'login',
@@ -55,7 +55,11 @@ export class LoginComponent {
   }
 
   newUser(): void {
-    this.navCtrl.push(NewUserComponent);
+    this.navCtrl.setRoot(NewUserComponent);
+  }
+
+  reset(): void {
+    this.navCtrl.setRoot(ResetPasswordComponent);
   }
 
   loginViaFacebook(): void {

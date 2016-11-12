@@ -6,7 +6,7 @@ import * as style from './login.component.scss';
 import { MeteorObservable } from 'meteor-rxjs';
 import { UtilityService } from '../../services/utility.service';
 import { NewUserComponent } from './new-user.component'
-import { ResetPasswordComponent } from './reset-password.component'
+import { ForgotPasswordComponent } from './forgot-password.component'
  
 @Component({
   selector: 'login',
@@ -58,8 +58,8 @@ export class LoginComponent {
     this.navCtrl.setRoot(NewUserComponent);
   }
 
-  reset(): void {
-    this.navCtrl.setRoot(ResetPasswordComponent);
+  forgot(): void {
+    this.navCtrl.setRoot(ForgotPasswordComponent);
   }
 
   loginViaFacebook(): void {

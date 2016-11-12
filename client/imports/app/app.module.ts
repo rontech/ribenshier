@@ -12,6 +12,7 @@ import { JobCommentsPage } from '../pages/jobs/job-comments.component';
 import { LoginComponent } from '../pages/auth/login.component';
 import { NewUserComponent } from '../pages/auth/new-user.component';
 import { ResetPasswordComponent } from '../pages/auth/reset-password.component';
+import { ForgotPasswordComponent } from '../pages/auth/forgot-password.component';
 import { ProfileComponent } from '../pages/auth/profile.component';
 import { NewTopicComponent } from '../pages/topics/new-topic.component';
 import { NewActivityComponent } from '../pages/activities/new-activity.component';
@@ -48,6 +49,7 @@ import 'intl/locale-data/jsonp/en';
     LoginComponent,
     NewUserComponent,
     ResetPasswordComponent,
+    ForgotPasswordComponent,
     ProfileComponent,
     NewTopicComponent,
     NewActivityComponent,
@@ -80,6 +82,7 @@ import 'intl/locale-data/jsonp/en';
     LoginComponent,
     NewUserComponent,
     ResetPasswordComponent,
+    ForgotPasswordComponent,
     ProfileComponent,
     NewTopicComponent,
     NewActivityComponent,
@@ -108,7 +111,8 @@ import 'intl/locale-data/jsonp/en';
       { component: TopicDetail, name: 'TopicDetail', segment: 'topic-detail/:topicId'},
       { component: ActivityDetail, name: 'ActivityDetail', segment: 'activity-detail/:activityId'},
       { component: HouseDetail, name: 'HouseDetail', segment: 'house-detail/:houseId'},
-      { component: JobDetail, name: 'JobDetail', segment: 'job-detail/:jobId'}
+      { component: JobDetail, name: 'JobDetail', segment: 'job-detail/:jobId'},
+      { component: ResetPasswordComponent, name: 'ResetPassword', segment: 'reset-password/:token'}
     ]
   }),
     MomentModule,

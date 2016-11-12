@@ -1,4 +1,6 @@
 import { Main } from './imports/server-main/main';
+import { Meteor } from 'meteor/meteor'
+import { Accounts } from 'meteor/accounts-base';
 import './imports/methods/methods';
 import './imports/publications/topics.publication';
 import './imports/publications/comments.publication';
@@ -16,3 +18,32 @@ import './imports/publications/bookmarks.publication';
 
 const mainInstance = new Main();
 mainInstance.start();
+Meteor.startup(() => {
+  let smtp = {
+    username: 'ribenshier@gmail.com',
+    password: '!Qaz@Wsx*Ik,(Ol.',
+    server:   'smtp.gmail.com',
+    port: 465
+  }
+
+  process.env['MAIL_URL'] =  'smtps://'
+    + encodeURIComponent(smtp.username) + ':'
+    + smtp.password + ':@'
+    + smtp.server + ':' + smtp.port;
+
+  Accounts.emailTemplates.siteName = '日本事儿';
+  Accounts.emailTemplates.from = '日本事儿<no-reply@ribenshier.com>';
+
+  Accounts.emailTemplates.resetPassword.subject = (user) => {
+    return '重置您的密码';
+  };
+
+  Accounts.emailTemplates.resetPassword.text = (user, url) => {
+    return "尊敬的用户" + user.profile.name + " 您好,\n\n" +
+        "请点击下面的链接来重置您的密码:\n" +
+        url + "\n\n" +
+        "请务必记住您的密码!!!\n\n\n" +
+        "日本事儿网站服务\n" 
+  };
+});
+

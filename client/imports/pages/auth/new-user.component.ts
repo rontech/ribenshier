@@ -66,7 +66,12 @@ export class NewUserComponent {
        password, username,
        gravatar, 'self',
        (e: Error) => {
-          if (e) return this.utilSrv.alertDialog('创建用户失败', e.message);
+          if (e) {
+            if(e.message === 'Username already exists. [403]') {
+              return this.utilSrv.alertDialog('创建用户失败', '用户已经存在。');
+            }
+            return this.utilSrv.alertDialog('创建用户失败', e.message);
+          }
           this.events.publish('user:signup');
           this.viewCtrl.dismiss();
     });

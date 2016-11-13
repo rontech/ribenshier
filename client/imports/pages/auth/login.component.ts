@@ -137,7 +137,14 @@ export class LoginComponent {
       username,
       password,
       (e: Error) => {
-        if (e) return this.utilSrv.alertDialog('登录失败', e.message);
+        if (e) {
+          if(e.message === 'User not found [403]') {
+            return this.utilSrv.alertDialog('登录失败', '用户不存在。');
+          } else if(e.message === 'Incorrect password [403]') {
+            return this.utilSrv.alertDialog('登录失败', '密码不正确。');
+          }
+          return this.utilSrv.alertDialog('登录失败', e.message);
+        }
         this.events.publish('user:login');
         this.viewCtrl.dismiss();
       }
@@ -146,10 +153,15 @@ export class LoginComponent {
 
   private createUser(email, password, name, picture, via): void {
     this.utilSrv.createUser(email, password, name, picture, via, 
-     (e: Error) => {
-      if (e) return this.utilSrv.alertDialog('创建用户失败', e.message);
-      this.events.publish('user:signup');
-      this.viewCtrl.dismiss();
+      (e: Error) => {
+        if (e) {
+          if(e.message === 'Username already exists. [403]') {
+            return this.utilSrv.alertDialog('创建用户失败', '用户已经存在。');
+          }
+          return this.utilSrv.alertDialog('创建用户失败', e.message);
+        } 
+        this.events.publish('user:signup');
+        this.viewCtrl.dismiss();
     });
   }
 }

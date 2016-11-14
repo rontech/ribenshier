@@ -47,6 +47,7 @@ export class TopicsComponent implements OnInit {
   category: string = 'topics';
   scroll_order: string[] = ['topics', 'activities', 'houses', 'jobs'];
   user: User;
+  showSearch: boolean = false;
   @ViewChild(Content) content:Content;
 
   constructor(
@@ -85,6 +86,11 @@ export class TopicsComponent implements OnInit {
     setTimeout(() => {
       refresher.complete();
     }, 3000);
+  }
+
+  toggleSearch() {
+    console.log("showSearch=", this.showSearch);
+    this.showSearch = !this.showSearch;
   }
 
   addNew(): void {

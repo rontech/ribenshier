@@ -3,7 +3,14 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
+    <ion-title *ngIf="!showSearch">日本事儿</ion-title>
     <ion-buttons end>
+      <button *ngIf="!showSearch" ion-button icon-only (click)="toggleSearch()">
+        <ion-icon name="search"><ion-icon>
+      </button>
+      <button *ngIf="showSearch" ion-button icon-only (click)="toggleSearch()">
+        <ion-icon name="pause"></ion-icon>
+      </button>
       <ion-thumbnail *ngIf="user">
         <img [src]="user.profile.picture" class="profile-picture"></img>
       </ion-thumbnail>
@@ -11,7 +18,7 @@
         <ion-icon name="log-in"></ion-icon>
       </button>
     </ion-buttons>
-    <ion-toolbar>
+    <ion-toolbar *ngIf="showSearch">
       <ion-searchbar color="primary"
                      [(ngModel)]="queryText"
                      (ionInput)="getItems($event)"

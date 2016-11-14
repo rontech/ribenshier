@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { Platform, Events, MenuController, Nav, AlertController } from 'ionic-angular';
-import { StatusBar, Depplinks } from 'ionic-native';
+import { StatusBar, Deeplinks } from 'ionic-native';
 import { Meteor } from 'meteor/meteor';
 import template from './app.component.html';
 import { TabsContainerComponent } from '../pages/tabs-container/tabs-container.component';

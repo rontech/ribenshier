@@ -174,15 +174,14 @@ export class AppComponent {
   private handleLogout(alert): void {
     let user = Meteor.user();
     Meteor.logout((e: Error) => {
+      this.events.publish('user:logout');
+      this.enableMenu(false);
       alert.dismiss().then(() => {
         if (e) return this.utilSrv.alertDialog('提醒', e.message);
         if(user.profile.via && user.profile.via === 'facebook') {
           FB.logout((response)  => {
           });
         }
-
-        this.enableMenu(false);
-        this.events.publish('user:logout');
       });
     });
   }

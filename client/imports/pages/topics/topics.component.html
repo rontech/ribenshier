@@ -14,7 +14,7 @@
       <button *ngIf="!user" ion-button icon-only (click)="login()">
         <ion-icon name="log-in"></ion-icon>
       </button>
-      <button *ngIf="user" class="profile-button">
+      <button *ngIf="user" class="profile-button" (click)="logout()">
         <img [src]="user.profile.picture" class="profile-picture"></img>
       </button>
     </ion-buttons>

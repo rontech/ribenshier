@@ -14,7 +14,7 @@ import { HousePictures } from '../../../../both/collections/house-pictures.colle
 import { HousePicture } from '../../../../both/models/house-picture.model';
 import { Jobs } from '../../../../both/collections/jobs.collection';
 import { Job } from '../../../../both/models/job.model';
-import { NavParams, NavController, ModalController,  Content, Events, Tabs } from 'ionic-angular';
+import { NavParams, NavController, ModalController,  Content, Events, Tabs, AlertController } from 'ionic-angular';
 import { NewTopicComponent } from './new-topic.component';
 import { NewActivityComponent } from '../activities/new-activity.component';
 import { NewHouseComponent } from '../houses/new-house.component';
@@ -55,6 +55,7 @@ export class TopicsComponent implements OnInit {
     private navParams: NavParams,
     private navCtrl: NavController,
     private modalCtrl: ModalController,
+    private alertCtrl: AlertController,
     private utilSrv: UtilityService
     ) {
       this.category = navParams.get('category') || 'topics';
@@ -113,6 +114,28 @@ export class TopicsComponent implements OnInit {
   login(): void {
     let  modal = this.modalCtrl.create(LoginComponent);
     modal.present();
+  }
+
+  logout(): void {
+    const alert = this.alertCtrl.create({
+      title: '退出',
+      message: '你确信你要退出?',
+      buttons: [
+        {
+          text: '不想退出',
+          role: 'cancel'
+        },
+        {
+          text: '退出',
+          handler: () => {
+            this.handleLogout(alert);
+            return false;
+          }
+        }
+      ]
+    });
+
+    alert.present();
   }
 
   getItems(ev: any) {
@@ -332,6 +355,21 @@ export class TopicsComponent implements OnInit {
               return jobs;
             }
           }).zone();
+      });
+    });
+  }
+
+  private handleLogout(alert): void {
+    let user = Meteor.user();
+    Meteor.logout((e: Error) => {
+      this.updateLoginStatus();   
+      this.events.publish('user:logout');
+      alert.dismiss().then(() => {
+        if (e) return this.utilSrv.alertDialog('提醒', e.message);
+        if(user.profile.via && user.profile.via === 'facebook') {
+          FB.logout((response)  => {
+          });
+        }
       });
     });
   }

@@ -1,11 +1,12 @@
 import { Component, ViewChild } from '@angular/core';
 import { Platform, Events, MenuController, Nav, AlertController } from 'ionic-angular';
-import { StatusBar } from 'ionic-native';
+import { StatusBar, Depplinks } from 'ionic-native';
 import { Meteor } from 'meteor/meteor';
 import template from './app.component.html';
 import { TabsContainerComponent } from '../pages/tabs-container/tabs-container.component';
 import { LoginComponent } from '../pages/auth/login.component';
 import { ProfileComponent } from '../pages/auth/profile.component';
+import { ResetPasswordComponent } from '../pages/auth/reset-password.component';
 import * as moment from 'moment';
 import { ChineseTimeAgoPipe } from '../filters/time.filter';
 import { UtilityService } from '../services/utility.service';
@@ -46,7 +47,7 @@ export class AppComponent {
   ];
 
   constructor(
-    platform: Platform,
+    public platform: Platform,
     public menu: MenuController,
     public events: Events,
     private alertCtrl: AlertController,
@@ -74,6 +75,19 @@ export class AppComponent {
         this.events.publish('user:logout');
       }, 1000);
     }
+  }
+
+  ngAfterViewInit() {
+    this.platform.ready().then(() => {
+      // Convenience to route with a given nav
+      Deeplinks.routeWithNavController(this.nav, {
+        '/reset-password/:token': ResetPasswordComponent 
+      }).subscribe((match) => {
+        console.log('Successfully routed', match);
+      }, (nomatch) => {
+        console.warn('Unmatched Route', nomatch);
+      });
+    })
   }
 
   ionViewDidEnter() {

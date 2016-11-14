@@ -89,7 +89,6 @@ export class TopicsComponent implements OnInit {
   }
 
   toggleSearch() {
-    console.log("showSearch=", this.showSearch);
     this.showSearch = !this.showSearch;
   }
 

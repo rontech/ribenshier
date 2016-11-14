@@ -1,4 +1,8 @@
 .topics-page-header {
+  .narrow-bar {
+    min-height: 40px;
+  }
+
   ion-avatar {
     min-height: 25px;
   }
@@ -7,6 +11,15 @@
     border-radius: 50%;
     max-width: 30px;
     max-height: 30px;
+  }
+
+  .profile-button {
+    background-color: transparent;
+  }
+
+  .small-icon {
+    width: 25px;
+    vertical-align: top;
   }
 }
 

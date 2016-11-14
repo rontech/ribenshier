@@ -1,24 +1,24 @@
 <ion-header class="topics-page-header">
-  <ion-navbar color="myapp">
+  <ion-navbar color="myapp" class="narrow-bar">
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-title *ngIf="!showSearch">日本事儿</ion-title>
     <ion-buttons end>
-      <button *ngIf="!showSearch" ion-button icon-only (click)="toggleSearch()">
+      <button *ngIf="!showSearch" ion-button icon-only (click)="toggleSearch()" class="small-icon">
         <ion-icon name="search"><ion-icon>
       </button>
-      <button *ngIf="showSearch" ion-button icon-only (click)="toggleSearch()">
+      <button *ngIf="showSearch" ion-button icon-only (click)="toggleSearch()" class="small-icon">
         <ion-icon name="pause"></ion-icon>
       </button>
-      <ion-thumbnail *ngIf="user">
-        <img [src]="user.profile.picture" class="profile-picture"></img>
-      </ion-thumbnail>
       <button *ngIf="!user" ion-button icon-only (click)="login()">
         <ion-icon name="log-in"></ion-icon>
       </button>
+      <button *ngIf="user" class="profile-button">
+        <img [src]="user.profile.picture" class="profile-picture"></img>
+      </button>
     </ion-buttons>
-    <ion-toolbar *ngIf="showSearch">
+    <ion-toolbar *ngIf="showSearch" class="narrow-bar">
       <ion-searchbar color="primary"
                      [(ngModel)]="queryText"
                      (ionInput)="getItems($event)"
@@ -27,7 +27,7 @@
     </ion-toolbar>
   </ion-navbar>
 
-  <ion-toolbar>
+  <ion-toolbar class="narrow-bar">
     <ion-segment [(ngModel)]="category" (ionChange)="onSegmentChanged($event)">
       <ion-segment-button value="topics">
         杂谈 

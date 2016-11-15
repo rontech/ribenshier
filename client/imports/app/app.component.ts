@@ -3,6 +3,7 @@ import { Platform, Events, MenuController, Nav, AlertController } from 'ionic-an
 import { StatusBar, Deeplinks } from 'ionic-native';
 import { Meteor } from 'meteor/meteor';
 import template from './app.component.html';
+import * as style from './app.component.scss';
 import { TabsContainerComponent } from '../pages/tabs-container/tabs-container.component';
 import { LoginComponent } from '../pages/auth/login.component';
 import { ProfileComponent } from '../pages/auth/profile.component';

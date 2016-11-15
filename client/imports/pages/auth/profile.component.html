@@ -5,7 +5,7 @@
     </button>
     <ion-title>个人设定</ion-title>
     <ion-buttons end>
-      <button ion-button class="done-button" (click)="done()">确定</button>
+      <button *ngIf="utilSrv.isLoggedIn()" ion-button class="done-button" (click)="done()">确定</button>
     </ion-buttons>
   </ion-navbar>
 </ion-header>

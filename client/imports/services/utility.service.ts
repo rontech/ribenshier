@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { Injectable } from '@angular/core';
 import { AlertController } from 'ionic-angular';
 import { Meteor} from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';

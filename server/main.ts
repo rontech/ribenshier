@@ -39,11 +39,11 @@ Meteor.startup(() => {
   };
 
   Accounts.emailTemplates.resetPassword.text = (user, url) => {
-    return "尊敬的用户" + user.profile.name + " 您好,\n\n" +
-        "请点击下面的链接来重置您的密码:\n" +
-        url + "\n\n" +
-        "请务必记住您的密码!!!\n\n\n" +
-        "日本事儿网站服务\n" 
+    return '尊敬的用户' + user.profile.name + ' 您好,\n\n' +
+        '请点击下面的链接来重置您的密码:\n' +
+        url + '\n\n' +
+        '请务必记住您的密码!!!\n\n\n' +
+        '日本事儿网站服务\n' 
   };
 });
 

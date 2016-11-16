@@ -1,138 +1,125 @@
-.comments-page-navbar {
-  min-height: 40px;
-
-  .topic-title {
-    float: center;
-  }
-}
- 
-.comments-page-content {
-  background-color: #a9a9a9;
-  background-image: url(/assets/chat-background.jpg);
-
-  > .scroll-content {
-    margin: 36px -15px 53px !important;
-  }
- 
-  .comments {
-    height: 100%;
-  }
- 
-  .comment-wrapper {
-    margin-bottom: 9px;
- 
-    &::after {
-      content: "";
-      display: table;
-      clear: both;
-    }
-  }
- 
-  .comment {
-    display: inline-block;
+comments-page {
+  .rlt {
     position: relative;
-    max-width: 236px;
-    border-radius: 7px;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, .15);
- 
-    &.comment-mine {
-      float: right;
-      margin-right: 6px;
-      background-color: #DCF8C6;
- 
-      &::before {
-        right: -11px;
-        top: 5px;
-        background-image: url(/assets/comment-mine.png)
-      }
-    }
- 
-    &.comment-other {
-      float: left;
-      margin-left: 6px;
-      background-color: #FFF;
- 
-      &::before {
-        left: -11px;
-        top: 5px;
-        background-image: url(/assets/comment-other.png)
-      }
-    }
- 
-    &.comment-other::before, &.comment-mine::before {
-      content: "";
-      position: absolute;
-      bottom: 3px;
-      width: 12px;
-      height: 19px;
-      background-position: 50% 50%;
-      background-repeat: no-repeat;
-      background-size: contain;
-    }
- 
-    .comment-content {
-      padding: 5px 7px;
-      word-wrap: break-word;
-      white-space: pre-wrap;
- 
-      &::after {
-        content: " \00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0";
-        display: inline;
-      }
-    }
- 
   }
 
-  .user-avatar {
-    max-width: 24px;
-    max-height: 24px;
-    
-    &.avatar-mine {
-      float: right;
-      margin-right: 0;
-      margin-top: 10px;
-    }
-
-    &.avatar-other {
-      float: left;
-      margin-left: 2px;
-      margin-top: 10px;
-    }
+  .cf {
+    clear: both;
   }
 
-  .comment-timestamp {
-    font-size: 12px;
-    color: gray;
-    width: 100%;
+  .comments-page-navbar {
+    min-height: 40px;
+
+    .topic-title {
+      float: center;
+    }
+  }
+ 
+  img.profile-picture {
+    width: 36px;
+    height: 36px;
     position: absolute;
+    border-radius: 50%;
+    bottom: 10px;
+    &.left {
+      left: 10px;
+    }
+    &.right {
+      right: 10px;
+    }
+  }
 
-    &.timestamp-mine {
-      float: right;
-      margin-right: 10px;
+  .message {
+    font-size: 14px;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+  }
+
+  .message-detail {
+    white-space: nowrap;
+    font-size: 11px;
+  }
+
+  .message-wrapper {
+    position: relative;
+    &:last-child {
+      margin-bottom: 10px;
+    }
+  }
+
+  .chat-bubble {
+    border-radius: 5px;
+    display: inline-block;
+    padding: 10px 18px;
+    position: relative;
+    margin: 10px;
+    max-width: 80%;
+
+    .message-time {
+      font-size: 0.7em;
+      display: block;
     }
 
-    &.timestamp-other {
+    &:before {
+      content: "\00a0";
+      display: block;
+      height: 16px;
+      width: 9px;
+      position: absolute;
+      bottom: -7.5px;
+    }
+
+    &.left {
+      background-color: #e6e5eb;
       float: left;
-      margin-right: 10px;
+      margin-left: 55px;
+
+      &:before {
+        background-color: #e6e5eb;
+        left: 10px;
+        -webkit-transform: rotate(70deg) skew(5deg);
+      }
+    }
+    &.right {
+      background-color: #bc8f8f;
+      color: #fff;
+      float: right;
+      margin-right: 55px;
+
+      &:before {
+        background-color: #bc8f8f;
+        right: 10px;
+        -webkit-transform: rotate(118deg) skew(-5deg);
+      }
+
+      a.autolinker {
+        color: #fff;
+        font-weight: bold;
+      }
+
+      .message-time {
+        text-align: right;
+      }
     }
   }
-}
 
-.comments-page-footer {
-  padding-right: 0;
- 
-  .comment-editor {
-    margin-left: 2px;
-    padding-left: 5px;
-    background: white;
-    border-radius: 3px;
-  }
- 
-  .comment-editor-button {
-    box-shadow: none;
-    width: 50px;
-    height: 50px;
-    font-size: 17px;
-    margin: auto;
+  .footer-bar {
+    border: none;
+
+    .comment-editor {
+      margin-left: 2px;
+      padding-left: 5px;
+      background: white;
+      border-radius: 3px;
+      max-width: 320px;
+    }
+
+    .comment-editor-button {
+      box-shadow: none;
+      width: 50px;
+      height: 50px;
+      font-size: 17px;
+      margin: auto;
+    }
   }
 }

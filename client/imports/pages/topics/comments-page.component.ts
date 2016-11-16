@@ -113,20 +113,12 @@ export class CommentsPage implements OnInit, OnDestroy {
     return false;
   }
 
-  private get commentsPageContent(): Element {
-    return document.querySelector('.comments-page-content');
-  }
- 
-  private get commentsPageFooter(): Element {
-    return document.querySelector('.comments-page-footer');
-  }
- 
   private get commentsList(): Element {
-    return this.commentsPageContent.querySelector('.comments');
+    return document.querySelector('.scroll-content');
   }
  
   private get commentEditor(): HTMLInputElement {
-    return <HTMLInputElement>this.commentsPageFooter.querySelector('.comment-editor');
+    return <HTMLInputElement>document.querySelector('.comment-editor');
   }
  
   private get scroller(): Element {

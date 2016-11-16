@@ -1,5 +1,11 @@
-app {
-  .narrow-bar {
-    min-height: 40px;
-  }
+.narrow-bar {
+  min-height: 40px;
+}
+
+.rlt {
+  position: relative;
+}
+
+.cf {
+  clear: both;
 }

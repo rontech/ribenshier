@@ -7,34 +7,43 @@
     </ion-buttons>
   </ion-navbar>
 </ion-header>
- 
-<ion-content padding class="comments-page-content">
-  <div class="comments">
-    <div *ngFor="let comment of comments | async" class="comment-wrapper">
-    <!--
-      <div [class]="'comment-timestamp timestamp-' + comment.ownership">{{comment.createdAt | amDateFormat: 'H时m分'}}</div>
-      -->
-      <ion-avatar>
-        <img [src]="comment.profile.picture" [class]="'user-avatar avatar-' + comment.ownership"></img>
-      </ion-avatar>
-      <div [class]="'comment comment-' + comment.ownership">
-        <div class="comment-content">{{comment.content}}</div>
+
+<ion-content>
+  <div *ngFor="let comment of comments | async" class="message-wrapper rlt"
+       (hold)="onMessageHold($event, $index, comment)">
+    <div *ngIf="comment.ownership === 'other'">
+      <img class="profile-picture left" [src]="comment.profile.picture" />
+      <div class="chat-bubble left">
+        <div class="message">
+          {{ comment.content }}
+        </div>
+        <div class="message-detail">
+          <span class="message-time">{{comment.createdAt | amDateFormat: 'H时m分'}}</span>
+        </div>
       </div>
     </div>
+
+    <div *ngIf="comment.ownership === 'mine'">
+      <img class="profile-picture right" [src]="comment.profile.picture"  />
+      <div class="chat-bubble right">
+        <div class="message" ng-bind-html="comment.content">
+          {{ comment.content }}
+        </div>
+        <div class="message-detail">
+          <span class="message-time">{{ comment.createdAt | amDateFormat: 'H时m分' }}</span>
+        </div>
+      </div>
+    </div>
+    <div class="cf"></div>
   </div>
 </ion-content>
 
- 
 <ion-footer>
-  <ion-toolbar color="myapp" class="comments-page-footer" position="bottom">
-    <textarea rows="3" cols="35"  [(ngModel)]="comment"  class="comment-editor" placeholder="输入评论内容"></textarea>
+  <ion-toolbar class="footer-bar" color="white">
+    <textarea [(ngModel)]="comment" cols="60" placeholder="输入评论内容" class="comment-editor"></textarea>
     <ion-buttons end>
-      <button ion-button icon-only *ngIf="comment" class="comment-editor-button" (click)="sendComment()">
-        <ion-icon name="send"></ion-icon>
-      </button>
- 
-      <button ion-button icon-only *ngIf="!comment" class="comment-editor-button">
-        <ion-icon name="mic"></ion-icon>
+      <button ion-button (click)="sendComment()" class="comment-editor-button" [disabled]="!comment || comment.trim().length == 0">
+        <ion-icon name="send" color="primary"></ion-icon>
       </button>
     </ion-buttons>
   </ion-toolbar>

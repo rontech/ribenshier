@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
 import { Platform, Events, MenuController, Nav, AlertController } from 'ionic-angular';
 import { StatusBar, Deeplinks } from 'ionic-native';
 import { Meteor } from 'meteor/meteor';
@@ -11,6 +11,7 @@ import { ResetPasswordComponent } from '../pages/auth/reset-password.component';
 import * as moment from 'moment';
 import { ChineseTimeAgoPipe } from '../filters/time.filter';
 import { UtilityService } from '../services/utility.service';
+import { Profile } from '../../../both/models/profile.model';
 
 export interface PageObj {
   title: string;
@@ -25,9 +26,10 @@ export interface PageObj {
   selector: 'app',
   template
 })
-export class AppComponent {
+export class AppComponent implements OnInit{
   @ViewChild(Nav) nav: Nav;
   rootPage: any;
+  profile: Profile;
 
   // List of pages that can be navigated to from the left menu
   // the left menu only works after login
@@ -76,6 +78,10 @@ export class AppComponent {
         this.events.publish('user:logout');
       }, 1000);
     }
+  }
+
+  ngOnInit() {
+    this.profile = this.utilSrv.loadProfile();
   }
 
   ngAfterViewInit() {
@@ -133,14 +139,17 @@ export class AppComponent {
 
   listenToLoginEvents() {
     this.events.subscribe('user:login', () => {
+      this.profile = this.utilSrv.loadProfile();
       this.enableMenu(true);
     });
 
     this.events.subscribe('user:signup', () => {
+      this.profile = this.utilSrv.loadProfile();
       this.enableMenu(true);
     });
 
     this.events.subscribe('user:logout', () => {
+      this.profile = this.utilSrv.loadProfile();
       this.enableMenu(false);
     });
   }

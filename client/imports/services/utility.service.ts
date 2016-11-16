@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { AlertController } from 'ionic-angular';
 import { Meteor} from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
+import { Profile } from '../../../both/models/profile.model';
 
 @Injectable()
 export class UtilityService {
@@ -62,5 +63,16 @@ export class UtilityService {
     }, (e: Error) => {
       callback(e);
     });
+  }
+
+  loadProfile(): Profile {
+    if(Meteor.user()) {
+      return  Meteor.user().profile;
+    } else {
+      return {
+        name: '',
+        picture: 'assets/none.png'
+      };
+    }
   }
 }

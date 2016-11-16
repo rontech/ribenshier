@@ -32,18 +32,18 @@ export class ProfileComponent implements OnInit {
   ) {}
  
   ngOnInit(): void {
-    this.loadProfile();
+    this.profile = this.utilSrv.loadProfile();
 
     this.events.subscribe('user:login', () => {
-      this.loadProfile();
+      this.profile = this.utilSrv.loadProfile();
     });
 
     this.events.subscribe('user:logout', () => {
-      this.loadProfile();
+      this.profile = this.utilSrv.loadProfile();
     });
 
     this.events.subscribe('user:signup', () => {
-      this.loadProfile();
+      this.profile = this.utilSrv.loadProfile();
     });
   }
   
@@ -101,16 +101,5 @@ export class ProfileComponent implements OnInit {
         });
       });
     });
-  }
-
-  private loadProfile(): void {
-    if(Meteor.user()) {
-      this.profile = Meteor.user().profile
-    } else {
-      this.profile = {
-        name: '',
-        picture: 'assets/none.png'
-      };
-    }
   }
 }

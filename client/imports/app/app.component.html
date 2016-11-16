@@ -1,19 +1,22 @@
 <!-- logged out menu -->
 <ion-menu id="loggedOutMenu" [content]="content">
-  <ion-header>
-    <ion-toolbar color="myapp">
-      <ion-title>日本事儿</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <ion-content class="menu-left">
+    <!-- User profile -->
+    <div text-center>
+      <div menuClose>
+        <img class="profile-picture" [src]="profile.picture">
+        <h4 color="primary">{{profile.name}}</h4>
+      </div>
+    </div>
 
-  <ion-content class="outer-content">
-    <ion-list>
+    <ion-list class="list-full-border">
       <ion-list-header>
         功能快览 
       </ion-list-header>
-      <button ion-item menuClose *ngFor="let p of appPages" (click)="openPage(p)">
-        <ion-icon item-left [name]="p.icon" color="myapp"></ion-icon>
-        <h2 color="primary"> {{p.title}}</h2>
+      <button menuClose ion-item *ngFor="let p of appPages" (click)="openPage(p)">
+        <ion-icon item-left [name]="p.icon" color="primary"></ion-icon>
+        <h2 color="primary">{{ p.title }}</h2>
+        <ion-badge color="danger" item-right *ngIf="p.count">{{ p.count }}</ion-badge>
       </button>
     </ion-list>
   </ion-content>
@@ -21,13 +24,15 @@
 
 <!-- logged in menu -->
 <ion-menu id="loggedInMenu" [content]="content">
-  <ion-header>
-    <ion-toolbar color="myapp">
-      <ion-title>日本事儿</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <ion-content class="menu-left">
+    <!-- User profile -->
+    <div text-center>
+      <div menuClose>
+        <img class="profile-picture" [src]="profile.picture">
+        <h4 color="primary">{{profile.name}}</h4>
+      </div>
+    </div>
 
-  <ion-content class="outer-content">
     <ion-list>
       <ion-list-header>
         功能快览 
@@ -35,6 +40,7 @@
       <button ion-item menuClose *ngFor="let p of appPages" (click)="openPage(p)">
         <ion-icon item-left [name]="p.icon" color="myapp"></ion-icon>
         <h2 color="primary"> {{p.title}}</h2>
+        <ion-badge color="danger" item-right *ngIf="p.count">{{ p.count }}</ion-badge>
       </button>
     </ion-list>
 

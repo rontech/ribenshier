@@ -1,52 +1,50 @@
-.topic-detail-navbar {
-  min-height: 40px;
+topic-detail {
+  .topic-detail-navbar {
+    min-height: 40px;
 
-  .topic-title {
-    float: center;
+    .topic-title {
+      float: center;
+    }
   }
-}
- 
-.topic-detail-content {
+
+  ion-item.item-block.item-no-border {
+    .item-inner {
+      border: none;
+    }
+  }
+
+  .profile-picture {
+    border-radius: 50%;
+  }
+
   .topic-content {
     text-align: left ;
     white-space: pre-wrap;
     word-wrap: break-word;
+    font-size: 17px;
   }
 
-  .label-md {
-    margin: 0px 0px 0px 0px !important;
-    border: 0;
-  }
-  .label-ios {
-    margin: 0px 0px 0px 0px !important;
-    border: 0;
+  .post-author {
+    align-self: center;
   }
 
-  .user-avatar {
-    max-width: 25px;
-    max-height: 25px;
-  }
- 
-  ion-avatar {
-    min-height: 25px;
+  h3.post-author {
+    font-weight: normal;
   }
 
-  .shrink-item {
-    padding: 0px !important;
-    min-height: 25px;
-    min-width: 35px;
-    width: 30px;
+  .post-comment {
+
+    .like-count {
+      margin-right: 5px;
+      font-size: 0.8em;
+    }
   }
 
-  .no-padding {
-    padding: 0px !important;
+  .post-time {
+    font-size: 11px;
   }
 
-  .item-md.item-block .item-inner {
-    border-bottom: 0;
-  }
-
-  .item-ios.item-block .item-inner {
-    border-bottom: 0;
+  .corner-count {
+    padding-bottom: 10px;
   }
 }

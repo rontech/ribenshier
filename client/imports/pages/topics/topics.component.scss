@@ -13,10 +13,6 @@
     max-height: 25px;
   }
 
-  .profile-button {
-    background-color: transparent;
-  }
-
   .small-icon {
     width: 25px;
     vertical-align: top;
@@ -116,7 +112,10 @@
   
   .last-comment-time {
     font-size: 12px;
-    text-align: left;
+    float: right;
+    width: 30%;
+    text-align: right;
+    margin-top: 10px;
   }
 
   .activity-info {
@@ -139,6 +138,13 @@
 
   .icon-line {
     background-color: #f5f5f5;
+    .icon-group {
+      width: 60%; 
+    }
+
+    .corner-count {
+      padding-bottom: 10px;
+    }
   }
 }
 

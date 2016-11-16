@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { NavParams, NavController, PopoverController } from 'ionic-angular';
 import { Meteor } from 'meteor/meteor';
 import { Topic } from '../../../../both/models/topic.model';
+import { Comment } from '../../../../both/models/comment.model';
 import { Comments } from '../../../../both/collections/comments.collection';
 import { Topics } from '../../../../both/collections/topics.collection';
 import { Observable } from 'rxjs';
-import { Comment } from '../../../../both/models/comment.model';
 import template from './topic-detail.component.html';
 import * as style from './topic-detail.component.scss';
 import { TopicOptionsComponent } from './topic-options.component';
@@ -25,6 +25,7 @@ export class TopicDetail implements OnInit {
   private topic: Topic;
   private topicId: string;
   private barTitle: string;
+  private comments: Observable<Comment[]>;
  
   constructor(
     navParams: NavParams,
@@ -40,6 +41,7 @@ export class TopicDetail implements OnInit {
     const user = Meteor.users.findOne({_id: this.topic.creatorId}, {fields: {profile: 1}});
     this.topic.profile = user.profile;
     this.barTitle = this.utilSrv.editTitle(this.topic.title, 12);
+    this.subComments();
   }
 
   ionViewDidEnter() {
@@ -72,7 +74,7 @@ export class TopicDetail implements OnInit {
   }
 
   showComments(): void {
-    this.navCtrl.parent.parent.push(CommentsPage, {topic: this.topic}); 
+    this.navCtrl.push(CommentsPage, {topic: this.topic}); 
   }
 
   thumbUp(): void {
@@ -116,5 +118,32 @@ export class TopicDetail implements OnInit {
       method: 'share',
       href: 'http://www.ribenshier.com/#/topic-detail/' +  this.topic._id
     }, (response) => {console.log('response=', response);});
+  }
+
+  private subComments(): void {
+    MeteorObservable.subscribe('comments', this.topicId).subscribe(() => {
+      MeteorObservable.autorun().subscribe(() => {
+        this.comments = Comments
+          .find({topicId: this.topicId}, { sort: { createdAt: -1 }, limit: 10 })
+          .mergeMap<Comment[]>(comments =>
+            Observable.combineLatest(
+              comments.map(comment =>
+                Meteor.users.find({_id: comment.senderId}, {fields: {profile: 1}})
+                .map(user => {
+                  if(user) {
+                    comment.profile = user.profile;
+                  }
+                  if(Meteor.userId()) {
+                    comment.ownership = Meteor.userId() == comment.senderId ? 'mine' : 'other';
+                  } else {
+                    comment.ownership = 'other';
+                  }
+                  return comment;
+                })
+              )
+            )
+          ).zone();
+      });
+    });
   }
 }

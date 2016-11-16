@@ -50,12 +50,13 @@ export class UtilityService {
   }
 
   createUser(email, password, name, picture, via, callback): void {
+    let myName =  name.split("@")[0];
     Accounts.createUser({
       username: email,
       password: password,
       email: email,
       profile: {
-        name: name,
+        name: myName,
         picture: picture,
         admin: false,
         via: via

@@ -7,7 +7,7 @@ import { Observable, Subscription } from 'rxjs';
 import { JobComment } from '../../../../both/models/job-comment.model';
 import template from './job-comments.component.html';
 import * as style from './job-comments.component.scss';
-import { JobCommentsOptionsComponent } from './job-comments-options.component';
+import { JobOptionsComponent } from './job-options.component';
 import { MeteorObservable } from 'meteor-rxjs';
 import { UtilityService } from '../../services/utility.service';
  
@@ -77,7 +77,7 @@ export class JobCommentsPage implements OnInit, OnDestroy {
   }
 
   showOptions(): void {
-    const popover = this.popoverCtrl.create(JobCommentsOptionsComponent, {
+    const popover = this.popoverCtrl.create(JobOptionsComponent, {
       job: this.selectedJob
     }, {
       cssClass: 'options-popover'

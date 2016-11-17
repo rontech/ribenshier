@@ -18,9 +18,6 @@ import { NewTopicComponent } from '../pages/topics/new-topic.component';
 import { NewActivityComponent } from '../pages/activities/new-activity.component';
 import { NewHouseComponent } from '../pages/houses/new-house.component';
 import { NewJobComponent } from '../pages/jobs/new-job.component';
-import { CommentsOptionsComponent } from '../pages/topics/comments-options.component';
-import { HouseCommentsOptionsComponent } from '../pages/houses/house-comments-options.component';
-import { JobCommentsOptionsComponent } from '../pages/jobs/job-comments-options.component';
 import { TopicDetail } from '../pages/topics/topic-detail.component';
 import { ActivityDetail } from '../pages/activities/activity-detail.component';
 import { HouseDetail } from '../pages/houses/house-detail.component';
@@ -54,9 +51,6 @@ import 'intl/locale-data/jsonp/en';
     NewActivityComponent,
     NewHouseComponent,
     NewJobComponent,
-    CommentsOptionsComponent,
-    HouseCommentsOptionsComponent,
-    JobCommentsOptionsComponent,
     TopicDetail,
     TopicOptionsComponent,
     ActivityDetail,
@@ -86,9 +80,6 @@ import 'intl/locale-data/jsonp/en';
     NewActivityComponent,
     NewHouseComponent,
     NewJobComponent,
-    CommentsOptionsComponent,
-    HouseCommentsOptionsComponent,
-    JobCommentsOptionsComponent,
     TopicDetail,
     TopicOptionsComponent,
     ActivityDetail,

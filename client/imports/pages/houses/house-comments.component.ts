@@ -7,7 +7,7 @@ import { Observable, Subscription } from 'rxjs';
 import { HouseComment } from '../../../../both/models/house-comment.model';
 import template from './house-comments.component.html';
 import * as style from './house-comments.component.scss';
-import { HouseCommentsOptionsComponent } from './house-comments-options.component';
+import { HouseOptionsComponent } from './house-options.component';
 import { MeteorObservable } from 'meteor-rxjs';
 import { UtilityService } from '../../services/utility.service';
  
@@ -77,7 +77,7 @@ export class HouseCommentsPage implements OnInit, OnDestroy {
   }
 
   showOptions(): void {
-    const popover = this.popoverCtrl.create(HouseCommentsOptionsComponent, {
+    const popover = this.popoverCtrl.create(HouseOptionsComponent, {
       house: this.selectedHouse
     }, {
       cssClass: 'options-popover'

@@ -7,7 +7,7 @@ import { Observable, Subscription } from 'rxjs';
 import { Comment } from '../../../../both/models/comment.model';
 import template from './comments-page.component.html';
 import * as style from './comments-page.component.scss';
-import { CommentsOptionsComponent } from './comments-options.component';
+import { TopicOptionsComponent } from './topic-options.component';
 import { MeteorObservable } from 'meteor-rxjs';
 import { UtilityService } from '../../services/utility.service';
  
@@ -77,7 +77,7 @@ export class CommentsPage implements OnInit, OnDestroy {
   }
 
   showOptions(): void {
-    const popover = this.popoverCtrl.create(CommentsOptionsComponent, {
+    const popover = this.popoverCtrl.create(TopicOptionsComponent, {
       topic: this.selectedTopic
     }, {
       cssClass: 'options-popover'

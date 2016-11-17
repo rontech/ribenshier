@@ -5,7 +5,7 @@ export interface Activity {
   title?: string;
   status?: string;
   day?: Date;
-  pepole?: number;
+  people?: number;
   deadline?: Date;
   description?: string;
   creatorId?: string,

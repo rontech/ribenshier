@@ -200,7 +200,11 @@ export class TopicsComponent implements OnInit {
         this.utilSrv.alertDialog('信息', '报名成功!');
       },
       error: (e: Error) => {
-        this.utilSrv.alertDialog('提醒', e.message);
+        if(e.message.indexOf('already-joined') != -1) {
+          this.confirmUnjoin(activity);
+        } else {
+          this.utilSrv.alertDialog('提醒', e.message);
+        }
       }
     });
   }
@@ -374,7 +378,39 @@ export class TopicsComponent implements OnInit {
     });
   }
 
-  private get navbar(): Element {
-    return document.getElementsByTagName('ion-navbar')[0];
+  private confirmUnjoin(activity): void {
+    const alert = this.alertCtrl.create({
+      title: '提醒',
+      message: '你已经报名，需要取消吗?',
+      buttons: [
+        {
+          text: '不想取消',
+          role: 'cancel'
+        },
+        {
+          text: '取消活动',
+          handler: () => {
+            this.unjoinActivity(alert, activity);
+            return false;
+          }
+        }
+      ]
+    });
+
+    alert.present();    
+  }
+
+  private unjoinActivity(alert, activity): void {
+    alert.dismiss();
+    MeteorObservable.call('unjoinActivity',
+                      activity._id,
+                      Meteor.userId()
+      ).subscribe({
+      next: () => {
+      },
+      error: (e: Error) => {
+        this.utilSrv.alertDialog('提醒', e.message);
+      }
+    });
   }
 }

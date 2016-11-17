@@ -132,9 +132,9 @@ Meteor.methods({
     TopicThumbeds.collection.insert(thumbedInfo);
   },
   addActivity(title: string,
-           people: number,
-           day: Date,
-           deadline: Date,
+           people: string,
+           day: string,
+           deadline: string,
            description: string): void {
     if (!this.userId) throw new Meteor.Error('unauthorized',
       '你需要登录才可以操作。');
@@ -145,10 +145,10 @@ Meteor.methods({
     let dt = new Date();
     const activity = {
       title: title,
-      people: people,
-      day: day,
+      people: parseInt(people),
+      day: new Date(day),
       status: '0',
-      deadline: deadline,
+      deadline: new Date(deadline),
       description: description,
       creatorId: this.userId, 
       commented: 0,
@@ -180,11 +180,30 @@ Meteor.methods({
     check(senderId, nonEmptyString);
     check(activityId, nonEmptyString);
     
-    const member = ActivityMembers.findOne({activityId: activityId, senderId: senderId});
-    if (member) throw new Meteor.Error('already-joined',
-      '你已经报过名了！');
+    const activity = Activities.collection.findOne(activityId);
 
-    //Thumbed increment
+    if(activity.status === '-1') 
+      throw new Meteor.Error('stopped', '活动已经中止。');
+
+    if(activity.deadline) {
+      let now = new Date();
+      let today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+      if(today.getTime() > activity.deadline.getTime())
+        throw new Meteor.Error('outdated', '活动已经过期。');
+    }
+
+    const member = ActivityMembers.collection.findOne({activityId: activityId, senderId: senderId});
+    if (member)
+      throw new Meteor.Error('already-joined', '你已经报过名了！');
+
+    if(activity.status === '1') 
+      throw new Meteor.Error('overcrowded', '活动已经满员。');
+
+    if(activity.joined >= activity.people) 
+      throw new Meteor.Error('overcrowded', '活动已经满员。');
+
+
     Activities.collection.update(activityId, {
       $inc: {joined: 1} 
     });
@@ -195,6 +214,29 @@ Meteor.methods({
       senderId: senderId
     };
     ActivityMembers.collection.insert(memberInfo);
+  },
+  unjoinActivity(activityId: string, senderId: string): void {
+    if (!this.userId) throw new Meteor.Error('unauthorized',
+      '你需要登录才可以操作。');
+    check(senderId, nonEmptyString);
+    check(activityId, nonEmptyString);
+    
+    const member = ActivityMembers.collection.findOne({activityId: activityId, senderId: senderId});
+    if (!member)
+      throw new Meteor.Error('member-not-exists', '你并未报名。');
+
+
+    Activities.collection.update(activityId, {
+      $inc: {joined: -1}, 
+      $set: {status: '0'}
+    });
+
+    //remove member information
+    const memberInfo = {
+      activityId: activityId,
+      senderId: senderId
+    };
+    ActivityMembers.collection.remove(memberInfo);
   },
   addActivityComment(activityId: string, content: string): void {
     if (!this.userId) throw new Meteor.Error('unauthorized',
@@ -219,6 +261,20 @@ Meteor.methods({
     Activities.collection.update(activityId, {
       $inc: {commented: 1},
       $set: {commentedAt: dt, sortedBy: dt, lastComment: content}
+    });
+  },
+  cancelActivity(activityId: string): void {
+    if (!this.userId) throw new Meteor.Error('unauthorized',
+      '你需要登录才可以操作。');
+    check(activityId, nonEmptyString);
+    
+    const activity = Activities.collection.findOne(activityId);
+    if (!activity) throw new Meteor.Error('already-joined',
+      '你已经报过名了！');
+
+    //Thumbed increment
+    Activities.collection.update(activityId, {
+      $set: {status: '-1'}
     });
   },
   addHouse(

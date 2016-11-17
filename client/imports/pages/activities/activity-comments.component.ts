@@ -7,7 +7,7 @@ import { Observable, Subscription } from 'rxjs';
 import { ActivityComment } from '../../../../both/models/activity-comment.model';
 import template from './activity-comments.component.html';
 import * as style from './activity-comments.component.scss';
-import { ActivityCommentsOptionsComponent } from './activity-comments-options.component';
+import { ActivityOptionsComponent } from './activity-options.component';
 import { MeteorObservable } from 'meteor-rxjs';
 import { UtilityService } from '../../services/utility.service';
  
@@ -77,7 +77,7 @@ export class ActivityCommentsPage implements OnInit, OnDestroy {
   }
 
   showOptions(): void {
-    const popover = this.popoverCtrl.create(ActivityCommentsOptionsComponent, {
+    const popover = this.popoverCtrl.create(ActivityOptionsComponent, {
       activity: this.selectedActivity
     }, {
       cssClass: 'options-popover'

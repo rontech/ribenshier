@@ -24,9 +24,17 @@ export class ActivityOptionsComponent {
   ) {}
  
   remove(): void {
+    this.confirmDialog('你确信你要删除?', 'removeActivity');
+  }
+
+  cancel(): void {
+    this.confirmDialog('你确信你要终止?', 'cancelActivity');
+  }
+ 
+  private confirmDialog(message, method): void {
     const alert = this.alertCtrl.create({
       title: '提醒',
-      message: '你确信你要删除?',
+      message: message,
       buttons: [
         {
           text: '取消',
@@ -35,20 +43,20 @@ export class ActivityOptionsComponent {
         {
           text: '了解',
           handler: () => {
-            this.handleRemove(alert);
+            this.callMethod(alert, method);
             return false;
           }
         }
       ]
     });
- 
+
     this.viewCtrl.dismiss().then(() => {
       alert.present();
     });
   }
- 
-  private handleRemove(alert): void {
-    MeteorObservable.call('removeActivity', this.params.get('activity')._id).subscribe({
+
+  private callMethod(alert, method) {
+    MeteorObservable.call(method, this.params.get('activity')._id).subscribe({
       next: () => {
         alert.dismiss().then(() => {
           this.navCtrl.setRoot(TabsContainerComponent, {}, {

@@ -1,11 +1,4 @@
-import { Profile } from "./profile.model";
+import { Comment } from "./comment.model";
 
- export interface HouseComment {
-  _id?: string;
-  houseId?: string;
-  senderId?: string;
-  profile?: Profile;
-  content?: string;
-  ownership?: string;
-  createdAt?: Date;
+export interface HouseComment extends Comment {
 }

@@ -371,7 +371,7 @@ Meteor.methods({
  
     let dt = new Date();
     HouseComments.collection.insert({
-      houseId: houseId,
+      objId: houseId,
       senderId: this.userId,
       content: content,
       createdAt: dt

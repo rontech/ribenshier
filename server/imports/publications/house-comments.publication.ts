@@ -7,5 +7,5 @@ import { HouseComment } from '../../../both/models/house-comment.model';
 Meteor.publish('house-comments', function(houseId: string): Mongo.Cursor<HouseComment> {
   if (!houseId) return;
  
-  return HouseComments.collection.find({houseId});
+  return HouseComments.collection.find({objId: houseId});
 });

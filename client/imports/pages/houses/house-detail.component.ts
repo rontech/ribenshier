@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NavParams, NavController, PopoverController } from 'ionic-angular';
 import { Meteor } from 'meteor/meteor';
 import { House } from '../../../../both/models/house.model';
+import { HouseComment } from '../../../../both/models/house-comment.model';
 import { HousePicture } from '../../../../both/models/house-picture.model';
 import { Observable } from 'rxjs';
 import template from './house-detail.component.html';
@@ -11,6 +12,7 @@ import { HouseCommentsPage } from './house-comments.component';
 import { MeteorObservable } from 'meteor-rxjs';
 import { HousePictures } from '../../../../both/collections/house-pictures.collection';
 import { Houses } from '../../../../both/collections/houses.collection';
+import { HouseComments } from '../../../../both/collections/house-comments.collection';
 import { UtilityService } from '../../services/utility.service';
 import { Users } from '../../../../both/collections/users.collection';
  
@@ -33,6 +35,7 @@ export class HouseDetail implements OnInit {
   };
   private rentalTypes = ['待租', '待售'];
   private houseTypes = ['マンション',  'アパート', '一户建', '土地' ,'其它物件'];
+  private comments: Observable<HouseComment[]>;
  
   constructor(
     navParams: NavParams,
@@ -48,13 +51,8 @@ export class HouseDetail implements OnInit {
     const user = Users.findOne({_id: this.house.creatorId}, {fields: {profile: 1}});
     this.house.profile = user.profile;
     this.barTitle = this.utilSrv.editTitle(this.house.title, 12);
-
-    MeteorObservable.subscribe('house-pictures', this.houseId).subscribe(() => {
-       MeteorObservable.autorun().subscribe(() => {
-        this.pictures = HousePictures
-          .find({houseId: this.houseId}, {fields: {picture: 1, thumb: 1}}).zone();
-      });
-    });
+    this.subComments();
+    this.subPictures();
   }
   
   showOptions(): void {
@@ -68,7 +66,7 @@ export class HouseDetail implements OnInit {
   }
 
   showComments(): void {
-    this.navCtrl.parent.parent.push(HouseCommentsPage, {house: this.house}); 
+    this.navCtrl.push(HouseCommentsPage, {house: this.house}); 
   }
 
   showOptionsOrNot(): boolean {
@@ -88,5 +86,41 @@ export class HouseDetail implements OnInit {
 
   getHouseType(house): string {
     return this.rentalTypes[parseInt(house.forRental)] + this.houseTypes[parseInt(house.type)]; 
+  }
+
+  private subComments(): void {
+    MeteorObservable.subscribe('house-comments', this.houseId).subscribe(() => {
+      MeteorObservable.autorun().subscribe(() => {
+        this.comments = HouseComments
+          .find({objId: this.houseId}, { sort: { createdAt: -1 }, limit: 10 })
+          .mergeMap<HouseComment[]>(comments =>
+            Observable.combineLatest(
+              comments.map(comment =>
+                Meteor.users.find({_id: comment.senderId}, {fields: {profile: 1}})
+                .map(user => {
+                  if(user) {
+                    comment.profile = user.profile;
+                  }
+                  if(Meteor.userId()) {
+                    comment.ownership = Meteor.userId() == comment.senderId ? 'mine' : 'other';
+                  } else {
+                    comment.ownership = 'other';
+                  }
+                  return comment;
+                })
+              )
+            )
+          ).zone();
+      });
+    });
+  }
+
+  private subPictures(): void {
+    MeteorObservable.subscribe('house-pictures', this.houseId).subscribe(() => {
+       MeteorObservable.autorun().subscribe(() => {
+        this.pictures = HousePictures
+          .find({houseId: this.houseId}, {fields: {picture: 1, thumb: 1}}).zone();
+      });
+    });
   }
 }

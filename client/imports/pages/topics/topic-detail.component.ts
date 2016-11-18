@@ -64,6 +64,7 @@ export class TopicDetail implements OnInit {
                       Meteor.userId()
       ).subscribe({
       next: () => {
+        this.topic.thumbed += 1; 
       },
       error: (e: Error) => {
         this.utilSrv.alertDialog('提醒', e.message);

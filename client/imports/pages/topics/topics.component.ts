@@ -201,7 +201,7 @@ export class TopicsComponent implements OnInit {
       },
       error: (e: Error) => {
         if(e.message.indexOf('already-joined') != -1) {
-          this.confirmUnjoin(activity);
+          this.confirmUnjoin(activity._id);
         } else {
           this.utilSrv.alertDialog('提醒', e.message);
         }
@@ -378,7 +378,7 @@ export class TopicsComponent implements OnInit {
     });
   }
 
-  private confirmUnjoin(activity): void {
+  private confirmUnjoin(id): void {
     const alert = this.alertCtrl.create({
       title: '提醒',
       message: '你已经报名，需要取消吗?',
@@ -390,7 +390,7 @@ export class TopicsComponent implements OnInit {
         {
           text: '取消活动',
           handler: () => {
-            this.unjoinActivity(alert, activity);
+            this.unjoinActivity(alert, id);
             return false;
           }
         }
@@ -400,10 +400,10 @@ export class TopicsComponent implements OnInit {
     alert.present();    
   }
 
-  private unjoinActivity(alert, activity): void {
+  private unjoinActivity(alert, id): void {
     alert.dismiss();
     MeteorObservable.call('unjoinActivity',
-                      activity._id,
+                      id,
                       Meteor.userId()
       ).subscribe({
       next: () => {

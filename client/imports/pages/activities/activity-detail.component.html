@@ -10,7 +10,7 @@
 </ion-header>
 
 <ion-content class="activity-detail-content">
-  <ion-fab left bottom>
+  <ion-fab right bottom>
     <button ion-fab mini color="dark"><ion-icon ios="ios-share-outline" md="md-share"></ion-icon></button>
     <ion-fab-list side="top">
       <button ion-fab><ion-icon name="logo-facebook" (click)="shareViaFacebook()"></ion-icon></button>
@@ -18,51 +18,73 @@
     </ion-fab-list>
   </ion-fab>
 
-  <h1 class="card-title">
-    {{activity.title}}
-  </h1>
+  <div><h3>{{activity.title}}</h3></div>
 
-  <ion-row class="no-padding">
-    <ion-item class="shrink-item">
-      <ion-avatar>
-        <img [src]="activity.profile.picture" class="user-avatar"></img>
-      </ion-avatar>
+  <ion-item class="item-no-border">
+    <ion-avatar item-left (click)="viewUser(activity.creatorId)">
+      <img [src]="activity.profile.picture">
+    </ion-avatar>
+    <h2 color="primary"  class="post-author" (click)="viewUser(activity.creatorId)">{{activity.profile.name }}</h2>
+    <span class="post-time">
+      <ion-icon name="timer-outline"></ion-icon>
+      {{activity.createdAt | amTimeAgo | chineseTimeAgo}}
+    </span>
+  </ion-item>
+
+  <div padding>
+    <ion-item>
+      <div><ion-icon name="people"  style="color: #4682b4"></ion-icon><span class="section-name">定员人数</span></div>
+      <div class="section-content"> {{activity.people}}名</div>
     </ion-item>
-      <p>{{activity.profile.name}} {{activity.createdAt | amTimeAgo | chineseTimeAgo}}</p>
-  </ion-row>
-  
-  <ion-item>
-    <div class="activity-item"><ion-icon name="people"  style="color: #4682b4"></ion-icon>    计划人数</div>
-    <div class="activity-content"> {{activity.people}}名</div>
-  </ion-item>
 
-  <ion-item>
-    <div class="activity-item"><ion-icon name="calendar"  style="color: #4682b4"></ion-icon>    活动时间</div>
-    <div class="activity-content">{{activity.day | date:'yyyy年M月d日'}}</div>
-  </ion-item>
+    <ion-item>
+      <div><ion-icon name="calendar"  style="color: #4682b4"></ion-icon><span class="section-name">活动时间</span></div>
+      <div class="section-content">{{activity.day | date:'yyyy年M月d日'}}</div>
+    </ion-item>
 
-  <ion-item>
-    <div class="activity-item"><ion-icon name="close-circle"  style="color: #4682b4"></ion-icon>    报名截止时间</div>
-    <div class="activity-content">{{activity.deadline | date:'yyyy年M月d日'}}</div>
-  </ion-item>
+    <ion-item>
+      <div><ion-icon name="close-circle"  style="color: #4682b4"></ion-icon><span class="section-name">报名截止时间</span></div>
+      <div class="section-content">{{activity.deadline | date:'yyyy年M月d日'}}</div>
+    </ion-item>
 
-  <ion-item>
-    <div class="activity-item"><ion-icon name="information-circle"  style="color: #4682b4"></ion-icon>    活动介绍</div>
-    <div class="activity-content">{{activity.description}}</div>
-  </ion-item>
+    <ion-item>
+      <div><ion-icon name="information-circle"  style="color: #4682b4"></ion-icon><span class="section-name">活动内容介绍</span></div>
+      <div class="section-content">{{activity.description}}</div>
+    </ion-item>
 
-  <ion-item>
-    <button ion-button  icon-only clear (click)="joinActivity()" item-right>
-      <ion-icon name='person-add' item-right style="color: #d03e84"></ion-icon>
-    </button>
-    <ion-badge item-right>{{activity.joined}}</ion-badge>
-  </ion-item>
+    <ion-row>
+      <div>
+        <button ion-button clear small (click)="joinActivity()">
+          <ion-icon name="person-add" style="color: #d03e84"></ion-icon>
+          <div class="corner-count">{{activity.joined}}</div>
+        </button>
+        <button ion-button clear small (click)="showComments()">
+          <ion-icon name="text" style="color: #556b2f" ></ion-icon>
+          <div class="corner-count">{{activity.commented}}</div>
+        </button>
+      </div>
+    </ion-row>
 
-  <ion-item>
-    <button ion-button icon-only clear (click)="showComments()" item-right>
-      <ion-icon name='text' item-right style="color: #556b2f"></ion-icon>
-    </button>
-    <ion-badge item-right>{{activity.commented}}</ion-badge></ion-icon>
-  </ion-item>
+    <ion-label color="danger">最新评论</ion-label>
+    <ion-item class="post-comment" *ngFor="let comment of comments | async">
+      <ion-avatar item-left (click)="viewUser(comment.senderId)">
+        <img [src]="comment.profile.picture">
+      </ion-avatar>
 
+      <h3 color="primary"  class="post-author">
+        {{comment.profile.name}}
+      </h3>
+      <p text-wrap>{{comment.content}}</p>
+      <!--
+      <a class="subdued like-count">
+        <ion-icon name="heart" color="danger" ></ion-icon>
+       0 {{ comment.likeCount}}
+      </a>
+      -->
+      <span class="post-time">
+        <ion-icon name="timer-outline"></ion-icon>
+        {{comment.createdAt | amTimeAgo | chineseTimeAgo}}
+      </span>
+    </ion-item>
+  </div>
 </ion-content> 

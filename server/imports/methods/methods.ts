@@ -98,7 +98,7 @@ Meteor.methods({
  
     let dt = new Date();
     Comments.collection.insert({
-      topicId: topicId,
+      objId: topicId,
       senderId: this.userId,
       content: content,
       createdAt: dt
@@ -253,7 +253,7 @@ Meteor.methods({
  
     let dt = new Date();
     ActivityComments.collection.insert({
-      activityId: activityId,
+      objId: activityId,
       senderId: this.userId,
       content: content,
       createdAt: dt

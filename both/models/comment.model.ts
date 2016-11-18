@@ -2,7 +2,7 @@ import { Profile } from "./profile.model";
 
 export interface Comment {
   _id?: string;
-  topicId?: string;
+  objId?: string;
   senderId?: string;
   profile?: Profile;
   content?: string;

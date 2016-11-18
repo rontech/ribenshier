@@ -1,63 +1,57 @@
-.activity-detail-navbar {
-  min-height: 40px;
+activity-detail {
+  .activity-detail-navbar {
+    min-height: 40px;
 
-  .topic-title {
-    line-height: 50px;
-    float: center;
+    .topic-title {
+      line-height: 50px;
+      float: center;
+    }
   }
-}
- 
-.activity-detail-content {
-  .activity-content {
+
+  ion-item.item-block.item-no-border {
+    .item-inner {
+      border: none;
+    }
+  }
+
+  .profile-picture {
+    border-radius: 50%;
+  }
+
+  .section-content {
     text-align: left ;
     white-space: pre-wrap;
     word-wrap: break-word;
+    font-size: 15px;
   }
 
-  .activity-item:before {
-    content: "\A" ;
-    white-space: pre ;
-  }
-
-  .label-md {
-    margin: 0px 0px 0px 0px !important;
-    border: 0;
-  }
-
-  .label-ios {
-    margin: 0px 0px 0px 0px !important;
-    border: 0;
-  }
-
-  .user-avatar {
-    max-width: 25px;
-    max-height: 25px;
-  }
- 
-  ion-avatar {
-    min-height: 25px;
-  }
-
-  .shrink-item {
-    padding: 0px !important;
-    min-height: 25px;
-    width: 30px;
-  }
-
-  .no-padding {
-    padding: 0px !important;
-  }
-
-  .item-md.item-block .item-inner {
-    border-bottom: 0;
-  }
-
-  .item-ios.item-block .item-inner {
-    border-bottom: 0;
-  }
-
-  .activity-item {
+  .section-name {
+    margin-left: 10px;
     font-weight: bold;
-    font-color: #000000;
+    font-color: #32db64;
+  }
+
+  .post-author {
+    align-self: center;
+  }
+
+  h3.post-author {
+    font-weight: normal;
+  }
+
+  .post-comment {
+
+    .like-count {
+      margin-right: 5px;
+      font-size: 0.8em;
+    }
+  }
+
+  .post-time {
+    font-size: 11px;
+  }
+
+  .corner-count {
+    padding-bottom: 10px;
   }
 }

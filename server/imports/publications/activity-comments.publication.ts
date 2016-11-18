@@ -7,5 +7,5 @@ import { ActivityComment } from '../../../both/models/activity-comment.model';
 Meteor.publish('activity-comments', function(activityId: string): Mongo.Cursor<ActivityComment> {
   if (!activityId) return;
  
-  return ActivityComments.collection.find({activityId});
+  return ActivityComments.collection.find({objId: activityId});
 });

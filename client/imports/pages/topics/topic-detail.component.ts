@@ -109,7 +109,7 @@ export class TopicDetail implements OnInit {
     MeteorObservable.subscribe('comments', this.topicId).subscribe(() => {
       MeteorObservable.autorun().subscribe(() => {
         this.comments = Comments
-          .find({topicId: this.topicId}, { sort: { createdAt: -1 }, limit: 10 })
+          .find({objId: this.topicId}, { sort: { createdAt: -1 }, limit: 10 })
           .mergeMap<Comment[]>(comments =>
             Observable.combineLatest(
               comments.map(comment =>

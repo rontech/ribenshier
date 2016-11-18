@@ -205,9 +205,12 @@ Meteor.methods({
     if(activity.joined >= activity.people) 
       throw new Meteor.Error('overcrowded', '活动已经满员。');
 
+    let status = '0';
+    if(activity.people == activity.joined + 1) status = '1';
 
     Activities.collection.update(activityId, {
-      $inc: {joined: 1} 
+      $inc: {joined: 1}, 
+      $set: {status: status}
     });
 
     //insert member information

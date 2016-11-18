@@ -83,6 +83,7 @@ Meteor.methods({
     TopicThumbeds.collection.remove({topicId}); 
     Comments.collection.remove({topicId});
     Topics.collection.remove(topicId);
+    Bookmarks.collection.remove({objId: topicId});
   },
   addComment(topicId: string, content: string): void {
     if (!this.userId) throw new Meteor.Error('unauthorized',
@@ -173,6 +174,7 @@ Meteor.methods({
     ActivityMembers.collection.remove({activityId}); 
     ActivityComments.collection.remove({activityId});
     Activities.collection.remove(activityId);
+    Bookmarks.collection.remove({objId: activityId});
   },
   joinActivity(activityId: string, senderId: string): void {
     if (!this.userId) throw new Meteor.Error('unauthorized',
@@ -345,6 +347,7 @@ Meteor.methods({
     HousePictures.collection.remove({houseId}); 
     HouseComments.collection.remove({houseId});
     Houses.collection.remove(houseId);
+    Bookmarks.collection.remove({objId: houseId});
   },
   removePicture(thumb: Thumb): void {
     if (!this.userId) throw new Meteor.Error('unauthorized',
@@ -423,6 +426,7 @@ Meteor.methods({
 
     JobComments.collection.remove({jobId});
     Jobs.collection.remove(jobId);
+    Bookmarks.collection.remove({objId: jobId});
   },
   addJobComment(jobId: string, content: string): void {
     if (!this.userId) throw new Meteor.Error('unauthorized',

@@ -441,7 +441,7 @@ Meteor.methods({
  
     let dt = new Date();
     JobComments.collection.insert({
-      jobId: jobId,
+      objId: jobId,
       senderId: this.userId,
       content: content,
       createdAt: dt

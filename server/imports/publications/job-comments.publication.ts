@@ -7,5 +7,5 @@ import { JobComment } from '../../../both/models/job-comment.model';
 Meteor.publish('job-comments', function(jobId: string): Mongo.Cursor<JobComment> {
   if (!jobId) return;
  
-  return JobComments.collection.find({jobId});
+  return JobComments.collection.find({objId: jobId});
 });

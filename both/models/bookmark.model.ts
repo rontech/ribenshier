@@ -1,4 +1,4 @@
-import { Bookmark } from "./bookmark.model";
+import { Bookmark } from './bookmark.model';
  
 export interface Bookmark {
   _id?: string;

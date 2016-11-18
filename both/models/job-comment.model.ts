@@ -1,11 +1,4 @@
-import { Profile } from "./profile.model";
+import { Comment } from './comment.model';
 
- export interface JobComment {
-  _id?: string;
-  jobId?: string;
-  senderId?: string;
-  profile?: Profile;
-  content?: string;
-  ownership?: string;
-  createdAt?: Date;
+export interface JobComment extends Comment {
 }

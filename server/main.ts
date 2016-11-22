@@ -28,7 +28,7 @@ Meteor.startup(() => {
 
   process.env['MAIL_URL'] =  'smtps://'
     + encodeURIComponent(smtp.username) + ':'
-    + smtp.password + ':@'
+    + smtp.password + '@'
     + smtp.server + ':' + smtp.port;
 
   Accounts.emailTemplates.siteName = '日本事儿';

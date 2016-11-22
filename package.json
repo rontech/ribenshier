@@ -28,7 +28,7 @@
     "angular2-meteor": "0.7.0",
     "angular2-meteor-polyfills": "0.1.1",
     "angular2-meteor-tests-polyfills": "0.0.2",
-    "angular2-moment": "^1.0.0-beta.3",
+    "angular2-moment": "^1.0.0-beta.rc.1",
     "gm": "^1.23.0",
     "gravatar": "^1.5.2",
     "intl": "^1.2.5",

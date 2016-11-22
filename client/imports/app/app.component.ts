@@ -24,7 +24,10 @@ export interface PageObj {
 
 @Component({
   selector: 'app',
-  template
+  template,
+  styles: [
+    style.innerHTML
+  ]
 })
 export class AppComponent implements OnInit{
   @ViewChild(Nav) nav: Nav;

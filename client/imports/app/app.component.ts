@@ -9,7 +9,6 @@ import { LoginComponent } from '../pages/auth/login.component';
 import { ProfileComponent } from '../pages/auth/profile.component';
 import { ResetPasswordComponent } from '../pages/auth/reset-password.component';
 import * as moment from 'moment';
-import { ChineseTimeAgoPipe } from '../filters/time.filter';
 import { UtilityService } from '../services/utility.service';
 import { Profile } from '../../../both/models/profile.model';
 

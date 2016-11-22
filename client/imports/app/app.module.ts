@@ -28,6 +28,7 @@ import { HouseOptionsComponent } from '../pages/houses/house-options.component';
 import { JobOptionsComponent } from '../pages/jobs/job-options.component';
 import { BookmarksComponent } from '../pages/bookmarks/bookmarks.component';
 import { ChineseTimeAgoPipe } from '../filters/time.filter';
+import { ChineseCalendarPipe } from '../filters/calendar.filter';
 import { UtilityService } from '../services/utility.service';
 import 'intl';
 import 'intl/locale-data/jsonp/en';
@@ -60,7 +61,8 @@ import 'intl/locale-data/jsonp/en';
     JobDetail,
     JobOptionsComponent,
     BookmarksComponent,
-    ChineseTimeAgoPipe
+    ChineseTimeAgoPipe,
+    ChineseCalendarPipe
   ],
   // Entry Components
   entryComponents: [
@@ -106,7 +108,7 @@ import 'intl/locale-data/jsonp/en';
     MomentModule,
     ReactiveFormsModule
   ],
-  exports: [ChineseTimeAgoPipe],
+  exports: [ChineseTimeAgoPipe, ChineseCalendarPipe],
   // Main Component
   bootstrap: [ IonicApp ]
 })

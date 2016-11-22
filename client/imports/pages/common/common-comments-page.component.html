@@ -18,7 +18,7 @@
           {{ comment.content }}
         </div>
         <div class="message-detail">
-          <span class="message-time">{{comment.createdAt | amDateFormat: 'H时m分'}}</span>
+          <span class="message-time">{{comment.createdAt | amCalendar | chineseCalendar}}</span>
         </div>
       </div>
     </div>
@@ -30,7 +30,7 @@
           {{ comment.content }}
         </div>
         <div class="message-detail">
-          <span class="message-time">{{ comment.createdAt | amDateFormat: 'H时m分' }}</span>
+          <span class="message-time">{{comment.createdAt | amCalendar | chineseCalendar}}</span>
         </div>
       </div>
     </div>

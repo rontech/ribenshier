@@ -27,6 +27,7 @@ import { ActivityOptionsComponent } from '../pages/activities/activity-options.c
 import { HouseOptionsComponent } from '../pages/houses/house-options.component';
 import { JobOptionsComponent } from '../pages/jobs/job-options.component';
 import { BookmarksComponent } from '../pages/bookmarks/bookmarks.component';
+import { NotificationsComponent } from '../pages/notifications/notifications.component';
 import { ChineseTimeAgoPipe } from '../filters/time.filter';
 import { ChineseCalendarPipe } from '../filters/calendar.filter';
 import { UtilityService } from '../services/utility.service';
@@ -61,6 +62,7 @@ import 'intl/locale-data/jsonp/en';
     JobDetail,
     JobOptionsComponent,
     BookmarksComponent,
+    NotificationsComponent,
     ChineseTimeAgoPipe,
     ChineseCalendarPipe
   ],
@@ -90,7 +92,8 @@ import 'intl/locale-data/jsonp/en';
     HouseOptionsComponent,
     JobDetail,
     JobOptionsComponent,
-    BookmarksComponent
+    BookmarksComponent,
+    NotificationsComponent
   ],
   // Providers
   providers: [ UtilityService ],

@@ -17,6 +17,7 @@ import { Job } from '../../../both/models/job.model';
 import { Jobs } from '../../../both/collections/jobs.collection';
 import { JobComments } from '../../../both/collections/job-comments.collection';
 import { Bookmarks } from '../../../both/collections/bookmarks.collection';
+import { Notifications } from '../../../both/collections/notifications.collection';
 
 const nonEmptyString = Match.Where((str) => {
   check(str, String);
@@ -109,6 +110,19 @@ Meteor.methods({
       $inc: {commented: 1},
       $set: {commentedAt: dt, sortedBy: dt, lastComment: content}
     });
+
+    //add a notification to the topic owner
+    if(this.userId != topic.creatorId)
+      Notifications.collection.insert({
+        objId: topicId,
+        objType: 'topic',
+        notType: 'c',
+        message: topic.title,
+        senderId: this.userId,
+        toId: topic.creatorId,
+        read: false,
+        createdAt: dt
+      });
   },
   thumbUp(topicId: string, senderId: string): void {
     if (!this.userId) throw new Meteor.Error('unauthorized',
@@ -131,6 +145,21 @@ Meteor.methods({
       senderId: senderId
     };
     TopicThumbeds.collection.insert(thumbedInfo);
+
+    //add a notification to the topic owner
+    const topic = Topics.collection.findOne(topicId);
+    let dt = new Date();
+    if(senderId != topic.creatorId)
+      Notifications.collection.insert({
+        objId: topicId,
+        objType: 'topic',
+        notType: 't',
+        message: topic.title,
+        senderId: senderId,
+        toId: topic.creatorId,
+        read: false,
+        createdAt: dt
+      });
   },
   addActivity(title: string,
            people: string,
@@ -219,6 +248,20 @@ Meteor.methods({
       senderId: senderId
     };
     ActivityMembers.collection.insert(memberInfo);
+
+    //add a notification to the owner
+    let dt = new Date();
+    if(senderId != activity.creatorId)
+      Notifications.collection.insert({
+        objId: activityId,
+        objType: 'activity',
+        notType: 'j',
+        message: activity.title,
+        senderId: senderId,
+        toId: activity.creatorId,
+        read: false,
+        createdAt: dt
+      });
   },
   unjoinActivity(activityId: string, senderId: string): void {
     if (!this.userId) throw new Meteor.Error('unauthorized',
@@ -229,7 +272,6 @@ Meteor.methods({
     const member = ActivityMembers.collection.findOne({activityId: activityId, senderId: senderId});
     if (!member)
       throw new Meteor.Error('member-not-exists', '你并未报名。');
-
 
     Activities.collection.update(activityId, {
       $inc: {joined: -1}, 
@@ -242,6 +284,21 @@ Meteor.methods({
       senderId: senderId
     };
     ActivityMembers.collection.remove(memberInfo);
+
+    //add a notification to the owner
+    const activity = Activities.collection.findOne(activityId);
+    let dt = new Date();
+    if(senderId != activity.creatorId)
+      Notifications.collection.insert({
+        objId: activityId,
+        objType: 'activity',
+        notType: 'u',
+        message: activity.title,
+        senderId: senderId,
+        toId: activity.creatorId,
+        read: false,
+        createdAt: dt
+      });
   },
   addActivityComment(activityId: string, content: string): void {
     if (!this.userId) throw new Meteor.Error('unauthorized',
@@ -385,6 +442,19 @@ Meteor.methods({
       $inc: {commented: 1},
       $set: {commentedAt: dt, sortedBy: dt, lastComment: content}
     });
+
+    //add a notification to the owner
+    if(this.userId != house.creatorId)
+      Notifications.collection.insert({
+        objId: houseId,
+        objType: 'house',
+        notType: 'c',
+        message: house.title,
+        senderId: this.userId,
+        toId: house.creatorId,
+        read: false,
+        createdAt: dt
+      });
   },
   addJob(title: string,
           location: string,
@@ -455,6 +525,19 @@ Meteor.methods({
       $inc: {commented: 1},
       $set: {commentedAt: dt, sortedBy: dt, lastComment: content}
     });
+
+    //add a notification to the owner
+    if(this.userId != job.creatorId)
+      Notifications.collection.insert({
+        objId: jobId,
+        objType: 'job',
+        notType: 'c',
+        message: job.title,
+        senderId: this.userId,
+        toId: job.creatorId,
+        read: false,
+        createdAt: dt
+      });
   },
   addBookmark(id: string, type:string, title: string, createdAt: Date, thumbnail: string): void {
     if (!this.userId) throw new Meteor.Error('unauthorized',
@@ -490,5 +573,13 @@ Meteor.methods({
   },
   checkUserExists(username: string): boolean {
     return Meteor.users.findOne({username: username}) ? true : false;
+  },
+  readNotification(notId: string): void {
+    Notifications.collection.update(notId, {
+      $set: {read: true}
+    });
+  },
+  removeNotification(notId: string): void {
+    Notifications.collection.remove(notId);
   }
 });

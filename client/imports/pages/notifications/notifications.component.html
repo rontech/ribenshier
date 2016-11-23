@@ -1,0 +1,47 @@
+<ion-header>
+  <ion-navbar color="myapp" class="narrow-bar">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>我的通知</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <div *ngIf="!utilSrv.isLoggedIn()">你需要登录才可以查看通知。</div>
+  <ion-list>
+    <ion-item-sliding *ngFor="let notification of notifications | async">
+      <button ion-item (click)="showDetail(notification)">
+        <ion-avatar  item-left>
+          <img class="profile-picture" [src]="notification.profile.picture" alt=""/>
+        </ion-avatar>
+
+        <h3 color="favorite">{{notification.profile.name}}</h3>
+
+        <div>
+          <div *ngIf="notification.objType != 'system'">
+            <ion-icon *ngIf="!notification.read" name="alert" style="color: #dc143c"></ion-icon>
+            <span>在{{objTypes[notification.objType]}}{{notTypes[notification.notType]}}</span>
+            <span class="post-time">
+              <ion-icon name="time"></ion-icon>
+              {{notification.createdAt | amTimeAgo | chineseTimeAgo}}
+            </span>
+          </div>
+          <div *ngIf="notification.notType === 'system'">
+            <ion-icon *ngIf="!notification.read" name="alert" style="color: #dc143c"></ion-icon>
+            <span>{{notTypes[notification.notType]}}</span>
+            <span class="post-time">
+              <ion-icon name="time"></ion-icon>
+              {{notification.createdAt | amTimeAgo | chineseTimeAgo}}
+            </span>
+          </div>
+        </div>
+      </button>
+
+      <ion-item-options>
+        <button ion-button icon-only color="danger" (click)="removeNotification(notification)"><ion-icon name="trash"></ion-icon></button>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+</ion-content> 
+

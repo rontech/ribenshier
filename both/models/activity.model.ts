@@ -8,7 +8,7 @@ export interface Activity {
   people?: number;
   deadline?: Date;
   description?: string;
-  creatorId?: string,
+  creatorId?: string;
   profile?: Profile;
   lastComment?: string;
   commented?: number;

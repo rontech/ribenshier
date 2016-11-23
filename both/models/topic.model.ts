@@ -8,7 +8,7 @@ export interface Topic {
   pictureId?: string;
   thumb?: string;
   thumbId?: string;
-  creatorId?: string,
+  creatorId?: string;
   profile?: Profile;
   lastComment?: string;
   commented?: number;

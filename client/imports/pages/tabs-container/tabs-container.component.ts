@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { TopicsComponent } from '../topics/topics.component';
 import { ProfileComponent } from '../auth/profile.component';
 import { BookmarksComponent } from '../bookmarks/bookmarks.component';
+import { NotificationsComponent } from '../notifications/notifications.component';
 import { NavParams, Events, AlertController, Tabs } from 'ionic-angular';
 import { ViewChild } from '@angular/core';
 
@@ -9,9 +10,10 @@ import { ViewChild } from '@angular/core';
   selector: 'tabs-container',
   template: `
   <ion-tabs #myTabs [selectedIndex]="mySelectedIndex">
-    <ion-tab [root]="topicsRoot" [rootParams]="tabParams" tabIcon="paper"></ion-tab>
+    <ion-tab [root]="topicsRoot" [rootParams]="tabParams" tabIcon="apps"></ion-tab>
     <ion-tab [root]="favoritesRoot" [rootParams]="tabParams" tabIcon="bookmarks"></ion-tab>
-    <ion-tab [root]="profileRoot" [rootParams]="tabParams" tabIcon="person"></ion-tab>
+    <ion-tab [root]="notificationsRoot" [rootParams]="tabParams" tabIcon="notifications"></ion-tab>
+    <ion-tab [root]="profileRoot" [rootParams]="tabParams" tabIcon="settings"></ion-tab>
   </ion-tabs>
   `
 })
@@ -20,6 +22,7 @@ export class TabsContainerComponent {
   profileRoot: any;
   topicsRoot: any; 
   favoritesRoot: any;
+  notificationsRoot: any;
   mySelectedIndex: number;
   @ViewChild('myTabs') tabRef: Tabs;
 
@@ -29,6 +32,7 @@ export class TabsContainerComponent {
     this.topicsRoot = TopicsComponent;
     this.profileRoot = ProfileComponent;
     this.favoritesRoot = BookmarksComponent;
+    this.notificationsRoot = NotificationsComponent;
 
     if(navParams.data.category) {
       this.tabParams = {category: navParams.data.category};

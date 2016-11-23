@@ -15,6 +15,7 @@ import './imports/publications/house-pictures.publication';
 import './imports/publications/jobs.publication';
 import './imports/publications/job-comments.publication';
 import './imports/publications/bookmarks.publication';
+import './imports/publications/notifications.publication';
 
 const mainInstance = new Main();
 mainInstance.start();

@@ -2,7 +2,7 @@ import { Profile } from './profile.model';
  
 export interface Job {
   _id?: string;
-  creatorId?: string,
+  creatorId?: string;
   profile?: Profile;
   title?: string;
   location?: string;

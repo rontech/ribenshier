@@ -2,10 +2,10 @@ import { Profile } from './profile.model';
  
 export interface House {
   _id?: string;
-  creatorId?: string,
+  creatorId?: string;
   profile?: Profile;
   title?: string;
-  type?: string
+  type?: string;
   forRental?: boolean;
   brief?: string;
   description?: string;

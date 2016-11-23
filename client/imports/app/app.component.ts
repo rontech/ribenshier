@@ -37,14 +37,15 @@ export class AppComponent implements OnInit{
   // the left menu only works after login
   // the login page disables the left menu
   appPages: PageObj[] = [
-    { title: '杂谈', component: TabsContainerComponent,  index: 0, category: 'topics', icon: 'paper' },
-    { title: '社群', component: TabsContainerComponent,  index: 0, category: 'activities', icon: 'paper' },
-    { title: '住居', component: TabsContainerComponent,  index: 0, category: 'houses', icon: 'paper' },
-    { title: '工作', component: TabsContainerComponent,  index: 0, category: 'jobs', icon: 'paper' }
+    { title: '杂谈', component: TabsContainerComponent,  index: 0, category: 'topics', icon: 'apps' },
+    { title: '社群', component: TabsContainerComponent,  index: 0, category: 'activities', icon: 'apps' },
+    { title: '住居', component: TabsContainerComponent,  index: 0, category: 'houses', icon: 'apps' },
+    { title: '工作', component: TabsContainerComponent,  index: 0, category: 'jobs', icon: 'apps' }
   ];
   loggedInPages: PageObj[] = [
     { title: '我的收藏', component: TabsContainerComponent, index: 1, icon: 'bookmarks' },
-    { title: '我的设定', component: TabsContainerComponent, index: 2, icon: 'person' },
+    { title: '我的通知', component: TabsContainerComponent, index: 2, icon: 'bookmarks' },
+    { title: '我的设定', component: TabsContainerComponent, index: 3, icon: 'settings' },
     { title: '退出', component: TabsContainerComponent, icon: 'log-out', logsOut: true }
   ];
   loggedOutPages: PageObj[] = [

@@ -97,24 +97,18 @@ export class ActivityDetail implements OnInit {
       MeteorObservable.autorun().subscribe(() => {
         this.comments = ActivityComments
           .find({objId: this.activityId}, { sort: { createdAt: -1 }, limit: 10 })
-          .mergeMap<ActivityComment[]>(comments =>
-            Observable.combineLatest(
-              comments.map(comment =>
-                Meteor.users.find({_id: comment.senderId}, {fields: {profile: 1}})
-                .map(user => {
-                  if(user) {
-                    comment.profile = user.profile;
-                  }
-                  if(Meteor.userId()) {
-                    comment.ownership = Meteor.userId() == comment.senderId ? 'mine' : 'other';
-                  } else {
-                    comment.ownership = 'other';
-                  }
-                  return comment;
-                })
-              )
-            )
-          ).zone();
+          .map(comments => {
+            comments.forEach(comment => {
+              const user = Meteor.users.findOne({_id: comment.senderId}, {fields: {profile: 1}});
+              comment.profile = user.profile;
+              if(Meteor.userId()) {
+                comment.ownership = Meteor.userId() == comment.senderId ? 'mine' : 'other';
+              } else {
+                comment.ownership = 'other';
+              }
+            });
+            return comments;
+          }).zone();
       });
     });
   }

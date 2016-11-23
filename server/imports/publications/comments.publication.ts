@@ -11,7 +11,7 @@ Meteor.publishComposite('comments', function(topicId: string): PublishCompositeC
  
   return {
     find() {
-       return Comments.collection.find({objId: topicId}); 
+      return Comments.collection.find({objId: topicId}); 
     },
 
     children: [

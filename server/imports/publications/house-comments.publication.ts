@@ -3,9 +3,27 @@ import { Mongo } from 'meteor/mongo';
  
 import { HouseComments } from '../../../both/collections/house-comments.collection';
 import { HouseComment } from '../../../both/models/house-comment.model';
+import { Users } from '../../../both/collections/users.collection';
+import { User } from '../../../both/models/user.model';
  
-Meteor.publish('house-comments', function(houseId: string): Mongo.Cursor<HouseComment> {
+Meteor.publishComposite('house-comments', function(houseId: string): PublishCompositeConfig<HouseComment> {
   if (!houseId) return;
  
-  return HouseComments.collection.find({objId: houseId});
+  return {
+    find() {
+      return HouseComments.collection.find({objId: houseId});
+    },
+
+    children: [
+      <PublishCompositeConfig1<HouseComment, User>> {
+        find: (comment) => {
+          return Meteor.users.find({
+            _id: comment.senderId
+          }, {
+            fields: {profile: 1}
+          });
+        }
+      }
+    ]
+  };
 });

@@ -15,7 +15,7 @@
   <div *ngFor="let thumb of thumbs | async"></div>
   <div *ngIf="utilSrv.isLoggedIn()" class="profile-picture">
     <img [src]="profile.picture" />
-    <label class="upload-label" for="picture_upload">
+    <label class="upload-mark" for="picture_upload">
       <ion-icon name="create"></ion-icon>
       <input type="file" id="picture_upload" style="display:none;" (change)="uploadPicture($event.target.files)"/>
     </label>

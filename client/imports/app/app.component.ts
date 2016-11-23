@@ -44,7 +44,7 @@ export class AppComponent implements OnInit{
   ];
   loggedInPages: PageObj[] = [
     { title: '我的收藏', component: TabsContainerComponent, index: 1, icon: 'bookmarks' },
-    { title: '我的通知', component: TabsContainerComponent, index: 2, icon: 'bookmarks' },
+    { title: '我的通知', component: TabsContainerComponent, index: 2, icon: 'notifications' },
     { title: '我的设定', component: TabsContainerComponent, index: 3, icon: 'settings' },
     { title: '退出', component: TabsContainerComponent, icon: 'log-out', logsOut: true }
   ];

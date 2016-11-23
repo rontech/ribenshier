@@ -9,15 +9,19 @@
 
 <ion-content class="bookmarks-page-content">
   <div *ngIf="!utilSrv.isLoggedIn()">你需要登录才可以查看收藏。</div>
-  <ion-list class="bookmarks">
-    <ion-item-sliding *ngFor="let bookmark of bookmarks | async" class="bookmark">
+  <ion-list>
+    <ion-item-sliding *ngFor="let bookmark of bookmarks | async">
       <button ion-item (click)="showDetail(bookmark)">
         <div class="bookmark-picture">
           <img [src]="bookmark.thumbnail"/>
         </div>
         <div class="bookmark-info">
-          <h2 class="bookmark-title">{{editTitle(bookmark.title)}}</h2>
-          <p class="creat-timestamp">{{types[bookmark.type]}} --  {{bookmark.createdAt | amTimeAgo | chineseTimeAgo}}</p>
+          <h2>{{editTitle(bookmark.title)}}</h2>
+          <span class="bookmark-type">{{types[bookmark.type]}}</span>
+          <span class="post-time">
+            <ion-icon name="time"></ion-icon>
+            {{bookmark.createdAt | amTimeAgo | chineseTimeAgo}}
+          </span>
         </div>
       </button>
       <ion-item-options>

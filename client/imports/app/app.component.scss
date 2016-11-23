@@ -1,5 +1,17 @@
+$borderColor: #DDD;
+
+$primary:    #56256e;
+$secondary:  #32db64;
+$danger:     #f53d3d;
+$light:      #f4f4f4;
+$dark:       #222;
+$favorite:   #9079b6;
+$myapp:      #47266e;
+$facebook:   #3b5998;
+$wechat:     #7bb32e;
+
 .menu-item {
-  color: colors(primary);
+  color: $primary;
   .item-icon {
     font-size: 32px;
   }
@@ -7,7 +19,7 @@
 
 .list-full-border {
   .item {
-    border-bottom: 1px solid borderColor;
+    border-bottom: 1px solid $borderColor;
     .item-inner {
       border: none;
     }

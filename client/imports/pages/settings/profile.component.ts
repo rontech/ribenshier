@@ -4,7 +4,6 @@ import { Meteor } from 'meteor/meteor';
 import { Observable } from 'rxjs';
 import { MeteorObservable } from 'meteor-rxjs';
 import { Profile } from '../../../../both/models/profile.model';
-import { TabsContainerComponent } from '../tabs-container/tabs-container.component';
 import { Thumbs } from '../../../../both/collections/images.collection';
 import { Thumb } from '../../../../both/models/image.model';
 import { upload } from '../../../../both/methods/images.methods';
@@ -54,7 +53,7 @@ export class ProfileComponent implements OnInit {
 
     MeteorObservable.call('updateProfile', this.profile).subscribe({
       next: () => {
-        this.navCtrl.push(TabsContainerComponent);
+        this.navCtrl.pop();
       },
       error(e: Error) {
         this.utilSrv.alertDialog('提醒', e.message);

@@ -5,6 +5,7 @@ import { Accounts } from 'meteor/accounts-base';
 import template from './reset-password.component.html';
 import * as style from './reset-password.component.scss';
 import { UtilityService } from '../../services/utility.service';
+import { MeteorObservable } from 'meteor-rxjs';
  
 @Component({
   selector: 'reset-password',
@@ -40,14 +41,20 @@ export class ResetPasswordComponent {
   onInputKeypress({keyCode}: KeyboardEvent): void {
     if (keyCode == 13) {
       if(this.resetPasswordForm.valid) {
-        this.resetPassword();
+        if(this.token)
+          this.resetPassword();
+        else
+          this.setPassword();
       }
     }
   }
 
   reset(): void {
     if(this.resetPasswordForm.valid) {
-      this.resetPassword();
+      if(this.token)
+        this.resetPassword();
+      else
+        this.setPassword();
     }
   }
 
@@ -69,7 +76,29 @@ export class ResetPasswordComponent {
       } else {
         this.utilSrv.alertDialog('信息', '已经完成密码重置。');
         this.events.publish('user:login');
-        this.viewCtrl.dismiss();
+        if(this.navCtrl.canGoBack()) 
+          this.navCtrl.pop();
+        else
+          this.viewCtrl.dismiss();
+      }
+    });
+  }
+
+  private setPassword() {
+    MeteorObservable.call('setPassword',
+      Meteor.userId(),
+      this.password.value
+      ).subscribe({
+      next: () => {
+        this.utilSrv.alertDialog('信息', '已经完成密码重置。');
+        this.events.publish('user:login');
+        if(this.navCtrl.canGoBack()) 
+          this.navCtrl.pop();
+        else
+          this.viewCtrl.dismiss();
+      },
+      error: (e: Error) => {
+        this.utilSrv.alertDialog('提醒', e.message);
       }
     });
   }

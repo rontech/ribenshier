@@ -59,6 +59,7 @@ export class UtilityService {
         name: myName,
         picture: picture,
         admin: false,
+        notify: true,
         via: via
       }
     }, (e: Error) => {
@@ -72,7 +73,9 @@ export class UtilityService {
     } else {
       return {
         name: '',
-        picture: 'assets/none.png'
+        picture: 'assets/none.png',
+        admin: false,
+        notify: true
       };
     }
   }

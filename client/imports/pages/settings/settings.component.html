@@ -1,0 +1,24 @@
+<ion-header>
+  <ion-navbar color="primary" class="narrow-bar">
+    <button  ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>个人设定</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <div *ngIf="!utilSrv.isLoggedIn()">你需要登录才可以操作。</div>
+  <ion-list class="list-full-border" *ngIf="utilSrv.isLoggedIn()">
+    <button ion-item (click)="showProfile()">
+      修改个人信息
+    </button>
+    <button ion-item (click)="showResetPassword()">
+      重置密码
+    </button>
+    <ion-item>
+      <ion-label>接受通知</ion-label>
+      <ion-toggle color="favorite" [(ngModel)]="notify" (ionChange)="changeNotifyStatus()"></ion-toggle>
+    </ion-item>
+  </ion-list>
+</ion-content>

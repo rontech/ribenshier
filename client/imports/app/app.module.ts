@@ -13,7 +13,8 @@ import { LoginComponent } from '../pages/auth/login.component';
 import { NewUserComponent } from '../pages/auth/new-user.component';
 import { ResetPasswordComponent } from '../pages/auth/reset-password.component';
 import { ForgotPasswordComponent } from '../pages/auth/forgot-password.component';
-import { ProfileComponent } from '../pages/auth/profile.component';
+import { ProfileComponent } from '../pages/settings/profile.component';
+import { SettingsComponent } from '../pages/settings/settings.component';
 import { NewTopicComponent } from '../pages/topics/new-topic.component';
 import { NewActivityComponent } from '../pages/activities/new-activity.component';
 import { NewHouseComponent } from '../pages/houses/new-house.component';
@@ -49,6 +50,7 @@ import 'intl/locale-data/jsonp/en';
     ResetPasswordComponent,
     ForgotPasswordComponent,
     ProfileComponent,
+    SettingsComponent,
     NewTopicComponent,
     NewActivityComponent,
     NewHouseComponent,
@@ -80,6 +82,7 @@ import 'intl/locale-data/jsonp/en';
     ResetPasswordComponent,
     ForgotPasswordComponent,
     ProfileComponent,
+    SettingsComponent,
     NewTopicComponent,
     NewActivityComponent,
     NewHouseComponent,

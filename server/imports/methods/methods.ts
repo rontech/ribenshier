@@ -581,5 +581,12 @@ Meteor.methods({
   },
   removeNotification(notId: string): void {
     Notifications.collection.remove(notId);
+  },
+  setPassword(userId: string, newPassword: string): void {
+    Accounts.setPassword(userId, newPassword, (e: Error) => {
+      if(e) {
+        throw e;
+      }
+    });
   }
 });

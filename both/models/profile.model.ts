@@ -4,4 +4,5 @@ export interface Profile {
   thumbId?: string;
   pictureId?: string;
   admin?: boolean;
+  notify?: boolean;
 }

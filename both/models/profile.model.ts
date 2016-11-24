@@ -5,4 +5,5 @@ export interface Profile {
   pictureId?: string;
   admin?: boolean;
   notify?: boolean;
+  desc?: string;
 }

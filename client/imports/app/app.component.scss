@@ -10,6 +10,14 @@ $myapp:      #47266e;
 $facebook:   #3b5998;
 $wechat:     #7bb32e;
 
+input.text-input {
+  text-align: left;
+}
+
+textarea.text-input {
+  text-align: left;
+}
+
 .menu-item {
   color: $primary;
   .item-icon {

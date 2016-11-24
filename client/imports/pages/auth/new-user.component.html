@@ -17,7 +17,7 @@
   <ion-list>
     <form [formGroup]="newUserForm">
       <ion-item>
-        <ion-label floating color="primary">邮件</ion-label>
+        <ion-label stacked>邮件</ion-label>
         <ion-input formControlName="username"  name="username" type="email" required></ion-input>
       </ion-item>
        
@@ -25,7 +25,7 @@
       <div *ngIf="username.hasError('incorrectMailFormat') && username.touched" class="error-hint">邮件格式错误!</div>
 
       <ion-item>
-        <ion-label floating color="primary">密码</ion-label>
+        <ion-label stacked>密码</ion-label>
         <ion-input formControlName="password" name="password" type="password" required>
         </ion-input>
       </ion-item>
@@ -39,7 +39,7 @@
       </div>
 
       <ion-item>
-        <ion-label floating color="primary">密码确认</ion-label>
+        <ion-label stacked>密码确认</ion-label>
         <ion-input formControlName="passwordConfirm" name="passwordConfirm" type="password"  (keypress)="onInputKeypress($event)"  required>
         </ion-input>
       </ion-item>

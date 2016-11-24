@@ -21,11 +21,12 @@
         <div>
           <div *ngIf="notification.objType != 'system'">
             <ion-icon *ngIf="!notification.read" name="alert" style="color: #dc143c"></ion-icon>
-            <span>在{{objTypes[notification.objType]}}{{notTypes[notification.notType]}}</span>
+            <span>{{notTypes[notification.notType]}}</span>
             <span class="post-time">
               <ion-icon name="time"></ion-icon>
               {{notification.createdAt | amTimeAgo | chineseTimeAgo}}
             </span>
+            <div class="notification-message">{{objTypes[notification.objType]}}:{{notification.message}}</div>
           </div>
           <div *ngIf="notification.notType === 'system'">
             <ion-icon *ngIf="!notification.read" name="alert" style="color: #dc143c"></ion-icon>
@@ -34,6 +35,7 @@
               <ion-icon name="time"></ion-icon>
               {{notification.createdAt | amTimeAgo | chineseTimeAgo}}
             </span>
+            <div class="notification-message">{{notification.message}}</div>
           </div>
         </div>
       </button>

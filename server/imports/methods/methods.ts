@@ -112,7 +112,8 @@ Meteor.methods({
     });
 
     //add a notification to the topic owner
-    if(this.userId != topic.creatorId)
+    const creator = Meteor.users.findOne(topic.creatorId);
+    if(creator.profile.notify && this.userId != topic.creatorId)
       Notifications.collection.insert({
         objId: topicId,
         objType: 'topic',
@@ -148,8 +149,9 @@ Meteor.methods({
 
     //add a notification to the topic owner
     const topic = Topics.collection.findOne(topicId);
+    const creator = Meteor.users.findOne(topic.creatorId);
     let dt = new Date();
-    if(senderId != topic.creatorId)
+    if(creator.profile.notify && senderId != topic.creatorId)
       Notifications.collection.insert({
         objId: topicId,
         objType: 'topic',
@@ -251,7 +253,8 @@ Meteor.methods({
 
     //add a notification to the owner
     let dt = new Date();
-    if(senderId != activity.creatorId)
+    const creator = Meteor.users.findOne(activity.creatorId);
+    if(creator.profile.notify && senderId != activity.creatorId)
       Notifications.collection.insert({
         objId: activityId,
         objType: 'activity',
@@ -287,8 +290,9 @@ Meteor.methods({
 
     //add a notification to the owner
     const activity = Activities.collection.findOne(activityId);
+    const creator = Meteor.users.findOne(activity.creatorId);
     let dt = new Date();
-    if(senderId != activity.creatorId)
+    if(creator.profile.notify && senderId != activity.creatorId)
       Notifications.collection.insert({
         objId: activityId,
         objType: 'activity',
@@ -330,13 +334,26 @@ Meteor.methods({
       '你需要登录才可以操作。');
     check(activityId, nonEmptyString);
     
-    const activity = Activities.collection.findOne(activityId);
-    if (!activity) throw new Meteor.Error('already-joined',
-      '你已经报过名了！');
-
     //Thumbed increment
     Activities.collection.update(activityId, {
       $set: {status: '-1'}
+    });
+
+    //notify all joined users
+    let dt = new Date();
+    const activity = Activities.collection.findOne(activityId);
+    const members = ActivityMembers.collection.find({activityId: activityId});
+    members.forEach(member => {
+      Notifications.collection.insert({
+        objId: activityId,
+        objType: 'activity',
+        notType: 's2',
+        message: activity.title,
+        senderId: this.userId,
+        toId: member.senderId,
+        read: false,
+        createdAt: dt
+      });
     });
   },
   addHouse(
@@ -444,7 +461,8 @@ Meteor.methods({
     });
 
     //add a notification to the owner
-    if(this.userId != house.creatorId)
+    const creator = Meteor.users.findOne(house.creatorId);
+    if(creator.profile.notify && this.userId != house.creatorId)
       Notifications.collection.insert({
         objId: houseId,
         objType: 'house',
@@ -527,7 +545,8 @@ Meteor.methods({
     });
 
     //add a notification to the owner
-    if(this.userId != job.creatorId)
+    const creator = Meteor.users.findOne(job.creatorId);
+    if(creator.profile.notify && this.userId != job.creatorId)
       Notifications.collection.insert({
         objId: jobId,
         objType: 'job',

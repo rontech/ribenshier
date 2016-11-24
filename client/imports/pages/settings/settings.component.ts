@@ -17,7 +17,6 @@ import * as style from './settings.component.scss';
   ]
 })
 export class SettingsComponent implements OnInit {
-  notify: boolean;
   profile: Profile;
 
   constructor(public events: Events,
@@ -26,21 +25,17 @@ export class SettingsComponent implements OnInit {
 
   ngOnInit(): void {
     this.profile = this.utilSrv.loadProfile();
-    this.notify = this.profile.notify;
 
     this.events.subscribe('user:login', () => {
       this.profile = this.utilSrv.loadProfile();
-      this.notify = this.profile.notify;
     });
 
     this.events.subscribe('user:logout', () => {
       this.profile = this.utilSrv.loadProfile();
-      this.notify = this.profile.notify;
     });
 
     this.events.subscribe('user:signup', () => {
       this.profile = this.utilSrv.loadProfile();
-      this.notify = this.profile.notify;
     });
   }
 
@@ -53,15 +48,12 @@ export class SettingsComponent implements OnInit {
   }
 
   changeNotifyStatus() {
-    if( this.notify != this.profile.notify) {
-      this.profile.notify = this.notify;
-      MeteorObservable.call('updateProfile', this.profile).subscribe({
-        next: () => {
-        },
-        error(e: Error) {
-          this.utilSrv.alertDialog('提醒', e.message);
-        }
-      });
-    }
+    MeteorObservable.call('updateProfile', this.profile).subscribe({
+      next: () => {
+      },
+      error(e: Error) {
+        this.utilSrv.alertDialog('提醒', e.message);
+      }
+    });
   }
 }

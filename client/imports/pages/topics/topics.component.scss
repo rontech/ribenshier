@@ -156,10 +156,15 @@
   }
 }
 
-.hidden-nav { 
-  display: none;
+.segment-button {
+  color: #56256e;
+  border: none;
+  font-size: 15px;
 }
 
-.segment-button {
-  font-size: 15px;
+.segment-button.segment-activated{
+  background-color: transparent;
+  color: #47266e;
+  border-bottom: 3px double;
+  border-color: #b22222;
 }

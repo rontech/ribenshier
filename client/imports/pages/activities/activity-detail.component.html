@@ -48,17 +48,12 @@
     </ion-item>
 
     <ion-item>
-      <div><ion-icon name="happy"  style="color: #4682b4"></ion-icon><span class="section-name">已报名</span></div>
-      <div class="section-content-small">{{activity.joined}}名</div>
-    </ion-item>
-
-    <ion-item>
       <div><ion-icon name="information-circle"  style="color: #4682b4"></ion-icon><span class="section-name">活动内容介绍</span></div>
       <div class="section-content-small">{{activity.description}}</div>
     </ion-item>
 
     <ion-item>
-      <div><ion-icon name="list"  style="color: #4682b4"></ion-icon><span class="section-name">已报名人员</span></div>
+      <div><ion-icon name="list"  style="color: #4682b4"></ion-icon><span class="section-name">已报名{{activity.joined}}名</span></div>
       <span *ngFor="let member of members | async">
         <img [src]="member.profile.picture" class="small-user-avatar" [alt]="member.profile.name"></img>
       </sapn>

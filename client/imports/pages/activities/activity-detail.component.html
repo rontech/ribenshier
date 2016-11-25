@@ -59,7 +59,7 @@
 
     <ion-item>
       <div><ion-icon name="list"  style="color: #4682b4"></ion-icon><span class="section-name">已报名人员</span></div>
-      <span *ngFor="let member of getJoinedMembers() | async">
+      <span *ngFor="let member of members | async">
         <img [src]="member.profile.picture" class="small-user-avatar" [alt]="member.profile.name"></img>
       </sapn>
     </ion-item>

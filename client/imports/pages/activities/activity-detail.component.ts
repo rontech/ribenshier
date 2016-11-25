@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NavParams, NavController, PopoverController, AlertController } from 'ionic-angular';
 import { Meteor } from 'meteor/meteor';
 import { Activity } from '../../../../both/models/activity.model';
+import { ActivityMember } from '../../../../both/models/activity-member.model';
 import { ActivityComment } from '../../../../both/models/activity-comment.model';
 import { Observable } from 'rxjs';
 import template from './activity-detail.component.html';
@@ -26,6 +27,7 @@ export class ActivityDetail implements OnInit {
   private activityId: string;
   private barTitle: string;
   private comments: Observable<ActivityComment[]>;
+  private members: Observable<ActivityMember[]>;
  
   constructor(
     navParams: NavParams,
@@ -43,6 +45,7 @@ export class ActivityDetail implements OnInit {
     this.activity.profile = user.profile;
     this.barTitle = this.utilSrv.editTitle(this.activity.title, 12);
     this.subComments();
+    this.subJoinedMembers();
   }
 
   showOptions(): void {
@@ -93,14 +96,18 @@ export class ActivityDetail implements OnInit {
     return false;
   }
 
-  getJoinedMembers() {
-    return ActivityMembers.find({activityId: this.activityId}, {sort: {createdAt: -1}})
-      .map(members => {
-        members.forEach(member => {
-          const memberUser = Meteor.users.findOne({_id: member.senderId}, {fields: {profile: 1}});
-          member.profile = memberUser.profile;
+  private subJoinedMembers() {
+    MeteorObservable.subscribe('activity-members', this.activityId).subscribe(() => {
+      MeteorObservable.autorun().subscribe(() => {
+        this.members =  ActivityMembers.find({activityId: this.activityId}, {sort: {createdAt: -1}})
+          .map(members => {
+            members.forEach(member => {
+              const memberUser = Meteor.users.findOne({_id: member.senderId}, {fields: {profile: 1}});
+              member.profile = memberUser.profile;
+            });
+            return members;
         });
-        return members;
+      });
     });
   }
 

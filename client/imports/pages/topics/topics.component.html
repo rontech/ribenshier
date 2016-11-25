@@ -145,7 +145,7 @@
         </ion-card-content>
 
         <ion-row> 
-          <div *ngFor="let member of getJoinedMembers(activity._id) | async">
+          <div *ngFor="let member of members[activity._id] | async">
             <ion-avatar>
               <img [src]="member.profile.picture" class="small-user-avatar" [alt]="member.profile.name"></img>
             </ion-avatar>

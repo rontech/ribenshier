@@ -15,7 +15,7 @@ Meteor.publishComposite('job-comments', function(jobId: string): PublishComposit
     },
 
     children: [
-      <PublishCompositeConfig1<JobComment, User>> {
+      {
         find: (comment) => {
           return Meteor.users.find({
             _id: comment.senderId

@@ -7,6 +7,7 @@ import { MeteorObservable } from 'meteor-rxjs';
 import { Topics } from '../../../../both/collections/topics.collection';
 import { Topic } from '../../../../both/models/topic.model';
 import { Activities } from '../../../../both/collections/activities.collection';
+import { ActivityMembers } from '../../../../both/collections/activity-members.collection';
 import { Activity } from '../../../../both/models/activity.model';
 import { Houses } from '../../../../both/collections/houses.collection';
 import { House } from '../../../../both/models/house.model';
@@ -314,6 +315,17 @@ export class TopicsComponent implements OnInit {
             }
           }).zone();
       });
+    });
+  }
+
+  getJoinedMembers(id) {
+    return ActivityMembers.find({activityId: id}, {sort: {createdAt: -1}, limit: 15})
+      .map(members => {
+        members.forEach(member => {
+          const memberUser = Meteor.users.findOne({_id: member.senderId}, {fields: {profile: 1}});
+          member.profile = memberUser.profile;
+        });
+        return members;
     });
   }
 

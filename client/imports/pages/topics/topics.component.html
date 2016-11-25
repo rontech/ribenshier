@@ -138,9 +138,19 @@
                 <ion-icon name="bonfire"  style="color: #4682b4"></ion-icon>
                 定员{{activity.people}}名 {{activity.day | date:'M月d日'}}发动 ...
               </p>
+              <p class="topic-brief">{{activity.description.slice(0, 22)}}</p>
+              <p class="topic-brief">{{activity.description.slice(22, 44)}}...</p>
             </span>
           </button>
         </ion-card-content>
+
+        <ion-row> 
+          <div *ngFor="let member of getJoinedMembers(activity._id) | async">
+            <ion-avatar>
+              <img [src]="member.profile.picture" class="small-user-avatar" [alt]="member.profile.name"></img>
+            </ion-avatar>
+          </div>
+        </ion-row>
 
         <ion-row class="icon-line">
           <div class="icon-group">
@@ -235,6 +245,8 @@
              <p class="job-info">
              <ion-icon name="boat"  style="color: #4682b4"></ion-icon> {{job.location}}  {{job.position}} {{job.people}}名 {{job.start | date:'M月d日'}}开始 ...</p>
             </span>
+            <p class="topic-brief">{{job.description.slice(0, 22)}}</p>
+            <p class="topic-brief">{{job.description.slice(22, 44)}}...</p>
           </button>
         </ion-card-content>
 

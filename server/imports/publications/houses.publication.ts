@@ -14,7 +14,7 @@ Meteor.publishComposite('houses', function(): PublishCompositeConfig<House> {
     },
  
     children: [
-      <PublishCompositeConfig1<House, User>> {
+      {
         find: (house) => {
           return Users.collection.find({
             _id: house.creatorId
@@ -24,7 +24,7 @@ Meteor.publishComposite('houses', function(): PublishCompositeConfig<House> {
         }
       },
 
-      <PublishCompositeConfig1<House, HousePicture>> {
+      {
         find: (house) => {
           return HousePictures.collection.find({
             houseId: house._id

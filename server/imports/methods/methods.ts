@@ -245,14 +245,15 @@ Meteor.methods({
     });
 
     //insert member information
+    let dt = new Date();
     const memberInfo = {
       activityId: activityId,
-      senderId: senderId
+      senderId: senderId,
+      createdAt: dt
     };
     ActivityMembers.collection.insert(memberInfo);
 
     //add a notification to the owner
-    let dt = new Date();
     const creator = Meteor.users.findOne(activity.creatorId);
     if(creator.profile.notify && senderId != activity.creatorId)
       Notifications.collection.insert({

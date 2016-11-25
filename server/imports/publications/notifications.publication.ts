@@ -13,7 +13,7 @@ Meteor.publishComposite('notifications', function(toId: string): PublishComposit
     },
 
     children: [
-      <PublishCompositeConfig1<Notification, User>> {
+      {
         find: (not) => {
           return Meteor.users.find({
             _id: not.senderId

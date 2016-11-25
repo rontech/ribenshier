@@ -11,6 +11,7 @@ import { MeteorObservable } from 'meteor-rxjs';
 import { ActivityCommentsPage } from './activity-comments.component';
 import { Activities } from '../../../../both/collections/activities.collection';
 import { ActivityComments } from '../../../../both/collections/activity-comments.collection';
+import { ActivityMembers } from '../../../../both/collections/activity-members.collection';
 import { UtilityService } from '../../services/utility.service';
  
 @Component({
@@ -90,6 +91,17 @@ export class ActivityDetail implements OnInit {
       return true;
     }
     return false;
+  }
+
+  getJoinedMembers() {
+    return ActivityMembers.find({activityId: this.activityId}, {sort: {createdAt: -1}})
+      .map(members => {
+        members.forEach(member => {
+          const memberUser = Meteor.users.findOne({_id: member.senderId}, {fields: {profile: 1}});
+          member.profile = memberUser.profile;
+        });
+        return members;
+    });
   }
 
   private subComments(): void {

@@ -12,7 +12,7 @@ Meteor.publishComposite('jobs', function(): PublishCompositeConfig<Job> {
     },
  
     children: [
-      <PublishCompositeConfig1<Job, User>> {
+      {
         find: (job) => {
           return Users.collection.find({
             _id: job.creatorId

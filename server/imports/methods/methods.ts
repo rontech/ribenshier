@@ -606,6 +606,9 @@ Meteor.methods({
   removeNotification(notId: string): void {
     Notifications.collection.remove(notId);
   },
+  countNotification(userId: string): number {
+    return Notifications.collection.find({toId: userId, read: false}).count();
+  },
   setPassword(userId: string, newPassword: string): void {
     Accounts.setPassword(userId, newPassword, (e: Error) => {
       if(e) {

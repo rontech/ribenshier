@@ -68,6 +68,7 @@ export class NotificationsComponent implements OnInit {
                       not._id
       ).subscribe({
       next: () => {
+        this.events.publish('notification:read');
       },
       error: (e: Error) => {
         this.utilSrv.alertDialog('提醒', e.message);
@@ -80,6 +81,7 @@ export class NotificationsComponent implements OnInit {
                       not._id
       ).subscribe({
       next: () => {
+        this.events.publish('notification:read');
       },
       error: (e: Error) => {
         this.utilSrv.alertDialog('提醒', e.message);

@@ -160,45 +160,6 @@
   display: none;
 }
 
-ion-segment {
-  margin-top: 8px;
-  margin-bottom: 8px;
-}
-ion-segment-button{
-  border-style: solid;
-}
-
 .segment-button {
-  border-style: none;
-  border-color: #47266e;
-  color: #47266e;
-  border-width: thin;
-  font-size: 18px;
-}
-
-.segment-button:first-of-type {
-  border-radius: 20px;
-  margin-left: 0px;
-  height: 100%;
-  width: 100%;
-}
-
-.segment-button:not(:first-of-type) {
-  border-radius: 20px;
-  margin-left: 20px;
-  height: 100%;
-  width: 100%;
-}
-
-.segment-button:last-of-type {
-  border-radius: 20px;
-  margin-right: 0px;
-  margin-left: 20px;
-  height: 100%;
-  width: 100%;
-}
-
-.segment-activated{
-  background-color: #47266e;
-  color: #ffffff;
+  font-size: 15px;
 }

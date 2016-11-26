@@ -1,3 +1,5 @@
+@import "{}/client/styles/_variables";
+
 .topics-page-header {
   ion-avatar {
     min-height: 25px;
@@ -142,4 +144,17 @@
       padding-bottom: 10px;
     }
   }
+}
+
+.segment-button {
+  color: map_get($colors, primary);
+  border: none;
+  font-size: 15px;
+}
+
+.segment-button.segment-activated{
+  background-color: transparent;
+  color: map_get($colors, dark);
+  border-bottom: 3px double;
+  border-color: map_get($colors, primary);
 }

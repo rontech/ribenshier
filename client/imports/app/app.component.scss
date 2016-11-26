@@ -56,19 +56,6 @@ ion-item.item-block.item-no-border {
   }
 }
 
-.segment-button {
-  color: map_get($colors, primary);
-  border: none;
-  font-size: 15px;
-}
-
-.segment-button.segment-activated{
-  background-color: transparent;
-  color: map_get($colors, dark);
-  border-bottom: 3px double;
-  border-color: map_get($colors, primary);
-}
-
 
 //####################
 //### edit page css

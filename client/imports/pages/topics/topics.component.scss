@@ -154,7 +154,7 @@
 
 .segment-button.segment-activated{
   background-color: transparent;
-  color: map_get($colors, dark);
+  color: map_get($colors, myapp);
   border-bottom: 3px double;
-  border-color: map_get($colors, primary);
+  border-color: map_get($colors, myapp);
 }

@@ -1,4 +1,4 @@
-<ion-header class="profile-header">
+<ion-header>
   <ion-navbar color="myapp" class="narrow-bar">
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
@@ -27,7 +27,7 @@
   </ion-item>
 
   <ion-item *ngIf="utilSrv.isLoggedIn()" class="profile-desc">
-    <ion-label stacked>你的简介</ion-label>
-    <ion-textarea rows="10" [(ngModel)]="profile.desc" placeholder="修改你的简介"></ion-input>
+    <ion-label stacked>你的签名</ion-label>
+    <ion-textarea rows="10" [(ngModel)]="profile.desc" placeholder="修改你的签名"></ion-input>
   </ion-item>
 </ion-content>

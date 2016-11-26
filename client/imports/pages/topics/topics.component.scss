@@ -143,28 +143,3 @@
     }
   }
 }
-
-.options-popover {
-  $popover-width: 200px;
-  $popover-margin: 5px;
- 
-  .popover-content {
-    width: $popover-width;
-    transform-origin: right top 0px !important;
-    left: calc(100% - #{$popover-width} - #{$popover-margin}) !important;
-    top: $popover-margin !important;
-  }
-}
-
-.segment-button {
-  color: #56256e;
-  border: none;
-  font-size: 15px;
-}
-
-.segment-button.segment-activated{
-  background-color: transparent;
-  color: #47266e;
-  border-bottom: 3px double;
-  border-color: #b22222;
-}

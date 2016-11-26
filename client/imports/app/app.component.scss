@@ -1,30 +1,8 @@
-$borderColor: #DDD;
+@import "{}/client/styles/_variables";
 
-$primary:    #56256e;
-$secondary:  #32db64;
-$danger:     #f53d3d;
-$light:      #f4f4f4;
-$dark:       #222;
-$favorite:   #9079b6;
-$myapp:      #47266e;
-$facebook:   #3b5998;
-$wechat:     #7bb32e;
-
-input.text-input {
-  text-align: left;
-}
-
-textarea.text-input {
-  text-align: left;
-}
-
-.menu-item {
-  color: $primary;
-  .item-icon {
-    font-size: 32px;
-  }
-}
-
+//####################
+//### common css
+//####################
 .list-full-border {
   .item {
     border-bottom: 1px solid $borderColor;
@@ -50,21 +28,62 @@ textarea.text-input {
   float: center;
 }
 
-.options {
-  margin: 0;
+ion-item.item-block.item-no-border {
+  .item-inner {
+    border: none;
+  }
 }
 
-.option-name {
-  float: left;
+.corner-count {
+  padding-bottom: 10px;
 }
 
-.option-icon {
-  float: right;
+.small-user-avatar {
+  border-radius: 50%;
+  max-width: 20px;
+  max-height: 20px;
+}
+
+.options-popover {
+  $popover-width: 200px;
+  $popover-margin: 5px;
+
+  .popover-content {
+    width: $popover-width;
+    transform-origin: right top 0px !important;
+    left: calc(100% - #{$popover-width} - #{$popover-margin}) !important;
+    top: $popover-margin !important;
+  }
+}
+
+.segment-button {
+  color: map_get($colors, primary);
+  border: none;
+  font-size: 15px;
+}
+
+.segment-button.segment-activated{
+  background-color: transparent;
+  color: map_get($colors, dark);
+  border-bottom: 3px double;
+  border-color: map_get($colors, primary);
+}
+
+
+//####################
+//### edit page css
+//####################
+input.text-input {
+  text-align: left;
+}
+
+textarea.text-input {
+  text-align: left;
 }
 
 .error-hint {
   font-size: 11px;
-  color: #f53d3d;
+  color: map_get($colors, danger);
 }
 
 .large-button {
@@ -75,10 +94,6 @@ textarea.text-input {
   text-align: center;
   font-size: 18px;
   margin: 30px;
-}
-
-.text-input {
-  text-align: center;
 }
 
 .upload-label {
@@ -92,12 +107,26 @@ textarea.text-input {
   cursor: pointer;
 }
 
-ion-item.item-block.item-no-border {
-  .item-inner {
-    border: none;
-  }
+
+//####################
+//### option menu css
+//####################
+.options {
+  margin: 0;
 }
 
+.option-name {
+  float: left;
+}
+
+.option-icon {
+  float: right;
+}
+
+
+//####################
+//###detail page style
+//####################
 .profile-picture {
   border-radius: 50%;
 }
@@ -141,12 +170,19 @@ h3.post-author {
   font-size: 11px;
 }
 
-.corner-count {
-  padding-bottom: 10px;
-}
 
-.small-user-avatar {
-  border-radius: 50%;
-  max-width: 20px;
-  max-height: 20px;
+//####################
+//###side menu
+//####################
+.menu-left {
+  background-image:  url("/assets/background.jpg");
+  background-repeat: repeat;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  background-size: cover;
+  height: 100%;
+  position: absolute;
+  .item  {
+    background-color: transparent !important;
+  }
 }

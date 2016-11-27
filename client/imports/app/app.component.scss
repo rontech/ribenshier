@@ -37,6 +37,7 @@ ion-item.item-block.item-no-border {
 
 .corner-count {
   padding-bottom: 10px;
+  font-size: 9px;
 }
 
 .small-user-avatar {
@@ -56,6 +57,10 @@ ion-item.item-block.item-no-border {
     left: calc(100% - #{$popover-width} - #{$popover-margin}) !important;
     top: $popover-margin !important;
   }
+}
+
+.profile-desc {
+  padding-bottom: 20px;
 }
 
 

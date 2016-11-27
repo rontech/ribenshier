@@ -14,4 +14,25 @@ user {
       display: block;
     }
   }
+
+  .plain-anchor {
+    text-decoration: none !important;
+  }
+
+  .corner-count {
+    font-size: 9px;
+    vertical-align: top;
+  }
+}
+
+.segment-button {
+  color: map_get($colors, primary);
+  border: none;
+}
+
+.segment-button.segment-activated{
+  background-color: transparent;
+  color: map_get($colors, myapp);
+  border-bottom: 3px solid;
+  border-color: map_get($colors, myapp);
 }

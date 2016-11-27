@@ -3,7 +3,7 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>个人设定</ion-title>
+    <ion-title>修改个人信息</ion-title>
     <ion-buttons end>
       <button *ngIf="utilSrv.isLoggedIn()" ion-button class="done-button" (click)="done()">确定</button>
     </ion-buttons>
@@ -28,6 +28,6 @@
 
   <ion-item *ngIf="utilSrv.isLoggedIn()" class="profile-desc">
     <ion-label stacked>你的签名</ion-label>
-    <ion-textarea rows="10" [(ngModel)]="profile.desc" placeholder="修改你的签名"></ion-input>
+    <ion-input [(ngModel)]="profile.desc" placeholder="修改你的签名"></ion-input>
   </ion-item>
 </ion-content>

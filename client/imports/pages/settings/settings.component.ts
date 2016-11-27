@@ -17,7 +17,11 @@ import * as style from './settings.component.scss';
   ]
 })
 export class SettingsComponent implements OnInit {
-  profile: Profile;
+  private profile: Profile;
+  private topicsPostCnt = 0;
+  private activitiesPostCnt = 0;
+  private housesPostCnt = 0;
+  private jobsPostCnt = 0;
 
   constructor(public events: Events,
               private nav: NavController,
@@ -25,17 +29,26 @@ export class SettingsComponent implements OnInit {
 
   ngOnInit(): void {
     this.profile = this.utilSrv.loadProfile();
+    this.setPostCount();
 
     this.events.subscribe('user:login', () => {
       this.profile = this.utilSrv.loadProfile();
+      this.setPostCount();
     });
 
     this.events.subscribe('user:logout', () => {
       this.profile = this.utilSrv.loadProfile();
+      this.setPostCount();
     });
 
     this.events.subscribe('user:signup', () => {
       this.profile = this.utilSrv.loadProfile();
+      this.setPostCount();
+    });
+
+    this.events.subscribe('profile:update', () => {
+      this.profile = this.utilSrv.loadProfile();
+      this.setPostCount();
     });
   }
 
@@ -55,5 +68,80 @@ export class SettingsComponent implements OnInit {
         this.utilSrv.alertDialog('提醒', e.message);
       }
     });
+  }
+
+  private setPostCount(): void {
+    this.setTopicsPostCount();
+    this.setActivitiesPostCount();
+    this.setHousesPostCount();
+    this.setJobsPostCount();
+  }
+
+  private setTopicsPostCount(): void {
+    if(this.utilSrv.isLoggedIn()) {
+      MeteorObservable.call('countByUser',
+                      Meteor.userId(),
+                      'topic'
+        ).subscribe({
+        next: (count: number) => {
+          this.topicsPostCnt = count;
+        },
+        error: (e: Error) => {
+        }
+      });
+    } else {
+      this.topicsPostCnt = 0;
+    }
+  }
+
+  private setActivitiesPostCount() {
+    if(this.utilSrv.isLoggedIn()) {
+      MeteorObservable.call('countByUser',
+                      Meteor.userId(),
+                      'activity'
+        ).subscribe({
+        next: (count: number) => {
+          this.activitiesPostCnt = count;
+        },
+        error: (e: Error) => {
+        }
+      });
+    } else {
+      this.activitiesPostCnt = 0;
+    }
+  }
+
+  private setHousesPostCount() {
+    if(this.utilSrv.isLoggedIn()) {
+      MeteorObservable.call('countByUser',
+                      Meteor.userId(),
+                      'house'
+        ).subscribe({
+        next: (count: number) => {
+          this.housesPostCnt = count;
+        },
+        error: (e: Error) => {
+        }
+      });
+    } else {
+      this.housesPostCnt = 0;
+    }
+  }
+
+  private setJobsPostCount() {
+    if(this.utilSrv.isLoggedIn()) {
+      MeteorObservable.call('countByUser',
+                      Meteor.userId(),
+                      'house'
+        ).subscribe({
+        next: (count: number) => {
+          this.jobsPostCnt = count;
+        },
+        error: (e: Error) => {
+        }
+      });
+    } else {
+      this.jobsPostCnt = 0;
+    }
   }
 }

@@ -53,6 +53,7 @@ export class ProfileComponent implements OnInit {
 
     MeteorObservable.call('updateProfile', this.profile).subscribe({
       next: () => {
+        this.events.publish('profile:update');
         this.navCtrl.pop();
       },
       error(e: Error) {

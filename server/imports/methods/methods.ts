@@ -615,5 +615,16 @@ Meteor.methods({
         throw e;
       }
     });
+  },
+  countByUser(userId: string, objName: string): number {
+   if(objName === 'topic')
+     return Topics.collection.find({creatorId: userId}).count();
+   if(objName === 'activity')
+     return Activities.collection.find({creatorId: userId}).count();
+   if(objName === 'house')
+     return Houses.collection.find({creatorId: userId}).count();
+   if(objName === 'job')
+     return Jobs.collection.find({creatorId: userId}).count();
+   return 0;
   }
 });

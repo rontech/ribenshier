@@ -5,9 +5,35 @@
     </button>
     <ion-title>个人设定</ion-title>
   </ion-navbar>
+  <div text-center class="app-bg">
+    <img class="profile-picture" src="{{profile.picture}}">
+    <h4>{{profile.name}}</h4>
+    <div>{{profile.desc}}</div>
+    <ion-grid>
+      <ion-row>
+        <ion-col width-25>
+          <span class="desc">杂谈</span>
+          <span class="number">{{topicsPostCnt}}</span>
+        </ion-col>
+        <ion-col width-25>
+          <span class="desc">社群</span>
+          <span class="number">{{activitiesPostCnt}}</span>
+        </ion-col>
+        <ion-col width-25>
+          <span class="desc">住居</span>
+          <span class="number">{{housesPostCnt}}</span>
+        </ion-col>
+        <ion-col width-25>
+          <span class="desc">工作</span>
+          <span class="number">{{jobsPostCnt}}</span>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
 </ion-header>
 
 <ion-content>
+
   <div *ngIf="!utilSrv.isLoggedIn()">你需要登录才可以操作。</div>
   <ion-list class="list-full-border" *ngIf="utilSrv.isLoggedIn()">
     <button ion-item (click)="showProfile()">

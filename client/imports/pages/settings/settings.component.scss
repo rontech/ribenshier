@@ -1,2 +1,17 @@
+@import "{}/client/styles/_variables";
+
 page-setting {
+  .app-bg {
+    color: map_get($colors, light);
+    background: map_get($colors, myapp);
+    border: none;
+  }
+
+  ion-row {
+    border-top: 1px solid $borderColor;
+
+    .number {
+      display: block;
+    }
+  }
 }

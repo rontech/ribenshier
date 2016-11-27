@@ -67,16 +67,21 @@ export class UtilityService {
     });
   }
 
-  loadProfile(): Profile {
-    if(Meteor.user()) {
-      return  Meteor.user().profile;
-    } else {
-      return {
-        name: '',
-        picture: 'assets/none.png',
-        admin: false,
-        notify: true
-      };
+  loadProfile(userId = null): Profile {
+   if(!userId) {
+      if(Meteor.user()) {
+        return  Meteor.user().profile;
+      } else {
+        return {
+          name: '',
+          picture: 'assets/none.png',
+          admin: false,
+          notify: true
+        };
+      }
     }
+
+    let user = Meteor.users.findOne({_id: userId}, {fields: {profile: 1}});
+    return user.profile;
   }
 }

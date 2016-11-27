@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { NavParams, PopoverController, Content } from 'ionic-angular';
+import { NavParams, PopoverController, Content, NavController } from 'ionic-angular';
 import { Meteor } from 'meteor/meteor';
 import { Job } from '../../../../both/models/job.model';
 import { JobComments } from '../../../../both/collections/job-comments.collection';
@@ -27,11 +27,12 @@ export class JobCommentsPage extends CommonCommentsPage  implements OnInit, OnDe
   comments: Observable<JobComment[]>;
 
   constructor(
+    navCtrl: NavController,
     navParams: NavParams,
     popoverCtrl: PopoverController,
     utilSrv: UtilityService
   ) {
-    super(popoverCtrl, utilSrv);
+    super(navCtrl, popoverCtrl, utilSrv);
     this.selectedObject = <Job>navParams.get(this.objectName);
     this.title = utilSrv.editTitle(this.selectedObject.title, 12);
     this.id = this.selectedObject._id;

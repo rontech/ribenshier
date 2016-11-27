@@ -32,6 +32,8 @@ import { NotificationsComponent } from '../pages/notifications/notifications.com
 import { ChineseTimeAgoPipe } from '../filters/time.filter';
 import { ChineseCalendarPipe } from '../filters/calendar.filter';
 import { UtilityService } from '../services/utility.service';
+import { UserComponent } from '../pages/user/user.component';
+
 import 'intl';
 import 'intl/locale-data/jsonp/en';
 
@@ -65,6 +67,7 @@ import 'intl/locale-data/jsonp/en';
     JobOptionsComponent,
     BookmarksComponent,
     NotificationsComponent,
+    UserComponent,
     ChineseTimeAgoPipe,
     ChineseCalendarPipe
   ],
@@ -96,7 +99,8 @@ import 'intl/locale-data/jsonp/en';
     JobDetail,
     JobOptionsComponent,
     BookmarksComponent,
-    NotificationsComponent
+    NotificationsComponent,
+    UserComponent
   ],
   // Providers
   providers: [ UtilityService ],

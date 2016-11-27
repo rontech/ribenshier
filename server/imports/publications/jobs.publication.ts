@@ -24,3 +24,9 @@ Meteor.publishComposite('jobs', function(): PublishCompositeConfig<Job> {
     ]
   };
 });
+
+Meteor.publish('jobs-user', function(userId: string): Mongo.Cursor<Job> {
+  if (!userId) return;
+
+  return Jobs.collection.find({creatorId: userId});
+});

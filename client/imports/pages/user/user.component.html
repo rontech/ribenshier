@@ -1,0 +1,137 @@
+<ion-header>
+  <ion-navbar color="myapp" class="narrow-bar">
+    <ion-title>用户信息</ion-title>
+  </ion-navbar>
+  <div text-center class="app-bg">
+    <img class="profile-picture" src="{{profile.picture}}">
+    <h4>{{profile.name}}</h4>
+    <div>{{profile.desc}}</div>
+    <ion-grid>
+      <ion-row>
+        <ion-col width-25>
+          <span class="desc">杂谈</span>
+          <span class="number">{{topicsPostCnt}}</span>
+        </ion-col>
+        <ion-col width-25>
+          <span class="desc">社群</span>
+          <span class="number">{{activitiesPostCnt}}</span>
+        </ion-col>
+        <ion-col width-25>
+          <span class="desc">住居</span>
+          <span class="number">{{housesPostCnt}}</span>
+        </ion-col>
+        <ion-col width-25>
+          <span class="desc">工作</span>
+          <span class="number">{{jobsPostCnt}}</span>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+</ion-header>
+
+<ion-content>
+  <ion-segment [(ngModel)]="category">
+    <ion-segment-button value="topics">
+      杂谈
+    </ion-segment-button>
+    <ion-segment-button value="activities">
+       社群
+    </ion-segment-button>
+    <ion-segment-button value="houses">
+       住居
+    </ion-segment-button>
+      <ion-segment-button value="jobs">
+      工作
+    </ion-segment-button>
+  </ion-segment>
+
+  <div [ngSwitch]="category">
+    <ion-list *ngSwitchCase="'topics'">
+      <ion-item text-wrap *ngFor="let post of topics | async">
+        <div class="post-content">
+          <div (click)="viewPost(post._id, 'topic')">
+            <p>{{post.title}}</p>
+          </div>
+          <p>
+            <a class="subdued">
+              <ion-icon name="thumbs-up" style="color: #d03e84"></ion-icon>
+              {{post.thumbed}}
+            </a>
+            <a class="subdued">
+              <ion-icon name="chatboxes" color="primary" ></ion-icon>
+              {{post.commented}}
+            </a>
+            <span class="post-time">
+              <ion-icon name="time"></ion-icon>
+              {{post.createdAt | amTimeAgo | chineseTimeAgo}}
+            </span>
+          </p>
+        </div>
+      </ion-item>
+    </ion-list>
+
+    <ion-list *ngSwitchCase="'activities'">
+      <ion-item text-wrap *ngFor="let post of activities | async">
+        <div class="post-content">
+          <div (click)="viewPost(post._id, 'activity')">
+            <p>{{post.title}}</p>
+          </div>
+          <p>
+            <a class="subdued">
+              <ion-icon name="person" style="color: #d03e84"></ion-icon>
+              {{post.joined}}
+            </a>
+            <a class="subdued">
+              <ion-icon name="chatboxes" color="primary" ></ion-icon>
+              {{post.commented}}
+            </a>
+            <span class="post-time">
+              <ion-icon name="time"></ion-icon>
+              {{post.createdAt | amTimeAgo | chineseTimeAgo}}
+            </span>
+          </p>
+        </div>
+      </ion-item>
+    </ion-list>
+
+    <ion-list *ngSwitchCase="'houses'">
+      <ion-item text-wrap *ngFor="let post of houses | async">
+        <div class="post-content">
+          <div (click)="viewPost(post._id, 'house')">
+            <p>{{post.title}}</p>
+          </div>
+          <p>
+            <a class="subdued">
+              <ion-icon name="chatboxes" color="primary" ></ion-icon>
+              {{post.commented}}
+            </a>
+            <span class="post-time">
+              <ion-icon name="time"></ion-icon>
+              {{post.createdAt | amTimeAgo | chineseTimeAgo}}
+            </span>
+          </p>
+        </div>
+      </ion-item>
+    </ion-list>
+
+    <ion-list *ngSwitchCase="'jobs'">
+      <ion-item text-wrap *ngFor="let post of jobs | async">
+        <div class="post-content">
+          <div (click)="viewPost(post._id, 'job')">
+            <p>{{post.title}}</p>
+          </div>
+          <p>
+            <a class="subdued">
+              <ion-icon name="chatboxes" color="primary" ></ion-icon>
+              {{post.commented}}
+            </a>
+            <span class="post-time">
+              <ion-icon name="time"></ion-icon>
+              {{post.createdAt | amTimeAgo | chineseTimeAgo}}
+            </span>
+          </p>
+        </div>
+      </ion-item>
+    </ion-list>
+  </div>
+</ion-content>

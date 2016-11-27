@@ -1,14 +1,9 @@
-import { Profile } from './profile.model';
+import { CommonEntity } from './common-entity.model';
  
-export interface House {
-  _id?: string;
-  creatorId?: string;
-  profile?: Profile;
-  title?: string;
+export interface House extends CommonEntity {
   type?: string;
   forRental?: boolean;
   brief?: string;
-  description?: string;
   floorPlan?: string;
   area?: number;
   acess?: string;
@@ -20,9 +15,4 @@ export interface House {
   thumbId?: string;
   pictures?: Array<string>;
   thumbs?: Array<string>;
-  lastComment?: string;
-  commented?: number;
-  commentedAt?: Date;
-  createdAt?: Date;
-  sortedBy?: Date;
 }

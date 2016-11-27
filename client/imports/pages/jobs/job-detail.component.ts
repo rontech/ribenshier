@@ -12,6 +12,7 @@ import { MeteorObservable } from 'meteor-rxjs';
 import { Jobs } from '../../../../both/collections/jobs.collection';
 import { JobComments } from '../../../../both/collections/job-comments.collection';
 import { UtilityService } from '../../services/utility.service';
+import { UserComponent } from '../../pages/user/user.component';
  
 @Component({
   selector: 'job-detail',
@@ -75,6 +76,10 @@ export class JobDetail implements OnInit {
       return true;
     }
     return false;
+  }
+
+  viewUser(id): void {
+    this.navCtrl.push(UserComponent, {userId: id});
   }
 
   private subComments(): void {

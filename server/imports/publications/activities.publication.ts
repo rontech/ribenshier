@@ -40,3 +40,9 @@ Meteor.publishComposite('activities', function(): PublishCompositeConfig<Activit
     ]
   };
 });
+
+Meteor.publish('activities-user', function(userId: string): Mongo.Cursor<Activity> {
+  if (!userId) return;
+
+  return Activities.collection.find({creatorId: userId});
+});

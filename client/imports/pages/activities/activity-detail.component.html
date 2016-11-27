@@ -49,13 +49,13 @@
 
     <ion-item>
       <div><ion-icon name="information-circle"  style="color: #4682b4"></ion-icon><span class="section-name">活动内容介绍</span></div>
-      <div class="section-content-small">{{activity.description}}</div>
+      <div class="section-content-small">{{activity.content}}</div>
     </ion-item>
 
     <ion-item>
       <div><ion-icon name="list"  style="color: #4682b4"></ion-icon><span class="section-name">已报名{{activity.joined}}名</span></div>
       <span *ngFor="let member of members | async">
-        <img [src]="member.profile.picture" class="small-user-avatar" [alt]="member.profile.name"></img>
+        <img [src]="member.profile.picture" class="small-user-avatar" [alt]="member.profile.name" (click)="viewUser(member.senderId)"></img>
       </sapn>
     </ion-item>
 

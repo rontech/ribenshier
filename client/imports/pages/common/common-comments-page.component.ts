@@ -1,10 +1,11 @@
 import { ViewChild } from '@angular/core';
-import { PopoverController, Content } from 'ionic-angular';
+import { PopoverController, Content, NavController } from 'ionic-angular';
 import { Meteor } from 'meteor/meteor';
 import { Observable, Subscription } from 'rxjs';
 import { Comment } from '../../../../both/models/comment.model';
 import { MeteorObservable, MongoObservable } from 'meteor-rxjs';
 import { UtilityService } from '../../services/utility.service';
+import { UserComponent } from '../../pages/user/user.component';
  
 export class CommonCommentsPage {
   id: string;
@@ -20,6 +21,7 @@ export class CommonCommentsPage {
   @ViewChild(Content) content:Content;
  
   constructor(
+    private navCtrl: NavController,
     private popoverCtrl: PopoverController,
     private utilSrv: UtilityService
   ) {}
@@ -102,6 +104,10 @@ export class CommonCommentsPage {
       return true;
     }
     return false;
+  }
+
+  viewUser(id): void {
+    this.navCtrl.push(UserComponent, {userId: id});
   }
 
   private get commentsList(): Element {

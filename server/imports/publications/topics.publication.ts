@@ -12,7 +12,7 @@ Meteor.publishComposite('topics', function(): PublishCompositeConfig<Topic> {
     },
  
     children: [
-      <PublishCompositeConfig1<Topic, User>> {
+      {
         find: (topic) => {
           return Meteor.users.find({
             _id: topic.creatorId
@@ -25,22 +25,8 @@ Meteor.publishComposite('topics', function(): PublishCompositeConfig<Topic> {
   };
 });
 
-Meteor.publishComposite('topics-one', function(topicId: string): PublishCompositeConfig<Topic> {
-  return {
-    find: () => {
-      return Topics.collection.find({topicId});
-    },
- 
-    children: [
-      <PublishCompositeConfig1<Topic, User>> {
-        find: (topic) => {
-          return Meteor.users.find({
-            _id: topic.creatorId
-          }, {
-            fields: {profile: 1}
-          });
-        }
-      }
-    ]
-  };
+Meteor.publish('topics-user', function(userId: string): Mongo.Cursor<Topic> {
+  if (!userId) return;
+
+  return Topics.collection.find({creatorId: userId});
 });

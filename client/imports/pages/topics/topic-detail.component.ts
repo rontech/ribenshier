@@ -12,6 +12,7 @@ import { TopicOptionsComponent } from './topic-options.component';
 import { MeteorObservable } from 'meteor-rxjs';
 import { CommentsPage } from '../../pages/topics/comments-page.component';
 import { UtilityService } from '../../services/utility.service';
+import { UserComponent } from '../../pages/user/user.component';
  
 @Component({
   selector: 'topic-detail',
@@ -104,6 +105,10 @@ export class TopicDetail implements OnInit {
         href: 'http://www.ribenshier.com/#/topic-detail/' +  this.topic._id
       }, (response) => {console.log('fb response=', response);});
     }, 3000);
+  }
+
+  viewUser(id): void {
+    this.navCtrl.push(UserComponent, {userId: id});
   }
 
   private subComments(): void {

@@ -32,6 +32,7 @@ import { JobCommentsPage } from '../../pages/jobs/job-comments.component';
 import { User } from '../../../../both/models/user.model';
 import { LoginComponent } from '../../pages/auth/login.component';
 import { UtilityService } from '../../services/utility.service';
+import { UserComponent } from '../../pages/user/user.component';
  
 @Component({
   selector: 'topics',
@@ -268,6 +269,10 @@ export class TopicsComponent implements OnInit {
     return 'assets/recruit.jpg';
   }
 
+  viewUser(id): void {
+    this.navCtrl.parent.parent.push(UserComponent, {userId: id});
+  }
+
   private subJoinedMembers(id) {
     MeteorObservable.subscribe('activity-members', id).subscribe(() => {
       MeteorObservable.autorun().subscribe(() => {
@@ -295,7 +300,7 @@ export class TopicsComponent implements OnInit {
     MeteorObservable.subscribe('topics').subscribe(() => {
       MeteorObservable.autorun().subscribe(() => {
         this.topics = Topics
-          .find({}, { sort: { sortedBy: -1 } })
+          .find({}, {sort: {sortedBy: -1}})
           .map(topics => {
             topics.forEach(topic => {
               const user = Meteor.users.findOne({_id: topic.creatorId}, {fields: {profile: 1}});
@@ -317,7 +322,7 @@ export class TopicsComponent implements OnInit {
     MeteorObservable.subscribe('activities').subscribe(() => {
       MeteorObservable.autorun().subscribe(() => {
         this.activities = Activities
-          .find({}, { sort: { sortedBy: -1 } })
+          .find({}, {sort: {sortedBy: -1}})
           .map(activities => {
             activities.forEach(activity => {
               const user = Meteor.users.findOne({_id: activity.creatorId}, {fields: {profile: 1}});
@@ -327,7 +332,7 @@ export class TopicsComponent implements OnInit {
             if(this.queryText && this.queryText.trim() != '') {
               let text = this.queryText.trim();
               return  activities.filter(activity => activity.title.indexOf(text) > -1
-                                       || activity.description.indexOf(text) > -1);
+                                       || activity.content.indexOf(text) > -1);
             } else {
               return activities;
             }
@@ -340,7 +345,7 @@ export class TopicsComponent implements OnInit {
     MeteorObservable.subscribe('houses').subscribe(() => {
       MeteorObservable.autorun().subscribe(() => {
         this.houses = Houses
-          .find({})
+          .find({}, {sort: {sortedBy: -1}})
           .map(houses => {
             houses.forEach(house => {
               const user = Meteor.users.findOne({_id: house.creatorId}, {fields: {profile: 1}});
@@ -350,7 +355,7 @@ export class TopicsComponent implements OnInit {
             if(this.queryText && this.queryText.trim() != '') {
               let text = this.queryText.trim();
               return  houses.filter(house => house.title.indexOf(text) > -1
-                                       || house.description.indexOf(text) > -1
+                                       || house.content.indexOf(text) > -1
                                        || house.brief.indexOf(text) > -1);
             } else {
               return houses;
@@ -364,7 +369,7 @@ export class TopicsComponent implements OnInit {
     MeteorObservable.subscribe('jobs').subscribe(() => {
       MeteorObservable.autorun().subscribe(() => {
         this.jobs = Jobs
-          .find({}, { sort: { sortedBy: -1 } })
+          .find({}, {sort: {sortedBy: -1}})
           .map(jobs => {
             jobs.forEach(job => {
               const user = Meteor.users.findOne({_id: job.creatorId}, {fields: {profile: 1}});
@@ -373,7 +378,7 @@ export class TopicsComponent implements OnInit {
             if(this.queryText && this.queryText.trim() != '') {
               let text = this.queryText.trim();
               return  jobs.filter(job => job.title.indexOf(text) > -1
-                                       || job.description.indexOf(text) > -1);
+                                       || job.content.indexOf(text) > -1);
             } else {
               return jobs;
             }

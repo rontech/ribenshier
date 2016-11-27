@@ -1,19 +1,9 @@
-import { Profile } from './profile.model';
+import { CommonEntity } from './common-entity.model';
  
-export interface Topic {
-  _id?: string;
-  title?: string;
-  content?: string;
+export interface Topic extends CommonEntity {
   picture?: string;
   pictureId?: string;
   thumb?: string;
   thumbId?: string;
-  creatorId?: string;
-  profile?: Profile;
-  lastComment?: string;
-  commented?: number;
-  commentedAt?: Date;
   thumbed?: number;
-  createdAt?: Date;
-  sortedBy?: Date;
 }

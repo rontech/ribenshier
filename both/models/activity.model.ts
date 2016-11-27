@@ -1,19 +1,9 @@
-import { Profile } from './profile.model';
+import { CommonEntity } from './common-entity.model';
  
-export interface Activity {
-  _id?: string;
-  title?: string;
+export interface Activity extends CommonEntity {
   status?: string;
   day?: Date;
   people?: number;
   deadline?: Date;
-  description?: string;
-  creatorId?: string;
-  profile?: Profile;
-  lastComment?: string;
-  commented?: number;
-  commentedAt?: Date;
   joined?: number;
-  createdAt?: Date;
-  sortedBy?: Date;
 }

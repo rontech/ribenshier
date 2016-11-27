@@ -12,7 +12,7 @@
   <div *ngFor="let comment of comments | async" class="message-wrapper rlt"
        (hold)="onMessageHold($event, $index, comment)">
     <div *ngIf="comment.ownership === 'other'">
-      <img class="profile-picture left" [src]="comment.profile.picture" />
+      <img class="profile-picture left" [src]="comment.profile.picture" (click)="viewUser(comment.senderId)"/>
       <div class="chat-bubble left">
         <div class="message">
           {{ comment.content }}
@@ -24,7 +24,7 @@
     </div>
 
     <div *ngIf="comment.ownership === 'mine'">
-      <img class="profile-picture right" [src]="comment.profile.picture"  />
+      <img class="profile-picture right" [src]="comment.profile.picture" (click)="viewUser(comment.senderId)"/>
       <div class="chat-bubble right">
         <div class="message" ng-bind-html="comment.content">
           {{ comment.content }}

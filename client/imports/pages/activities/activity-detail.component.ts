@@ -14,6 +14,7 @@ import { Activities } from '../../../../both/collections/activities.collection';
 import { ActivityComments } from '../../../../both/collections/activity-comments.collection';
 import { ActivityMembers } from '../../../../both/collections/activity-members.collection';
 import { UtilityService } from '../../services/utility.service';
+import { UserComponent } from '../../pages/user/user.component';
  
 @Component({
   selector: 'activity-detail',
@@ -94,6 +95,10 @@ export class ActivityDetail implements OnInit {
       return true;
     }
     return false;
+  }
+
+  viewUser(id): void {
+    this.navCtrl.push(UserComponent, {userId: id});
   }
 
   private subJoinedMembers() {

@@ -1,18 +1,8 @@
-import { Profile } from './profile.model';
+import { CommonEntity } from './common-entity.model';
  
-export interface Job {
-  _id?: string;
-  creatorId?: string;
-  profile?: Profile;
-  title?: string;
+export interface Job extends CommonEntity {
   location?: string;
   position?: string;
   people?: number;
   start?: Date;
-  description?: string;
-  lastComment?: string;
-  commented?: number;
-  commentedAt?: Date;
-  createdAt?: Date;
-  sortedBy?: Date;
 }

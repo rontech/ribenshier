@@ -37,3 +37,9 @@ Meteor.publishComposite('houses', function(): PublishCompositeConfig<House> {
     ]
   };
 });
+
+Meteor.publish('houses-user', function(userId: string): Mongo.Cursor<House> {
+  if (!userId) return;
+
+  return Houses.collection.find({creatorId: userId});
+});

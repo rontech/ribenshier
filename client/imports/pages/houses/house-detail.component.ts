@@ -15,6 +15,7 @@ import { Houses } from '../../../../both/collections/houses.collection';
 import { HouseComments } from '../../../../both/collections/house-comments.collection';
 import { UtilityService } from '../../services/utility.service';
 import { Users } from '../../../../both/collections/users.collection';
+import { UserComponent } from '../../pages/user/user.component';
  
 @Component({
   selector: 'house-detail',
@@ -86,6 +87,10 @@ export class HouseDetail implements OnInit {
 
   getHouseType(house): string {
     return this.rentalTypes[parseInt(house.forRental)] + this.houseTypes[parseInt(house.type)]; 
+  }
+
+  viewUser(id): void {
+    this.navCtrl.push(UserComponent, {userId: id});
   }
 
   private subComments(): void {

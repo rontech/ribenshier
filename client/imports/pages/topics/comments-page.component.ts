@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { NavParams, PopoverController, Content } from 'ionic-angular';
+import { NavParams, PopoverController, Content, NavController } from 'ionic-angular';
 import { Meteor } from 'meteor/meteor';
 import { Topic } from '../../../../both/models/topic.model';
 import { Comments } from '../../../../both/collections/comments.collection';
@@ -27,11 +27,12 @@ export class CommentsPage extends CommonCommentsPage implements OnInit, OnDestro
   comments: Observable<Comment[]>;
 
   constructor(
+    navCtrl: NavController,
     navParams: NavParams,
     popoverCtrl: PopoverController,
     utilSrv: UtilityService
   ) {
-    super(popoverCtrl, utilSrv);
+    super(navCtrl, popoverCtrl, utilSrv);
     this.selectedObject = <Topic>navParams.get(this.objectName);
     this.title = utilSrv.editTitle(this.selectedObject.title, 12);
     this.id = this.selectedObject._id;

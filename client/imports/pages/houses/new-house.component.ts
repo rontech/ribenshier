@@ -10,6 +10,7 @@ import { Thumbs, Images } from '../../../../both/collections/images.collection';
 import { Thumb, Image } from '../../../../both/models/image.model';
 import { upload } from '../../../../both/methods/images.methods';
 import { UtilityService } from '../../services/utility.service';
+import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
  
 @Component({
   selector: 'new-house',
@@ -19,20 +20,39 @@ import { UtilityService } from '../../services/utility.service';
   ]
 })
 export class NewHouseComponent {
-  private title: string;
-  private forRental: boolean;
-  private type: string;
-  private brief: string;
-  private floorPlan: string;
-  private area: number;
-  private access: string;
-  private price: number;
-  private built: number;
-  private description: string;
+  newHouseForm: FormGroup;
+  private title = new FormControl('', Validators.compose([
+                                 Validators.required,
+                                 Validators.minLength(1),
+                                 Validators.maxLength(50)]));
+  private forRental = new FormControl('', Validators.compose([
+                                 Validators.required
+                                 ]));
+  private type = new FormControl('', Validators.compose([
+                                 Validators.required
+                                 ]));
+  private brief = new FormControl('', Validators.compose([
+                                 Validators.minLength(1),
+                                 Validators.maxLength(50)]));
+  private floorPlan = new FormControl('', Validators.compose([
+                                 Validators.minLength(1),
+                                 Validators.maxLength(50)]));
+  private area = new FormControl('', Validators.compose([
+                                 GlobalValidator.positiveNumberFormat]));
+  private access = new FormControl('', Validators.compose([
+                                 Validators.minLength(1),
+                                 Validators.maxLength(50)]));
+  private price = new FormControl('', Validators.compose([
+                                 PositiveIntegerCheck.positiveIntegerFormat]));
+  private built = new FormControl('', Validators.compose([
+                                 PositiveIntegerCheck.positiveIntegerFormat]));
+  private description = new FormControl('', Validators.compose([
+                                 Validators.minLength(1),
+                                 Validators.maxLength(2000)]));
   private pictureId: string;
   private picture: string;
   private thumbId: string;
-  private thumb; string;
+  private thumb:string;
   thumbsMain: Observable<Thumb[]>;
   thumbsSub: Observable<Thumb[]>;
   subPictureIds: Array<string> = [];
@@ -41,19 +61,46 @@ export class NewHouseComponent {
   subThumbs: Array<string>  = [];
  
   constructor(
-    private navCtrl: NavController, 
+    private navCtrl: NavController,
     private viewCtrl: ViewController,
     private loadingCtrl: LoadingController,
-    private utilSrv: UtilityService
-  ) {}
+    private utilSrv: UtilityService,
+    private formBuilder: FormBuilder,
+  ) {
+    this.newHouseForm = this.formBuilder.group({
+      title: this.title,
+      forRental:this.forRental,
+      type:this.type,
+      brief: this.brief,
+      floorPlan: this.floorPlan,
+      area: this.area,
+      access: this.access,
+      price: this.price,
+      built: this.built,
+      description: this.description
+    });
+  }
  
   addHouse(): void {
+
+    if(this.forRental.value !="0" && this.forRental.value !="1") {
+        this.utilSrv.alertDialog('目的没有填写', '请填写目的');
+        return;
+      }
+
+       if(this.type.value !="0" && this.type.value !="1" &&
+          this.type.value !="2" && this.type.value !="3" &&
+          this.type.value !="4") {
+        this.utilSrv.alertDialog('房屋类型没有填写', '请填写房屋类型');
+        return;
+      }
+
     MeteorObservable.call('addHouse', 
-                      this.title, this.forRental, this.type, 
-                      this.brief, this.floorPlan, this.area,
-                      this.access, this.price, this.built,
+                      this.title.value, this.forRental.value, this.type.value,
+                      this.brief.value, this.floorPlan.value, this.area.value,
+                      this.access.value, this.price.value, this.built.value,
                       this.pictureId, this.picture, this.thumbId,
-                      this.thumb, this.description,
+                      this.thumb, this.description.value,
                       this.subPictureIds, this.subPictures, this.subThumbIds, this.subThumbs
       ).subscribe({
       next: () => {
@@ -71,7 +118,12 @@ export class NewHouseComponent {
     if(files.length == 0) {
       return;
     }
-   
+    
+    if(files[0].size>512000) {
+      this.utilSrv.alertDialog('图片最大为500KB', '请你重新上传一张新的图片');
+      return;
+    }
+
     if(type === 'sub' && this.subPictureIds.length >= 3) {
       this.utilSrv.alertDialog('上限超出', '你需要删掉已上载图片才可以继续上载。');
       return;
@@ -169,3 +221,24 @@ export class NewHouseComponent {
     });
   }
 }
+
+export class GlobalValidator {
+  static positiveNumberFormat(control: FormControl) {
+    var NUMBER_REGEXP = /^\d+(.\d{1,2})?$/i;
+    if (control.value != '' && (!NUMBER_REGEXP.test(control.value))) {
+      return { 'incorrectPositiveNumberFormat': true };
+    }
+    return null;
+  }
+}
+
+export class PositiveIntegerCheck {
+  static positiveIntegerFormat(control: FormControl) {
+    var NUMBER_REGEXP = /^[0-9]*[1-9][0-9]*$/i;
+    if (control.value !='' && (!NUMBER_REGEXP.test(control.value))) {
+      return {'incorrectPositiveIntegerFormat': true};
+    }
+    return null;
+  }
+}
+

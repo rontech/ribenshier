@@ -23,6 +23,10 @@ const nonEmptyString = Match.Where((str) => {
   check(str, String);
   return str.length > 0;
 });
+
+const compare = Match.Where((booler) => {
+  return booler;
+});
  
 Meteor.methods({
   updateProfile(profile: Profile): void {
@@ -174,6 +178,9 @@ Meteor.methods({
  
     check(title, nonEmptyString);
     check(description, nonEmptyString);
+    check(day, nonEmptyString);
+    check(deadline, nonEmptyString);
+    check(day > deadline, compare);
  
     let dt = new Date();
     const activity = {

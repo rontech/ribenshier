@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, ViewController, LoadingController } from 'ionic-angular';
+import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { Meteor } from 'meteor/meteor';
 import { Observable } from 'rxjs';
 import template from './new-job.component.html';
@@ -10,7 +11,9 @@ import { Thumbs, Images } from '../../../../both/collections/images.collection';
 import { Thumb, Image } from '../../../../both/models/image.model';
 import { upload } from '../../../../both/methods/images.methods';
 import { UtilityService } from '../../services/utility.service';
- 
+
+import { GlobalValidator } from '../common/global-validator';
+
 @Component({
   selector: 'new-job',
   template,
@@ -19,24 +22,52 @@ import { UtilityService } from '../../services/utility.service';
   ]
 })
 export class NewJobComponent {
-  private title: string;
-  private location: string;
-  private position: string;
-  private people: number;
-  private start: Date;
-  private description: string;
- 
+  newJobForm: FormGroup;
+  private title = new FormControl('', Validators.compose([
+                              Validators.required,
+                              Validators.maxLength(50)
+                              ]));
+  private location = new FormControl('', Validators.compose([
+                              Validators.required,
+                              Validators.maxLength(50)
+                              ]));
+  private position = new FormControl('', Validators.compose([
+                              Validators.required,
+                              Validators.maxLength(50)
+                              ]));
+  private people = new FormControl('', Validators.compose([
+                              Validators.required,
+                              Validators.maxLength(5),
+                              GlobalValidator.numberCheck
+                              ]));
+  private start = new FormControl('', GlobalValidator.futureTimeCheck);
+  private description = new FormControl('', Validators.compose([
+                              Validators.required,
+                              Validators.maxLength(200)
+                              ]));
+
   constructor(
-    private navCtrl: NavController, 
+    private navCtrl: NavController,
     private viewCtrl: ViewController,
+    private formBuilder: FormBuilder,
     private loadingCtrl: LoadingController,
     private utilSrv: UtilityService
-  ) {}
- 
-  addJob(): void {
-    MeteorObservable.call('addJob', 
-                      this.title, this.location, this.position, 
-                      this.people, this.start, this.description
+  ) {
+    this.newJobForm = this.formBuilder.group({
+      title: this.title,
+      location: this.location,
+      position: this.position,
+      people: this.people,
+      start: this.start,
+      description: this.description
+    }
+    );
+  }
+
+  private addJob(): void {
+    MeteorObservable.call('addJob',
+                      this.title.value, this.location.value, this.position.value,
+                      this.people.value, this.start.value, this.description.value
       ).subscribe({
       next: () => {
         this.viewCtrl.dismiss();
@@ -46,6 +77,6 @@ export class NewJobComponent {
           this.utilSrv.alertDialog('发表失败', e.message);
         });
       }
-    }); 
+    });
   }
 }

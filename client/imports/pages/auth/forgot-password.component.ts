@@ -5,7 +5,7 @@ import { Accounts } from 'meteor/accounts-base';
 import template from './forgot-password.component.html';
 import * as style from './forgot-password.component.scss';
 import { UtilityService } from '../../services/utility.service';
-import { GlobalValidator } from './login.component';
+import { GlobalValidator } from '../common/global-validator';
  
 @Component({
   selector: 'forgot-password',

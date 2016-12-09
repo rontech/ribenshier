@@ -9,107 +9,152 @@
  
 <ion-content class="new-house">
   <ion-list>
-    <ion-item>
-      <ion-label floating color="primary">标题</ion-label>
-      <ion-input [(ngModel)]="title"  name="title" required></ion-input>
-    </ion-item>
-
-    <ion-item>
-      <ion-label floating color="primary">目的</ion-label>
-      <ion-select [(ngModel)]="forRental">
-        <ion-option value="0" selected="true">出租</ion-option>
-        <ion-option value="1">出售</ion-option>
-      </ion-select>
-    </ion-item>
-
-    <ion-item>
-      <ion-label floating color="primary">房屋类型</ion-label>
-      <ion-select [(ngModel)]="type">
-        <ion-option value="0" selected="true">マンション</ion-option>
-        <ion-option value="1">アパート</ion-option>
-        <ion-option value="2">一户建</ion-option>
-        <ion-option value="3">土地</ion-option>
-        <ion-option value="4">其它</ion-option>
-      </ion-select>
-    </ion-item>
-
-    <ion-item>
-      <ion-label floating color="primary">不动产特点</ion-label>
-      <ion-textarea rows="6" [(ngModel)]="brief"  name="brief" required></ion-textarea>
-    </ion-item>
-
-    <ion-item>
-      <ion-label floating color="primary">房型(LDK,DK...etc)</ion-label>
-      <ion-input [(ngModel)]="floorPlan"  name="floorPlan" required></ion-input>
-    </ion-item>
-
-    <ion-item>
-      <ion-label floating color="primary">面积(平米）</ion-label>
-      <ion-input [(ngModel)]="area"  name="area" required></ion-input>
-    </ion-item>
-
-    <ion-item>
-      <ion-label floating color="primary">交通</ion-label>
-      <ion-input [(ngModel)]="access"  name="access" required></ion-input>
-    </ion-item>
-
-    <ion-item>
-      <ion-label floating color="primary">价格(万円)</ion-label>
-      <ion-input [(ngModel)]="price"  name="price" required></ion-input>
-    </ion-item>
-
-    <ion-item>
-      <ion-label floating color="primary">建成年数</ion-label>
-      <ion-input [(ngModel)]="built"  name="built" required></ion-input>
-    </ion-item>
-    
-    <ion-item>
-      <ion-label floating color="primary">详细信息</ion-label>
-      <ion-textarea rows="6"  [(ngModel)]="description"></ion-textarea>
-    </ion-item>
-
-    <ion-row>
+    <form [formGroup]="newHouseForm">
       <ion-item>
-        <label class="upload-label" for="picture_upload_main">
-          ＋上传主图片
-          <input type="file" id="picture_upload_main" style="display:none;" (change)="uploadPicture($event.target.files, 'main')"/>
-        <label>
+          <ion-label floating color="primary">标题</ion-label>
+          <ion-input formControlName="title" name="title"></ion-input>
       </ion-item>
 
-      <ion-list>
-        <ion-item-sliding *ngFor="let thumb of thumbsMain | async" class="float: right;">
-          <button ion-item>
-            <img [src]= 'thumb.path'></img>
-          </button>
-          <ion-item-options>
-            <button ion-button color="danger" (click)="removePicture(thumb)">消除</button>
-          </ion-item-options>
-        </ion-item-sliding>
-      </ion-list>
-    </ion-row>
+      <div *ngIf="title.hasError('required') && title.touched" class="error-hint">标题不能为空!</div>
+      <div *ngIf="title.hasError('minlength') && title.touched" class="error-hint">
+        标题长度不能低于1位!
+      </div>
+      <div  *ngIf="title.hasError('maxlength') && title.touched" class="error-hint">
+        标题长度最长50位!
+      </div>
 
-    <ion-row>
+
       <ion-item>
-        <label class="upload-label" for="picture_upload_sub">
-          ＋上传副图片(限3张）
-          <input type="file" id="picture_upload_sub" style="display:none;" (change)="uploadPicture($event.target.files, 'sub')"/>
-        <label>
+        <ion-label floating color="primary">目的<ion-icon name="medical"  style="color:red;font-size:3px"></ion-icon></ion-label>
+        <ion-select formControlName="forRental">
+          <ion-option value="0" selected="true">出租</ion-option>
+          <ion-option value="1">出售</ion-option>
+        </ion-select>
       </ion-item>
 
-      <ion-list>
-        <ion-item-sliding *ngFor="let thumb of thumbsSub | async" class="float: right;">
-          <button ion-item>
-            <img [src]= 'thumb.path'></img>
-          </button>
-          <ion-item-options>
-            <button ion-button color="danger" (click)="removePicture(thumb)">消除</button>
-          </ion-item-options>
-        </ion-item-sliding>
-      </ion-list>
-    </ion-row>
-    
-    <ion-item>
-      <button ion-button (click)="addHouse()" type="submit" color="favorite" block>发布房屋信息</button>
-    </ion-item>
+      <ion-item>
+        <ion-label floating color="primary">房屋类型<ion-icon name="medical"  style="color:red;font-size:3px"></ion-icon></ion-label>
+        <ion-select formControlName="type">
+          <ion-option value="0" selected="true">マンション</ion-option>
+          <ion-option value="1">アパート</ion-option>
+          <ion-option value="2">一户建</ion-option>
+          <ion-option value="3">土地</ion-option>
+          <ion-option value="4">其它</ion-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-label floating color="primary">不动产特点</ion-label>
+        <ion-textarea rows="6" formControlName="brief" name="brief"></ion-textarea>
+      </ion-item>
+
+      <div  *ngIf="brief.hasError('minlength') && brief.touched" class="error-hint">
+        不动产特点长度不能低于1位!
+      </div>
+      <div  *ngIf="brief.hasError('maxlength') && brief.touched" class="error-hint">
+        不动产特点长度最长50位!
+      </div>
+
+      <ion-item>
+        <ion-label floating color="primary">房型(LDK,DK...etc)</ion-label>
+        <ion-input formControlName="floorPlan"  name="floorPlan"></ion-input>
+      </ion-item>
+
+       <div  *ngIf="floorPlan.hasError('minlength') && floorPlan.touched" class="error-hint">
+        房型长度不能低于1位!
+      </div>
+       <div  *ngIf="floorPlan.hasError('maxlength') && floorPlan.touched" class="error-hint">
+        房型长度最长50位!
+      </div>
+
+      <ion-item>
+        <ion-label floating color="primary">面积(平米）</ion-label>
+        <ion-input formControlName="area" name="area"></ion-input>
+      </ion-item>
+
+      <div *ngIf="area.hasError('incorrectPositiveNumberFormat') && area.touched" class="error-hint">只能是正数（最多保留两位小数）!</div>
+
+      <ion-item>
+        <ion-label floating color="primary">交通</ion-label>
+        <ion-input formControlName="access"  name="access"></ion-input>
+      </ion-item>
+
+      <div  *ngIf="access.hasError('minlength') && access.touched" class="error-hint">
+        交通长度不能低于1位!
+      </div>
+      <div  *ngIf="access.hasError('maxlength') && access.touched" class="error-hint">
+        交通长度最长50位!
+      </div>
+
+      <ion-item>
+        <ion-label floating color="primary">价格(万円)</ion-label>
+        <ion-input formControlName="price"  name="price"></ion-input>
+      </ion-item>
+
+      <div *ngIf="price.hasError('incorrectNumberFormat') && price.touched" class="error-hint">只能是正数!</div>
+
+      <ion-item>
+        <ion-label floating color="primary">建成年数</ion-label>
+        <ion-input formControlName="built"  name="built"></ion-input>
+      </ion-item>
+      
+       <div *ngIf="built.hasError('incorrectNumberFormat') && built.touched" class="error-hint">只能是正数!</div>
+
+      <ion-item>
+        <ion-label floating color="primary">详细信息</ion-label>
+        <ion-textarea rows="6"  formControlName="description"></ion-textarea>
+      </ion-item>
+
+      <div  *ngIf="description.hasError('minlength') && description.touched" class="error-hint">
+        详细信息长度不能低于1位!
+      </div>
+      <div  *ngIf="description.hasError('maxlength') && description.touched" class="error-hint">
+        详细信息长度最长2000位!
+      </div>
+
+      <ion-row>
+        <ion-item>
+          <label class="upload-label" for="picture_upload_main">
+            ＋上传主图片
+            <input type="file" id="picture_upload_main" style="display:none;" (change)="uploadPicture($event.target.files, 'main')"/>
+          </label>
+        </ion-item>
+
+        <ion-list>
+          <ion-item-sliding *ngFor="let thumb of thumbsMain | async" class="float: right;">
+            <button ion-item>
+              <img [src]= 'thumb.path'></img>
+            </button>
+            <ion-item-options>
+              <button ion-button color="danger" (click)="removePicture(thumb)">消除</button>
+            </ion-item-options>
+          </ion-item-sliding>
+        </ion-list>
+      </ion-row>
+
+      <ion-row>
+        <ion-item>
+          <label class="upload-label" for="picture_upload_sub">
+            ＋上传副图片(限3张）
+            <input type="file" id="picture_upload_sub" style="display:none;" (change)="uploadPicture($event.target.files, 'sub')"/>
+          <label>
+        </ion-item>
+
+        <ion-list>
+          <ion-item-sliding *ngFor="let thumb of thumbsSub | async" class="float: right;">
+            <button ion-item>
+              <img [src]= 'thumb.path'></img>
+            </button>
+            <ion-item-options>
+              <button ion-button color="danger" (click)="removePicture(thumb)">消除</button>
+            </ion-item-options>
+          </ion-item-sliding>
+        </ion-list>
+      </ion-row>
+      
+      <ion-item>
+        <button ion-button (click)="addHouse()" type="submit" color="favorite" [disabled]="!newHouseForm.valid" block>发布房屋信息</button>
+      </ion-item>
+    </form>
   </ion-list>
 </ion-content>

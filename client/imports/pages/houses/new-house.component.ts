@@ -11,6 +11,7 @@ import { Thumb, Image } from '../../../../both/models/image.model';
 import { upload } from '../../../../both/methods/images.methods';
 import { UtilityService } from '../../services/utility.service';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
+import { GlobalValidator } from '../../../../client/imports/pages/common/global-validator';
  
 @Component({
   selector: 'new-house',
@@ -43,9 +44,9 @@ export class NewHouseComponent {
                                  Validators.minLength(1),
                                  Validators.maxLength(50)]));
   private price = new FormControl('', Validators.compose([
-                                 PositiveIntegerCheck.positiveIntegerFormat]));
+                                 GlobalValidator.numberCheck]));
   private built = new FormControl('', Validators.compose([
-                                 PositiveIntegerCheck.positiveIntegerFormat]));
+                                 GlobalValidator.numberCheck]));
   private description = new FormControl('', Validators.compose([
                                  Validators.minLength(1),
                                  Validators.maxLength(2000)]));
@@ -82,36 +83,30 @@ export class NewHouseComponent {
   }
  
   addHouse(): void {
-
-    if(this.forRental.value !="0" && this.forRental.value !="1") {
-        this.utilSrv.alertDialog('目的没有填写', '请填写目的');
+    if(this.newHouseForm.valid) {
+      if(this.pictureId === undefined) {
+        this.utilSrv.alertDialog('图片必须', '请上传一张主图片');
         return;
       }
 
-       if(this.type.value !="0" && this.type.value !="1" &&
-          this.type.value !="2" && this.type.value !="3" &&
-          this.type.value !="4") {
-        this.utilSrv.alertDialog('房屋类型没有填写', '请填写房屋类型');
-        return;
-      }
-
-    MeteorObservable.call('addHouse', 
-                      this.title.value, this.forRental.value, this.type.value,
-                      this.brief.value, this.floorPlan.value, this.area.value,
-                      this.access.value, this.price.value, this.built.value,
-                      this.pictureId, this.picture, this.thumbId,
-                      this.thumb, this.description.value,
-                      this.subPictureIds, this.subPictures, this.subThumbIds, this.subThumbs
-      ).subscribe({
-      next: () => {
-        this.viewCtrl.dismiss();
-      },
-      error: (e: Error) => {
-        this.viewCtrl.dismiss().then(() => {
-          this.utilSrv.alertDialog('发表失败', e.message);
-        });
-      }
-    }); 
+      MeteorObservable.call('addHouse', 
+                        this.title.value, this.forRental.value, this.type.value,
+                        this.brief.value, this.floorPlan.value, this.area.value,
+                        this.access.value, this.price.value, this.built.value,
+                        this.pictureId, this.picture, this.thumbId,
+                        this.thumb, this.description.value,
+                        this.subPictureIds, this.subPictures, this.subThumbIds, this.subThumbs
+        ).subscribe({
+        next: () => {
+          this.viewCtrl.dismiss();
+        },
+        error: (e: Error) => {
+          this.viewCtrl.dismiss().then(() => {
+            this.utilSrv.alertDialog('发表失败', e.message);
+          });
+        }
+      });
+    }
   }
 
   uploadPicture(files, type): void {
@@ -219,26 +214,6 @@ export class NewHouseComponent {
         });
       });
     });
-  }
-}
-
-export class GlobalValidator {
-  static positiveNumberFormat(control: FormControl) {
-    var NUMBER_REGEXP = /^\d+(.\d{1,2})?$/i;
-    if (control.value != '' && (!NUMBER_REGEXP.test(control.value))) {
-      return { 'incorrectPositiveNumberFormat': true };
-    }
-    return null;
-  }
-}
-
-export class PositiveIntegerCheck {
-  static positiveIntegerFormat(control: FormControl) {
-    var NUMBER_REGEXP = /^[0-9]*[1-9][0-9]*$/i;
-    if (control.value !='' && (!NUMBER_REGEXP.test(control.value))) {
-      return {'incorrectPositiveIntegerFormat': true};
-    }
-    return null;
   }
 }
 

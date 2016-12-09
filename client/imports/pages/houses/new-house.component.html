@@ -23,8 +23,9 @@
         标题长度最长50位!
       </div>
 
+
       <ion-item>
-        <ion-label floating color="primary">目的</ion-label>
+        <ion-label floating color="primary">目的<ion-icon name="medical"  style="color:red;font-size:3px"></ion-icon></ion-label>
         <ion-select formControlName="forRental">
           <ion-option value="0" selected="true">出租</ion-option>
           <ion-option value="1">出售</ion-option>
@@ -32,7 +33,7 @@
       </ion-item>
 
       <ion-item>
-        <ion-label floating color="primary">房屋类型</ion-label>
+        <ion-label floating color="primary">房屋类型<ion-icon name="medical"  style="color:red;font-size:3px"></ion-icon></ion-label>
         <ion-select formControlName="type">
           <ion-option value="0" selected="true">マンション</ion-option>
           <ion-option value="1">アパート</ion-option>
@@ -90,14 +91,14 @@
         <ion-input formControlName="price"  name="price"></ion-input>
       </ion-item>
 
-      <div *ngIf="price.hasError('incorrectPositiveIntegerFormat') && price.touched" class="error-hint">只能是正数（最多保留两位小数）!</div>
+      <div *ngIf="price.hasError('incorrectNumberFormat') && price.touched" class="error-hint">只能是正数!</div>
 
       <ion-item>
         <ion-label floating color="primary">建成年数</ion-label>
         <ion-input formControlName="built"  name="built"></ion-input>
       </ion-item>
       
-       <div *ngIf="built.hasError('incorrectPositiveIntegerFormat') && built.touched" class="error-hint">只能是正数!</div>
+       <div *ngIf="built.hasError('incorrectNumberFormat') && built.touched" class="error-hint">只能是正数!</div>
 
       <ion-item>
         <ion-label floating color="primary">详细信息</ion-label>
@@ -152,7 +153,7 @@
       </ion-row>
       
       <ion-item>
-        <button ion-button (click)="addHouse()" type="submit" color="favorite" block>发布房屋信息</button>
+        <button ion-button (click)="addHouse()" type="submit" color="favorite" [disabled]="!newHouseForm.valid" block>发布房屋信息</button>
       </ion-item>
     </form>
   </ion-list>

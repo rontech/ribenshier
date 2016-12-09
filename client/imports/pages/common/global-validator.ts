@@ -30,4 +30,12 @@ export class GlobalValidator {
     let d = new Date(date);
     return moment(d).format('YYYY-MM-DD');
   }
+
+   static positiveNumberFormat(control: FormControl) {
+    var NUMBER_REGEXP = /^\d+(.\d{1,2})?$/i;
+    if (control.value != '' && (!NUMBER_REGEXP.test(control.value))) {
+      return { 'incorrectPositiveNumberFormat': true };
+    }
+    return null;
+  }
 }

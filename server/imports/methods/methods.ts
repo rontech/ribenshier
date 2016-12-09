@@ -180,7 +180,7 @@ Meteor.methods({
     check(description, nonEmptyString);
     check(day, nonEmptyString);
     check(deadline, nonEmptyString);
-    check(day > deadline, compare);
+    check(day >= deadline, compare);
  
     let dt = new Date();
     const activity = {

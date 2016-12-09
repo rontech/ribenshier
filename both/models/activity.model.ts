@@ -2,8 +2,8 @@ import { CommonEntity } from './common-entity.model';
  
 export interface Activity extends CommonEntity {
   status?: string;
-  day?: Date;
+  day?: string;
   people?: number;
-  deadline?: Date;
+  deadline?: string;
   joined?: number;
 }

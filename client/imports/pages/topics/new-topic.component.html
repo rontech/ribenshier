@@ -15,27 +15,27 @@
       <ion-input formControlName="title"  name="title"></ion-input>
     </ion-item>
 
-     <div *ngIf="title.hasError('required') && title.touched" class="error-hint">标题不能为空!</div>
-     <div  *ngIf="title.hasError('minlength') && title.touched" class="error-hint">
-       标题长度不能低于1位!
-     </div>
-     <div  *ngIf="title.hasError('maxlength') && title.touched" class="error-hint">
-       标题长度最长50位!
-     </div>
+    <div *ngIf="title.hasError('required') && title.touched" class="error-hint">标题不能为空!</div>
+    <div  *ngIf="title.hasError('minlength') && title.touched" class="error-hint">
+      标题长度不能低于1位!
+    </div>
+    <div  *ngIf="title.hasError('maxlength') && title.touched" class="error-hint">
+      标题长度最长50位!
+    </div>
 
     <ion-item>
       <ion-label floating color="primary">内容</ion-label>
       <ion-textarea rows="6" formControlName="content" name="content"></ion-textarea>
     </ion-item>
 
-     <div *ngIf="content.hasError('required') && content.touched" class="error-hint">内容不能为空!</div>
-     <div  *ngIf="content.hasError('minlength') && content.touched" class="error-hint">
-       内容长度不能低于1位!
-     </div>
-     <div  *ngIf="content.hasError('maxlength') && content.touched" class="error-hint">
-       内容长度最长2000位!
-     </div>
-    
+    <div *ngIf="content.hasError('required') && content.touched" class="error-hint">内容不能为空!</div>
+    <div  *ngIf="content.hasError('minlength') && content.touched" class="error-hint">
+      内容长度不能低于1位!
+    </div>
+    <div  *ngIf="content.hasError('maxlength') && content.touched" class="error-hint">
+      内容长度最长2000位!
+    </div>
+
     <ion-row>
       <ion-item>
         <label class="upload-label" for="picture_upload">
@@ -44,20 +44,20 @@
         <label>
       </ion-item>
 
-      <ion-list>
+    <ion-list>
       <ion-item-sliding *ngFor="let thumb of thumbs | async" class="float: right;">
       <button ion-item>
-        <img [src]= 'thumb.path' width="200"></img>
+        <img [src]= 'thumb.path'></img>
       </button>
       <ion-item-options>
         <button ion-button color="danger" (click)="removePicture(thumb)">消除</button>
       </ion-item-options>
       </ion-item-sliding>
-      </ion-list>
+    </ion-list>
     </ion-row>
 
     <ion-item>
-      <button ion-button (click)="addTopic()" type="submit" color="favorite" block>发表主题</button>
+      <button ion-button (click)="addTopic()" type="submit" [disabled]="!newTopicForm.valid" color="favorite" block>发表主题</button>
     </ion-item>
     </form>
   </ion-list>

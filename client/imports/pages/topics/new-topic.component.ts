@@ -5,14 +5,13 @@ import { Observable } from 'rxjs';
 import template from './new-topic.component.html';
 import * as style from './new-topic.component.scss';
 import { MeteorObservable } from 'meteor-rxjs';
+import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 
 import { Thumbs, Images } from '../../../../both/collections/images.collection';
 import { Thumb, Image } from '../../../../both/models/image.model';
 import { upload } from '../../../../both/methods/images.methods';
 import { UtilityService } from '../../services/utility.service';
-import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 
- 
 @Component({
   selector: 'new-topic',
   template,
@@ -23,8 +22,6 @@ import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms'
 export class NewTopicComponent {
   thumbs: Observable<Thumb[]>;
   private senderId: string;
-//private title: string;
-//private content: string;
   private picture: string;
   private pictureId: string;
   private thumbnail: string;
@@ -38,7 +35,8 @@ export class NewTopicComponent {
   content = new FormControl('',Validators.compose([
                                Validators.required,
                                Validators.minLength(1),
-                               Validators.maxLength(2000)]));;
+                               Validators.maxLength(2000)]));
+
   constructor(
     private navCtrl: NavController,
     private viewCtrl: ViewController,
@@ -49,11 +47,16 @@ export class NewTopicComponent {
     this.senderId = Meteor.userId();
     this.newTopicForm = this.formBuilder.group({
       title: this.title,
-      content: this.content,
+      content: this.content
     });
     }
 
   addTopic(): void {
+    if(this.pictureId === undefined) {
+      this.utilSrv.alertDialog('图片不能为空', '请选择一张图片上传');
+      return;
+    }
+
     MeteorObservable.call('addTopic',
                       this.senderId,
                       this.title.value,
@@ -115,7 +118,7 @@ export class NewTopicComponent {
       this.picture = undefined;
       this.pictureId = undefined;
     }
-   
+
     let loader = this.loadingCtrl.create({
       content: '上载中...',
       dismissOnPageChange: true

@@ -9,7 +9,7 @@
  
 <ion-content class="new-activity">
   <ion-list>
-  <form [formGroup]="newactivityForm">
+  <form [formGroup]="newActivityForm">
     <ion-item>
       <ion-label floating color="primary">标题</ion-label>
       <ion-input formControlName="title" name="title" type="text"></ion-input>
@@ -44,7 +44,7 @@
 
     <div *ngIf="deadline.hasError('required') && deadline.touched" class="error-hint">报名截止时间不能为空!</div>
     <div *ngIf="deadline.hasError('notFutureTime') && deadline.touched" class="error-hint">报名截止时间不能晚于当前时间!</div>
-    <div *ngIf="newactivityForm.hasError('incorrectdayincorrectDeadline') && deadline.touched" class="error-hint">报名截止时间不能晚于活动时间!</div>
+    <div *ngIf="newActivityForm.hasError('incorrectDeadline') && deadline.touched" class="error-hint">报名截止时间不能晚于活动时间!</div>
     
     
     <ion-item>
@@ -53,11 +53,10 @@
     </ion-item>
 
     <div *ngIf="description.hasError('required') && description.touched" class="error-hint">活动介绍不能为空!</div>
-    <div *ngIf="description.hasError('minlength') && description.touched" class="error-hint">活动介绍不能小于1位!</div>
     <div *ngIf="description.hasError('maxlength') && description.touched" class="error-hint">活动介绍不能大于2000位数!</div>  
     
     <ion-item>
-      <button ion-button (click)="addActivity()" type="submit" color="favorite" [disabled]="!newactivityForm.valid" block>发表活动</button>
+      <button ion-button (click)="addActivity()" type="submit" color="favorite" [disabled]="!newActivityForm.valid" block>发表活动</button>
     </ion-item>
     </form>
   </ion-list>

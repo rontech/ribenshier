@@ -20,15 +20,13 @@ import { GlobalValidator } from '../common/global-validator';
   ]
 })
 export class NewActivityComponent {
-  newactivityForm: FormGroup;
+  newActivityForm: FormGroup;
   title = new FormControl('', Validators.compose([
                                  Validators.required,
-                                 Validators.minLength(1),
                                  Validators.maxLength(50)]));
   people = new FormControl('', Validators.compose([
                                  Validators.required,
                                  GlobalValidator.numberCheck,
-                                 Validators.minLength(1),
                                  Validators.maxLength(5)]));
   day = new FormControl('', Validators.compose([
                                  Validators.required,
@@ -40,7 +38,6 @@ export class NewActivityComponent {
                                  ]));
   description = new FormControl('', Validators.compose([
                                  Validators.required,
-                                 Validators.minLength(0),
                                  Validators.maxLength(2000)]));
   constructor(
     private navCtrl: NavController,
@@ -48,22 +45,22 @@ export class NewActivityComponent {
     private utilSrv: UtilityService,
     private formBuilder: FormBuilder
   ) {
-    this.newactivityForm = this.formBuilder.group({
+    this.newActivityForm = this.formBuilder.group({
       title: this.title,
       people: this.people,
       day: this.day,
       deadline: this.deadline,
       description: this.description},
-      {'validator': Validators.compose([this.stdateGreaterThanDeadline])});
+      {'validator': Validators.compose([this.deadlineCheck])});
   }
 
-  stdateGreaterThanDeadline(group: FormGroup) {
+  deadlineCheck(group: FormGroup) {
     if (group.controls['day'].value != ''
       && group.controls['deadline'].value != ''
       && group.controls['day'].value >= group.controls['deadline'].value) {
       return null;
     }
-    return {'incorrectdayincorrectDeadline': true};
+    return {'incorrectDeadline': true};
   } 
  
   addActivity(): void {

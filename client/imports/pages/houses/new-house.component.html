@@ -16,13 +16,9 @@
       </ion-item>
 
       <div *ngIf="title.hasError('required') && title.touched" class="error-hint">标题不能为空!</div>
-      <div *ngIf="title.hasError('minlength') && title.touched" class="error-hint">
-        标题长度不能低于1位!
-      </div>
       <div  *ngIf="title.hasError('maxlength') && title.touched" class="error-hint">
         标题长度最长50位!
       </div>
-
 
       <ion-item>
         <ion-label floating color="primary">目的<ion-icon name="medical"  style="color:red;font-size:3px"></ion-icon></ion-label>
@@ -60,10 +56,7 @@
         <ion-input formControlName="floorPlan"  name="floorPlan"></ion-input>
       </ion-item>
 
-       <div  *ngIf="floorPlan.hasError('minlength') && floorPlan.touched" class="error-hint">
-        房型长度不能低于1位!
-      </div>
-       <div  *ngIf="floorPlan.hasError('maxlength') && floorPlan.touched" class="error-hint">
+      <div  *ngIf="floorPlan.hasError('maxlength') && floorPlan.touched" class="error-hint">
         房型长度最长50位!
       </div>
 
@@ -72,16 +65,13 @@
         <ion-input formControlName="area" name="area"></ion-input>
       </ion-item>
 
-      <div *ngIf="area.hasError('incorrectPositiveNumberFormat') && area.touched" class="error-hint">只能是正数（最多保留两位小数）!</div>
+      <div *ngIf="area.hasError('incorrectNumberFormat') && area.touched" class="error-hint">请输入数字!</div>
 
       <ion-item>
         <ion-label floating color="primary">交通</ion-label>
         <ion-input formControlName="access"  name="access"></ion-input>
       </ion-item>
 
-      <div  *ngIf="access.hasError('minlength') && access.touched" class="error-hint">
-        交通长度不能低于1位!
-      </div>
       <div  *ngIf="access.hasError('maxlength') && access.touched" class="error-hint">
         交通长度最长50位!
       </div>
@@ -91,23 +81,20 @@
         <ion-input formControlName="price"  name="price"></ion-input>
       </ion-item>
 
-      <div *ngIf="price.hasError('incorrectNumberFormat') && price.touched" class="error-hint">只能是正数!</div>
+      <div *ngIf="price.hasError('incorrectNumberFormat') && price.touched" class="error-hint">请输入数字!</div>
 
       <ion-item>
         <ion-label floating color="primary">建成年数</ion-label>
         <ion-input formControlName="built"  name="built"></ion-input>
       </ion-item>
       
-       <div *ngIf="built.hasError('incorrectNumberFormat') && built.touched" class="error-hint">只能是正数!</div>
+       <div *ngIf="built.hasError('incorrectNumberFormat') && built.touched" class="error-hint">请输入数字!</div>
 
       <ion-item>
         <ion-label floating color="primary">详细信息</ion-label>
         <ion-textarea rows="6"  formControlName="description"></ion-textarea>
       </ion-item>
 
-      <div  *ngIf="description.hasError('minlength') && description.touched" class="error-hint">
-        详细信息长度不能低于1位!
-      </div>
       <div  *ngIf="description.hasError('maxlength') && description.touched" class="error-hint">
         详细信息长度最长2000位!
       </div>

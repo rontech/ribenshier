@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, ViewController, LoadingController } from 'ionic-angular';
+import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { Meteor } from 'meteor/meteor';
 import { Observable } from 'rxjs';
 import template from './new-house.component.html';
@@ -10,8 +11,7 @@ import { Thumbs, Images } from '../../../../both/collections/images.collection';
 import { Thumb, Image } from '../../../../both/models/image.model';
 import { upload } from '../../../../both/methods/images.methods';
 import { UtilityService } from '../../services/utility.service';
-import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
-import { GlobalValidator } from '../../../../client/imports/pages/common/global-validator';
+import { GlobalValidator } from '../common/global-validator';
  
 @Component({
   selector: 'new-house',
@@ -24,7 +24,6 @@ export class NewHouseComponent {
   newHouseForm: FormGroup;
   private title = new FormControl('', Validators.compose([
                                  Validators.required,
-                                 Validators.minLength(1),
                                  Validators.maxLength(50)]));
   private forRental = new FormControl('', Validators.compose([
                                  Validators.required
@@ -33,27 +32,23 @@ export class NewHouseComponent {
                                  Validators.required
                                  ]));
   private brief = new FormControl('', Validators.compose([
-                                 Validators.minLength(1),
                                  Validators.maxLength(50)]));
   private floorPlan = new FormControl('', Validators.compose([
-                                 Validators.minLength(1),
                                  Validators.maxLength(50)]));
   private area = new FormControl('', Validators.compose([
-                                 GlobalValidator.positiveNumberFormat]));
+                                 GlobalValidator.numberCheck]));
   private access = new FormControl('', Validators.compose([
-                                 Validators.minLength(1),
                                  Validators.maxLength(50)]));
   private price = new FormControl('', Validators.compose([
                                  GlobalValidator.numberCheck]));
   private built = new FormControl('', Validators.compose([
                                  GlobalValidator.numberCheck]));
   private description = new FormControl('', Validators.compose([
-                                 Validators.minLength(1),
                                  Validators.maxLength(2000)]));
   private pictureId: string;
   private picture: string;
   private thumbId: string;
-  private thumb:string;
+  private thumb: string;
   thumbsMain: Observable<Thumb[]>;
   thumbsSub: Observable<Thumb[]>;
   subPictureIds: Array<string> = [];
@@ -114,8 +109,8 @@ export class NewHouseComponent {
       return;
     }
     
-    if(files[0].size>512000) {
-      this.utilSrv.alertDialog('图片最大为500KB', '请你重新上传一张新的图片');
+    if(files[0].size>2048000) {
+      this.utilSrv.alertDialog('图片最大为2M', '请你重新上传一张新的图片');
       return;
     }
 

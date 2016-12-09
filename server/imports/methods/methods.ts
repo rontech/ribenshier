@@ -24,10 +24,6 @@ const nonEmptyString = Match.Where((str) => {
   return str.length > 0;
 });
 
-const compare = Match.Where((booler) => {
-  return booler;
-});
- 
 Meteor.methods({
   updateProfile(profile: Profile): void {
     if (!this.userId) throw new Meteor.Error('unauthorized',
@@ -169,26 +165,20 @@ Meteor.methods({
       });
   },
   addActivity(title: string,
-           people: string,
-           day: string,
-           deadline: string,
+           people: number,
+           day: Date,
+           deadline: Date,
            description: string): void {
     if (!this.userId) throw new Meteor.Error('unauthorized',
       '你需要登录才可以操作。');
  
-    check(title, nonEmptyString);
-    check(description, nonEmptyString);
-    check(day, nonEmptyString);
-    check(deadline, nonEmptyString);
-    check(day >= deadline, compare);
- 
     let dt = new Date();
     const activity = {
       title: title,
-      people: parseInt(people),
-      day: new Date(day),
+      people: people,
+      day: day,
       status: '0',
-      deadline: new Date(deadline),
+      deadline: deadline,
       content: description,
       creatorId: this.userId, 
       commented: 0,

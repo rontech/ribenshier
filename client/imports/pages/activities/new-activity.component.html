@@ -30,7 +30,7 @@
     <div *ngIf="people.hasError('incorrectNumberFormat') && people.touched" class="error-hint">人数只能为数字！</div>
 
     <ion-item>
-      <ion-label floating color="primary">活动时间 * </ion-label>
+      <ion-label floating color="primary">活动时间 <ion-icon name="medical"  style="color:red; font-size:3px"></ion-icon></ion-label>
       <ion-datetime displayFormat="YYYY年M月D日" name="day" type="datetime" formControlName="day"></ion-datetime>
     </ion-item>
 
@@ -38,7 +38,7 @@
     <div *ngIf="day.hasError('notFutureTime') && day.touched" class="error-hint">活动时间不能晚于当前时间!</div>
 
     <ion-item>
-      <ion-label floating color="primary">报名截止时间 * </ion-label>
+      <ion-label floating color="primary">报名截止时间 <ion-icon name="medical"  style="color:red; font-size:3px"></ion-icon></ion-label>
       <ion-datetime displayFormat="YYYY年M月D日" name="deadline" formControlName="deadline" type="datetime"></ion-datetime>
     </ion-item>
 

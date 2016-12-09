@@ -5,7 +5,7 @@ import template from './new-user.component.html';
 import * as style from './new-user.component.scss';
 import * as Gravatar from 'gravatar';
 import { UtilityService } from '../../services/utility.service';
-import { GlobalValidator } from './login.component';
+import { GlobalValidator } from '../common/global-validator';
  
 @Component({
   selector: 'new-user',

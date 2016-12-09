@@ -7,6 +7,7 @@ import { MeteorObservable } from 'meteor-rxjs';
 import { UtilityService } from '../../services/utility.service';
 import { NewUserComponent } from './new-user.component'
 import { ForgotPasswordComponent } from './forgot-password.component'
+import { GlobalValidator } from '../common/global-validator'
  
 @Component({
   selector: 'login',
@@ -165,14 +166,3 @@ export class LoginComponent {
     });
   }
 }
-
-export class GlobalValidator {
-  static mailFormat(control: FormControl) {
-    var EMAIL_REGEXP = /^[a-z0-9!#$%&'*+\/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i;
-    if (control.value != '' && (control.value.length <= 5 || !EMAIL_REGEXP.test(control.value))) {
-      return { 'incorrectMailFormat': true };
-    }
-    return null;
-  }
-}
-

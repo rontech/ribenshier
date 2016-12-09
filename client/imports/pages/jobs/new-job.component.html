@@ -9,38 +9,70 @@
  
 <ion-content class="new-job">
   <ion-list>
-    <ion-item>
-      <ion-label floating color="primary">标题</ion-label>
-      <ion-input [(ngModel)]="title"  name="title" required></ion-input>
-    </ion-item>
+    <form [formGroup]="newJobForm">
+      <ion-item>
+        <ion-label floating color="primary">标题</ion-label>
+        <ion-input formControlName="title" name="title"></ion-input>
+      </ion-item>
 
-    <ion-item>
-      <ion-label floating color="primary">工作地点</ion-label>
-      <ion-input [(ngModel)]="location"  name="location" required></ion-input>
-    </ion-item>
+      <div *ngIf="title.hasError('required') && title.touched" class="error-hint">标题不能为空！</div>
+      <div *ngIf="title.hasError('maxlength') && title.touched" class="error-hint">
+        标题长度最长50位!
+      </div>
 
-    <ion-item>
-      <ion-label floating color="primary">职位</ion-label>
-      <ion-input [(ngModel)]="position"  name="position" required></ion-input>
-    </ion-item>
+      <ion-item>
+        <ion-label floating color="primary">工作地点</ion-label>
+        <ion-input formControlName="location" name="location"></ion-input>
+      </ion-item>
 
-    <ion-item>
-      <ion-label floating color="primary">人数</ion-label>
-      <ion-input [(ngModel)]="people"  name="people" required></ion-input>
-    </ion-item>
+      <div *ngIf="location.hasError('required') && location.touched" class="error-hint">工作地点不能为空！</div>
+      <div *ngIf="location.hasError('maxlength') && location.touched" class="error-hint">
+        工作地点长度最长50位!
+      </div>
 
-    <ion-item>
-      <ion-label floating color="primary">开始时期</ion-label>
-      <ion-datetime displayFormat="YYYY年M月D日" [(ngModel)]="start" required></ion-datetime>
-    </ion-item>
+      <ion-item>
+        <ion-label floating color="primary">职位</ion-label>
+        <ion-input formControlName="position" name="position"></ion-input>
+      </ion-item>
 
-    <ion-item>
-      <ion-label floating color="primary">详细信息</ion-label>
-      <ion-textarea rows="6"  [(ngModel)]="description"></ion-textarea>
-    </ion-item>
+      <div *ngIf="position.hasError('required') && position.touched" class="error-hint">职位不能为空！</div>
+      <div *ngIf="position.hasError('maxlength') && position.touched" class="error-hint">
+        职位长度最长50位!
+      </div>
 
-    <ion-item>
-      <button ion-button (click)="addJob()" type="submit" color="favorite" block>发布JOB信息</button>
-    </ion-item>
+      <ion-item>
+        <ion-label floating color="primary">人数</ion-label>
+        <ion-input formControlName="people" name="people"></ion-input>
+      </ion-item>
+
+      <div *ngIf="people.hasError('required') && people.touched" class="error-hint">人数不能为空！</div>
+      <div *ngIf="people.hasError('maxlength') && people.touched" class="error-hint">
+        人数长度最长5位!
+      </div>
+      <div  *ngIf="people.hasError('incorrectNumberFormat') && people.touched" class="error-hint">
+        人数只能为正整数!
+      </div>
+
+      <ion-item>
+        <ion-label floating color="primary">开始时间 <b class="error-hint">*</b></div></ion-label>
+        <ion-datetime displayFormat="YYYY年M月D日" formControlName="start" name="start" type="datetime"></ion-datetime>
+      </ion-item>
+
+      <div *ngIf="start.hasError('notFutureTime') && start.touched" class="error-hint">开始时间不能早于当前时间！</div>
+
+      <ion-item>
+        <ion-label floating color="primary">详细信息</ion-label>
+        <ion-textarea rows="6"  formControlName="description" name="description"></ion-textarea>
+      </ion-item>
+
+      <div *ngIf="description.hasError('required') && description.touched" class="error-hint">详细信息不能为空！</div>
+      <div *ngIf="description.hasError('maxlength') && description.touched" class="error-hint">
+        详细信息长度最长200字符!
+      </div>
+
+      <ion-item>
+        <button ion-button (click)="addJob()" type="submit" color="favorite" [disabled]="!newJobForm.valid" block>发布JOB信息</button>
+      </ion-item>
+     </form>
   </ion-list>
 </ion-content>

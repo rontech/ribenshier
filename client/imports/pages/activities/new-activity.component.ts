@@ -10,7 +10,7 @@ import { Thumbs, Images } from '../../../../both/collections/images.collection';
 import { Thumb, Image } from '../../../../both/models/image.model';
 import { UtilityService } from '../../services/utility.service';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
-import * as commonCheck from '../common/common-check';
+import { GlobalValidator } from '../common/global-validator';
 
 @Component({
   selector: 'new-activity',
@@ -27,34 +27,28 @@ export class NewActivityComponent {
                                  Validators.maxLength(50)]));
   people = new FormControl('', Validators.compose([
                                  Validators.required,
-                                 commonCheck.CommonCheck.integerFormat,
+                                 GlobalValidator.numberCheck,
                                  Validators.minLength(1),
                                  Validators.maxLength(5)]));
   day = new FormControl('', Validators.compose([
                                  Validators.required,
-                                 commonCheck.CommonCheck.dateGreaterThanNow
+                                 GlobalValidator.futureTimeCheck
                                  ]));
   deadline = new FormControl('', Validators.compose([
                                  Validators.required,
-                                 commonCheck.CommonCheck.dateGreaterThanNow
+                                 GlobalValidator.futureTimeCheck
                                  ]));
   description = new FormControl('', Validators.compose([
                                  Validators.required,
                                  Validators.minLength(0),
                                  Validators.maxLength(2000)]));
-  // private title: string;
-  // private people: number;
-  // private day: Date;
-  // private deadline: Date;
-  // private description: string;
- 
   constructor(
     private navCtrl: NavController,
     private viewCtrl: ViewController,
     private utilSrv: UtilityService,
     private formBuilder: FormBuilder
   ) {
-      this.newactivityForm = this.formBuilder.group({
+    this.newactivityForm = this.formBuilder.group({
       title: this.title,
       people: this.people,
       day: this.day,
@@ -63,9 +57,9 @@ export class NewActivityComponent {
       {'validator': Validators.compose([this.stdateGreaterThanDeadline])});
   }
 
-    stdateGreaterThanDeadline(group: FormGroup) {
-    if (group.controls['day'].value != "" 
-      && group.controls['deadline'].value != "" 
+  stdateGreaterThanDeadline(group: FormGroup) {
+    if (group.controls['day'].value != ''
+      && group.controls['deadline'].value != ''
       && group.controls['day'].value >= group.controls['deadline'].value) {
       return null;
     }
@@ -91,4 +85,3 @@ export class NewActivityComponent {
     });
   }
 }
-

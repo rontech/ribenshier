@@ -58,7 +58,7 @@
         <ion-datetime displayFormat="YYYY年M月D日" formControlName="start" name="start" type="datetime"></ion-datetime>
       </ion-item>
 
-      <div *ngIf="start.hasError('incorrectTime') && start.touched" class="error-hint">开始时间不能早于当前时间！</div>
+      <div *ngIf="start.hasError('notFutureTime') && start.touched" class="error-hint">开始时间不能早于当前时间！</div>
 
       <ion-item>
         <ion-label floating color="primary">详细信息</ion-label>

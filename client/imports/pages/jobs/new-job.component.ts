@@ -12,7 +12,7 @@ import { Thumb, Image } from '../../../../both/models/image.model';
 import { upload } from '../../../../both/methods/images.methods';
 import { UtilityService } from '../../services/utility.service';
 
-import * as GlobalValidator from '../common/GlobalValidator';
+import { GlobalValidator } from '../common/global-validator';
 
 @Component({
   selector: 'new-job',
@@ -38,9 +38,9 @@ export class NewJobComponent {
   private people = new FormControl('', Validators.compose([
                               Validators.required,
                               Validators.maxLength(5),
-                              GlobalValidator.GlobalValidator.positiveIntegerCheck
+                              GlobalValidator.numberCheck
                               ]));
-  private start = new FormControl('', GlobalValidator.GlobalValidator.earlierThanCurrentTime);
+  private start = new FormControl('', GlobalValidator.futureTimeCheck);
   private description = new FormControl('', Validators.compose([
                               Validators.required,
                               Validators.maxLength(200)

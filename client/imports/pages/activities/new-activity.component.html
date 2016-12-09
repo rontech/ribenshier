@@ -27,7 +27,7 @@
     <div *ngIf="people.hasError('required') && people.touched" class="error-hint">人数不能为空!</div>
     <div *ngIf="people.hasError('minlength') && people.touched" class="error-hint">人数不能小于1位!</div>
     <div *ngIf="people.hasError('maxlength') && people.touched" class="error-hint">人数不能大于5位数!</div>
-    <div *ngIf="people.hasError('incorrectIntegerFormat') && people.touched" class="error-hint">人数只能为数字！</div>
+    <div *ngIf="people.hasError('incorrectNumberFormat') && people.touched" class="error-hint">人数只能为数字！</div>
 
     <ion-item>
       <ion-label floating color="primary">活动时间 * </ion-label>
@@ -35,7 +35,7 @@
     </ion-item>
 
     <div *ngIf="day.hasError('required') && day.touched" class="error-hint">活动时间不能为空!</div>
-    <div *ngIf="day.hasError('incorrectDay') && day.touched" class="error-hint">活动时间不能晚于当前时间!</div>
+    <div *ngIf="day.hasError('notFutureTime') && day.touched" class="error-hint">活动时间不能晚于当前时间!</div>
 
     <ion-item>
       <ion-label floating color="primary">报名截止时间 * </ion-label>
@@ -43,7 +43,7 @@
     </ion-item>
 
     <div *ngIf="deadline.hasError('required') && deadline.touched" class="error-hint">报名截止时间不能为空!</div>
-    <div *ngIf="deadline.hasError('incorrectDay') && deadline.touched" class="error-hint">报名截止时间不能晚于当前时间!</div>
+    <div *ngIf="deadline.hasError('notFutureTime') && deadline.touched" class="error-hint">报名截止时间不能晚于当前时间!</div>
     <div *ngIf="newactivityForm.hasError('incorrectdayincorrectDeadline') && deadline.touched" class="error-hint">报名截止时间不能晚于活动时间!</div>
     
     

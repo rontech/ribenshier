@@ -48,7 +48,7 @@ export class BookmarksComponent implements OnInit {
 
   showDetail(bookmark): void {
     if(bookmark.type === 'topic') {
-      this.navCtrl.push(TopicDetail, {topicId: bookmark.objId});
+      this.navCtrl.parent.parent.push(TopicDetail, {topicId: bookmark.objId});
     } else if(bookmark.type === 'activity') {
       this.navCtrl.parent.parent.push(ActivityDetail, {activityId: bookmark.objId});
     } else if(bookmark.type === 'house') {

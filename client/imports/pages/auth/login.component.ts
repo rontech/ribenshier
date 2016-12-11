@@ -81,6 +81,10 @@ export class LoginComponent {
     }, 3000);
   }
 
+  loginViaWeChat() {
+    window.open('https://www.google.co.jp', '_self');
+  }
+
   private initFB() {
     let js;
     let fjs = document.getElementsByTagName('script')[0];

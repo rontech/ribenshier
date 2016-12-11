@@ -22,9 +22,8 @@ import { UserComponent } from '../../pages/user/user.component';
   ]
 })
 export class TopicDetail implements OnInit {
-  private topic: Topic;
+  topics: Observable<Topic[]>;
   private topicId: string;
-  private barTitle: string;
   private comments: Observable<Comment[]>;
  
   constructor(
@@ -38,16 +37,17 @@ export class TopicDetail implements OnInit {
   }
  
   ngOnInit() {
-    this.topic = Topics.findOne({_id: this.topicId});
-    const user = Meteor.users.findOne({_id: this.topic.creatorId}, {fields: {profile: 1}});
-    this.topic.profile = user.profile;
-    this.barTitle = this.utilSrv.editTitle(this.topic.title, 12);
+    this.subTopics();
     this.subComments();
   }
 
-  showOptions(): void {
+  barTitle(topic) {
+    return this.utilSrv.editTitle(topic.title, 12);
+  }
+
+  showOptions(topic): void {
     const popover = this.popoverCtrl.create(TopicOptionsComponent, {
-      topic: this.topic
+      topic: topic
     }, {
       cssClass: 'options-popover'
     });
@@ -55,17 +55,17 @@ export class TopicDetail implements OnInit {
     popover.present();
   }
 
-  showComments(): void {
-    this.navCtrl.push(CommentsPage, {topic: this.topic}); 
+  showComments(topic): void {
+    this.navCtrl.push(CommentsPage, {topic: topic}); 
   }
 
-  thumbUp(): void {
+  thumbUp(topic): void {
     MeteorObservable.call('thumbUp',
-                      this.topic._id,
+                      topic._id,
                       Meteor.userId()
       ).subscribe({
       next: () => {
-        this.topic.thumbed += 1; 
+        topic.thumbed += 1; 
       },
       error: (e: Error) => {
         this.utilSrv.alertDialog('提醒', e.message);
@@ -73,12 +73,12 @@ export class TopicDetail implements OnInit {
     });
   }
 
-  showOptionsOrNot(): boolean {
+  showOptionsOrNot(topic): boolean {
     if(!Meteor.user()) {
       return false;
     }
     
-    if(this.topic.creatorId === Meteor.user()._id) {
+    if(topic.creatorId === Meteor.user()._id) {
       return true;
     }
 
@@ -88,7 +88,7 @@ export class TopicDetail implements OnInit {
     return false;
   }
 
-  shareViaFacebook(): void {
+  shareViaFacebook(topic): void {
     this.initFB();
 
     let loader = this.loadingCtrl.create({
@@ -102,13 +102,29 @@ export class TopicDetail implements OnInit {
       loader.dismissAll();
       FB.ui({
         method: 'share',
-        href: 'http://www.ribenshier.com/#/topic-detail/' +  this.topic._id
+        href: 'http://www.ribenshier.com/#/topic-detail/' +  topic._id
       }, (response) => {console.log('fb response=', response);});
     }, 3000);
   }
 
   viewUser(id): void {
     this.navCtrl.push(UserComponent, {userId: id});
+  }
+
+  private subTopics(): void {
+    MeteorObservable.subscribe('topics').subscribe(() => {
+      MeteorObservable.autorun().subscribe(() => {
+        this.topics = Topics
+          .find({_id: this.topicId})
+          .map(topics => {
+            topics.forEach(topic => {
+              const user = Meteor.users.findOne({_id: topic.creatorId}, {fields: {profile: 1}});
+              topic.profile = user.profile;
+            });
+            return topics;
+          }).zone();
+      });
+    });
   }
 
   private subComments(): void {

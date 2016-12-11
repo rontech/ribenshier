@@ -3,7 +3,7 @@ import * as moment from 'moment';
 
 export class GlobalValidator {
   static mailFormat(control: FormControl) {
-    var EMAIL_REGEXP = /^[a-z0-9!#$%&'*+\/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i;
+    let EMAIL_REGEXP = /^[a-z0-9!#$%&'*+\/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i;
     if (control.value != '' && (control.value.length <= 5 || !EMAIL_REGEXP.test(control.value))) {
       return { 'incorrectMailFormat': true };
     }
@@ -11,11 +11,20 @@ export class GlobalValidator {
   }
 
   static numberCheck(control: FormControl) {
-    var NUMBER_REGEXP = /^\+?[1-9]\d*$/i;
+    let NUMBER_REGEXP = /^\d+$/;
     if (control.value != '' && (!NUMBER_REGEXP.test(control.value))) {
       return { 'incorrectNumberFormat': true };
     }
     return null;
+  }
+
+  static maxValueCheck(maxValue) {
+    return function(control: FormControl) {
+      if (control.value != '' && control.value > maxValue) {
+       return { 'overMaxValue': true };
+      }
+      return null;
+    }
   }
 
   static futureTimeCheck(control: FormControl) {
@@ -26,8 +35,21 @@ export class GlobalValidator {
     return null;
   }
 
+  static floatCheck(demical) {
+    return function(control: FormControl) {
+      let NUMBER_REGEXP = new RegExp('^\\d+(\\.\\d{1,' + demical + '2})?$');
+      if (control.value != '' && (!NUMBER_REGEXP.test(control.value))) {
+        return { 'incorrectFloatFormat': true };
+      }
+      return null;
+    }
+  }
+
   static transform(date: any, args?: any): any {
     let d = new Date(date);
-    return moment(d).format('YYYY-MM-DD');
+    if(args)
+      return moment(d).format(args);
+    else
+      return moment(d).format('YYYY-MM-DD');
   }
 }

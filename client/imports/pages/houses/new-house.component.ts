@@ -25,26 +25,21 @@ export class NewHouseComponent {
   private title = new FormControl('', Validators.compose([
                                  Validators.required,
                                  Validators.maxLength(50)]));
-  private forRental = new FormControl('', Validators.compose([
-                                 Validators.required
-                                 ]));
-  private type = new FormControl('', Validators.compose([
-                                 Validators.required
-                                 ]));
-  private brief = new FormControl('', Validators.compose([
-                                 Validators.maxLength(50)]));
-  private floorPlan = new FormControl('', Validators.compose([
-                                 Validators.maxLength(50)]));
-  private area = new FormControl('', Validators.compose([
-                                 GlobalValidator.numberCheck]));
-  private access = new FormControl('', Validators.compose([
-                                 Validators.maxLength(50)]));
-  private price = new FormControl('', Validators.compose([
-                                 GlobalValidator.numberCheck]));
-  private built = new FormControl('', Validators.compose([
-                                 GlobalValidator.numberCheck]));
-  private description = new FormControl('', Validators.compose([
-                                 Validators.maxLength(2000)]));
+  private forRental = new FormControl('0', Validators.required);
+  private type = new FormControl('0', Validators.required);
+  private brief = new FormControl('', Validators.maxLength(200));
+  private floorPlan = new FormControl('', Validators.compose([Validators.required,
+                                          Validators.maxLength(10)]));
+  private area = new FormControl('', Validators.compose([Validators.required,
+                                     GlobalValidator.floatCheck(2)]));
+  private access = new FormControl('', Validators.compose([Validators.required,
+                                     Validators.maxLength(100)]));
+  private price = new FormControl('', Validators.compose([Validators.required, 
+                                      GlobalValidator.floatCheck(2)]));
+  private built = new FormControl('', Validators.compose([Validators.required,
+                                      GlobalValidator.numberCheck]));
+  private description = new FormControl('', Validators.compose([Validators.required,
+                                            Validators.maxLength(1000)]));
   private pictureId: string;
   private picture: string;
   private thumbId: string;

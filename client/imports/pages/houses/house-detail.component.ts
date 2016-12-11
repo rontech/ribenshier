@@ -25,9 +25,8 @@ import { UserComponent } from '../../pages/user/user.component';
   ]
 })
 export class HouseDetail implements OnInit {
-  private house: House;
+  houses: Observable<House[]>;
   private houseId: string;
-  private barTitle: string;
   private pictures: Observable<HousePicture[]>;
   private mySlideOptions = {
     initialSlide: 1,
@@ -48,17 +47,18 @@ export class HouseDetail implements OnInit {
   }
  
   ngOnInit() {
-    this.house = Houses.findOne(this.houseId);
-    const user = Users.findOne({_id: this.house.creatorId}, {fields: {profile: 1}});
-    this.house.profile = user.profile;
-    this.barTitle = this.utilSrv.editTitle(this.house.title, 12);
+    this.subHouses();
     this.subComments();
     this.subPictures();
   }
+
+  barTitle(house) {
+    return this.utilSrv.editTitle(house.title, 12);
+  }
   
-  showOptions(): void {
+  showOptions(house): void {
     const popover = this.popoverCtrl.create(HouseOptionsComponent, {
-      house: this.house
+      house: house
     }, {
       cssClass: 'options-popover'
     });
@@ -66,16 +66,16 @@ export class HouseDetail implements OnInit {
     popover.present();
   }
 
-  showComments(): void {
-    this.navCtrl.push(HouseCommentsPage, {house: this.house}); 
+  showComments(house): void {
+    this.navCtrl.push(HouseCommentsPage, {house: house}); 
   }
 
-  showOptionsOrNot(): boolean {
+  showOptionsOrNot(house): boolean {
     if(!Meteor.user()) {
       return false;
     }
     
-    if(this.house.creatorId === Meteor.user()._id) {
+    if(house.creatorId === Meteor.user()._id) {
       return true;
     }
 
@@ -91,6 +91,22 @@ export class HouseDetail implements OnInit {
 
   viewUser(id): void {
     this.navCtrl.push(UserComponent, {userId: id});
+  }
+
+  private subHouses(): void {
+    MeteorObservable.subscribe('houses').subscribe(() => {
+      MeteorObservable.autorun().subscribe(() => {
+        this.houses = Houses
+          .find({_id: this.houseId})
+          .map(houses => {
+            houses.forEach(house => {
+              const user = Meteor.users.findOne({_id: house.creatorId}, {fields: {profile: 1}});
+              house.profile = user.profile;
+            });
+            return houses;
+          }).zone();
+      });
+    });
   }
 
   private subComments(): void {

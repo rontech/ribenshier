@@ -11,49 +11,55 @@
   <ion-list>
   <form [formGroup]="newActivityForm">
     <ion-item>
-      <ion-label floating color="primary">标题</ion-label>
+      <ion-label floating color="primary">标题
+        <ion-icon name="medical"  style="color:red; font-size:3px"></ion-icon></ion-label>
       <ion-input formControlName="title" name="title" type="text"></ion-input>
     </ion-item>
 
-    <div *ngIf="title.hasError('required') && title.touched" class="error-hint">标题不能为空!</div>
-    <div *ngIf="title.hasError('minlength') && title.touched" class="error-hint">标题不能少于1位!</div>
-    <div *ngIf="title.hasError('maxlength') && title.touched" class="error-hint">标题不能大于50位!</div>
+    <div *ngIf="title.hasError('required') && title.touched" class="error-hint">请输入标题!</div>
+    <div *ngIf="title.hasError('maxlength') && title.touched" class="error-hint">最长可输入50文字!</div>
 
     <ion-item>
       <ion-label floating color="primary">计划人数</ion-label>
       <ion-input formControlName="people" name="people" type="value"></ion-input>
     </ion-item>
 
-    <div *ngIf="people.hasError('required') && people.touched" class="error-hint">人数不能为空!</div>
-    <div *ngIf="people.hasError('minlength') && people.touched" class="error-hint">人数不能小于1位!</div>
-    <div *ngIf="people.hasError('maxlength') && people.touched" class="error-hint">人数不能大于5位数!</div>
-    <div *ngIf="people.hasError('incorrectNumberFormat') && people.touched" class="error-hint">人数只能为数字！</div>
-
+    <div *ngIf="people.hasError('incorrectNumberFormat') && people.touched" class="error-hint">请输入数字！</div>
+    <div *ngIf="people.hasError('overMaxValue') && people.touched" class="error-hint">请输入99999以下的数字！</div>
     <ion-item>
       <ion-label floating color="primary">活动时间 <ion-icon name="medical"  style="color:red; font-size:3px"></ion-icon></ion-label>
-      <ion-datetime displayFormat="YYYY年M月D日" name="day" type="datetime" formControlName="day"></ion-datetime>
+      <ion-datetime name="day" type="datetime" formControlName="day"
+          displayFormat="YYYY年M月D日"
+          [max]="maxDay"
+          [min]="minDay"
+          cancelText="取消"
+          doneText="选择"></ion-datetime>
     </ion-item>
 
-    <div *ngIf="day.hasError('required') && day.touched" class="error-hint">活动时间不能为空!</div>
-    <div *ngIf="day.hasError('notFutureTime') && day.touched" class="error-hint">活动时间不能晚于当前时间!</div>
+    <div *ngIf="day.hasError('required') && day.touched" class="error-hint">请输入活动时间!</div>
+    <div *ngIf="day.hasError('notFutureTime') && day.touched" class="error-hint">请输入未来时间!</div>
 
     <ion-item>
-      <ion-label floating color="primary">报名截止时间 <ion-icon name="medical"  style="color:red; font-size:3px"></ion-icon></ion-label>
-      <ion-datetime displayFormat="YYYY年M月D日" name="deadline" formControlName="deadline" type="datetime"></ion-datetime>
+      <ion-label floating color="primary">报名截止时间</ion-label>
+      <ion-datetime  name="deadline" formControlName="deadline" type="datetime"
+          displayFormat="YYYY年M月D日"
+          [max]="maxDay"
+          [min]="minDay"
+          cancelText="取消"
+          doneText="选择"></ion-datetime>
     </ion-item>
 
-    <div *ngIf="deadline.hasError('required') && deadline.touched" class="error-hint">报名截止时间不能为空!</div>
-    <div *ngIf="deadline.hasError('notFutureTime') && deadline.touched" class="error-hint">报名截止时间不能晚于当前时间!</div>
-    <div *ngIf="newActivityForm.hasError('incorrectDeadline') && deadline.touched" class="error-hint">报名截止时间不能晚于活动时间!</div>
+    <div *ngIf="newActivityForm.hasError('incorrectDeadline') && deadline.touched" class="error-hint">请输入活动之前的时间!</div>
     
     
     <ion-item>
-      <ion-label floating color="primary">活动介绍</ion-label>
+      <ion-label floating color="primary">活动介绍
+        <ion-icon name="medical"  style="color:red; font-size:3px"></ion-icon></ion-label>
       <ion-textarea rows="6" type="text" formControlName="description" name="description"></ion-textarea>
     </ion-item>
 
-    <div *ngIf="description.hasError('required') && description.touched" class="error-hint">活动介绍不能为空!</div>
-    <div *ngIf="description.hasError('maxlength') && description.touched" class="error-hint">活动介绍不能大于2000位数!</div>  
+    <div *ngIf="description.hasError('required') && description.touched" class="error-hint">请输入活动介绍!</div>
+    <div *ngIf="description.hasError('maxlength') && description.touched" class="error-hint">最长可输入1000文字!</div>  
     
     <ion-item>
       <button ion-button (click)="addActivity()" type="submit" color="favorite" [disabled]="!newActivityForm.valid" block>发表活动</button>

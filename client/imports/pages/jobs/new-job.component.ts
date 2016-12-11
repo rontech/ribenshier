@@ -22,6 +22,8 @@ import { GlobalValidator } from '../common/global-validator';
   ]
 })
 export class NewJobComponent {
+  minDay: any;
+  maxDay: any;
   newJobForm: FormGroup;
   private title = new FormControl('', Validators.compose([
                               Validators.required,
@@ -33,17 +35,17 @@ export class NewJobComponent {
                               ]));
   private position = new FormControl('', Validators.compose([
                               Validators.required,
-                              Validators.maxLength(50)
+                              Validators.maxLength(100)
                               ]));
   private people = new FormControl('', Validators.compose([
                               Validators.required,
-                              Validators.maxLength(5),
-                              GlobalValidator.numberCheck
+                              GlobalValidator.numberCheck,
+                              GlobalValidator.maxValueCheck(99999)
                               ]));
   private start = new FormControl('', GlobalValidator.futureTimeCheck);
   private description = new FormControl('', Validators.compose([
                               Validators.required,
-                              Validators.maxLength(200)
+                              Validators.maxLength(1000)
                               ]));
 
   constructor(
@@ -62,6 +64,11 @@ export class NewJobComponent {
       description: this.description
     }
     );
+    let dt = new Date();
+    dt.setDate(dt.getDate() + 1);
+    this.minDay = GlobalValidator.transform(dt);
+    dt.setDate(dt.getDate() + 364);
+    this.maxDay = GlobalValidator.transform(dt);
   }
 
   private addJob(): void {

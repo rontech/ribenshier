@@ -12,6 +12,8 @@ import * as moment from 'moment';
 import { UtilityService } from '../services/utility.service';
 import { Profile } from '../../../both/models/profile.model';
 
+import { TopicDetail } from '../pages/topics/topic-detail.component';
+
 export interface PageObj {
   title: string;
   component: any;
@@ -91,7 +93,8 @@ export class AppComponent implements OnInit{
     this.platform.ready().then(() => {
       // Convenience to route with a given nav
       Deeplinks.routeWithNavController(this.nav, {
-        '/reset-password/:token': ResetPasswordComponent 
+        '/reset-password/:token': ResetPasswordComponent, 
+        '/topic-detail/:topicId': TopicDetail 
       }).subscribe((match) => {
         console.log('Successfully routed', match);
       }, (nomatch) => {

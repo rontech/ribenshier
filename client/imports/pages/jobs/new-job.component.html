@@ -11,63 +11,71 @@
   <ion-list>
     <form [formGroup]="newJobForm">
       <ion-item>
-        <ion-label floating color="primary">标题</ion-label>
+        <ion-label floating color="primary">标题
+          <ion-icon name="medical" style="color:red; font-size:3px"></ion-icon></ion-label>
         <ion-input formControlName="title" name="title"></ion-input>
       </ion-item>
 
-      <div *ngIf="title.hasError('required') && title.touched" class="error-hint">标题不能为空！</div>
+      <div *ngIf="title.hasError('required') && title.touched" class="error-hint">请输入标题！</div>
       <div *ngIf="title.hasError('maxlength') && title.touched" class="error-hint">
-        标题长度最长50位!
+        最长可输入50文字!
       </div>
 
       <ion-item>
-        <ion-label floating color="primary">工作地点</ion-label>
+        <ion-label floating color="primary">工作地点
+          <ion-icon name="medical" style="color:red; font-size:3px"></ion-icon></ion-label>
         <ion-input formControlName="location" name="location"></ion-input>
       </ion-item>
 
-      <div *ngIf="location.hasError('required') && location.touched" class="error-hint">工作地点不能为空！</div>
+      <div *ngIf="location.hasError('required') && location.touched" class="error-hint">请输入工作地点</div>
       <div *ngIf="location.hasError('maxlength') && location.touched" class="error-hint">
-        工作地点长度最长50位!
+        最长可输入50文字!
       </div>
 
       <ion-item>
-        <ion-label floating color="primary">职位</ion-label>
+        <ion-label floating color="primary">职位
+          <ion-icon name="medical" style="color:red; font-size:3px"></ion-icon></ion-label>
         <ion-input formControlName="position" name="position"></ion-input>
       </ion-item>
 
-      <div *ngIf="position.hasError('required') && position.touched" class="error-hint">职位不能为空！</div>
+      <div *ngIf="position.hasError('required') && position.touched" class="error-hint">请输入职位！</div>
       <div *ngIf="position.hasError('maxlength') && position.touched" class="error-hint">
-        职位长度最长50位!
+        最长可输入100文字!
       </div>
 
       <ion-item>
-        <ion-label floating color="primary">人数</ion-label>
+        <ion-label floating color="primary">人数
+          <ion-icon name="medical" style="color:red; font-size:3px"></ion-icon></ion-label>
         <ion-input formControlName="people" name="people"></ion-input>
       </ion-item>
 
-      <div *ngIf="people.hasError('required') && people.touched" class="error-hint">人数不能为空！</div>
-      <div *ngIf="people.hasError('maxlength') && people.touched" class="error-hint">
-        人数长度最长5位!
-      </div>
-      <div  *ngIf="people.hasError('incorrectNumberFormat') && people.touched" class="error-hint">
-        人数只能为正整数!
+      <div *ngIf="people.hasError('required') && people.touched" class="error-hint">请输入人数！</div>
+      <div *ngIf="people.hasError('overMaxValue') && people.touched" class="error-hint">
+        请输入99999以下的数字!
       </div>
 
       <ion-item>
-        <ion-label floating color="primary">开始时间 <ion-icon name="medical" style="color:red; font-size:3px"></ion-icon></ion-label>
-        <ion-datetime displayFormat="YYYY年M月D日" formControlName="start" name="start" type="datetime"></ion-datetime>
+        <ion-label floating color="primary">开始时间
+          <ion-icon name="medical" style="color:red; font-size:3px"></ion-icon></ion-label>
+        <ion-datetime formControlName="start" name="start" type="datetime"
+          displayFormat="YYYY年M月D日"
+          [max]="maxDay"
+          [min]="minDay"
+          cancelText="取消"
+          doneText="选择"></ion-datetime>
       </ion-item>
 
-      <div *ngIf="start.hasError('notFutureTime') && start.touched" class="error-hint">开始时间不能早于当前时间！</div>
+      <div *ngIf="start.hasError('notFutureTime') && start.touched" class="error-hint">请输入将来时间！</div>
 
       <ion-item>
-        <ion-label floating color="primary">详细信息</ion-label>
+        <ion-label floating color="primary">详细信息
+          <ion-icon name="medical" style="color:red; font-size:3px"></ion-icon></ion-label>
         <ion-textarea rows="6"  formControlName="description" name="description"></ion-textarea>
       </ion-item>
 
-      <div *ngIf="description.hasError('required') && description.touched" class="error-hint">详细信息不能为空！</div>
+      <div *ngIf="description.hasError('required') && description.touched" class="error-hint">请输入详细信息！</div>
       <div *ngIf="description.hasError('maxlength') && description.touched" class="error-hint">
-        详细信息长度最长200字符!
+        最长可输入1000文字!
       </div>
 
       <ion-item>

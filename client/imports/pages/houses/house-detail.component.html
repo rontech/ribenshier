@@ -1,15 +1,18 @@
 <ion-header>
   <ion-navbar color="myapp" class="narrow-bar">
-    <ion-title class="bar-title">{{barTitle}}</ion-title>
+    <span *ngFor="let house of houses | async">
+      <ion-title class="bar-title">{{barTitle(house)}}</ion-title>
+    </span>
  
-    <ion-buttons end>
-      <button ion-button icon-only class="settings-button" (click)="showOptions()" *ngIf="showOptionsOrNot()"><ion-icon name="more"></ion-icon></button>
+    <ion-buttons *ngFor="let house of houses | async" end>
+      <button ion-button icon-only class="settings-button"
+        (click)="showOptions(house)" *ngIf="showOptionsOrNot(house)"><ion-icon name="more"></ion-icon></button>
     </ion-buttons>
     </ion-buttons>
   </ion-navbar>
 </ion-header>
 
-<ion-content class="house-detail-content">
+<ion-content class="house-detail-content" *ngFor="let house of houses | async">
   <ion-fab right bottom>
     <button ion-fab mini color="dark"><ion-icon ios="ios-share-outline" md="md-share"></ion-icon></button>
     <ion-fab-list side="top">
@@ -75,7 +78,7 @@
 
     <ion-row>
       <div>
-        <button ion-button clear small (click)="showComments()">
+        <button ion-button clear small (click)="showComments(house)">
           <ion-icon name="text" style="color: #556b2f" ></ion-icon>
           <div class="corner-count">{{house.commented}}</div>
         </button>

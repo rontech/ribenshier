@@ -1,17 +1,19 @@
 <ion-header>
   <ion-navbar color="myapp" class="narrow-bar">
-    <ion-title class="bar-title">{{barTitle}}</ion-title>
+    <span *ngFor="let topic of topics | async">
+      <ion-title class="bar-title">{{barTitle(topic)}}</ion-title>
+    </span>
  
-    <ion-buttons end>
+    <ion-buttons *ngFor="let topic of topics | async" end>
       <button ion-button icon-only 
-              (click)="showOptions()" *ngIf="showOptionsOrNot()">
+             (click)="showOptions(topic)" *ngIf="showOptionsOrNot(topic)">
         <ion-icon name="more"></ion-icon>
-      </button>
+        </button>
     </ion-buttons>
   </ion-navbar>
 </ion-header>
 
-<ion-content>
+<ion-content *ngFor="let topic of topics | async">
   <ion-fab right bottom>
     <button ion-fab mini color="dark"><ion-icon ios="ios-share-outline" md="md-share"></ion-icon></button>
     <ion-fab-list side="top">
@@ -39,11 +41,11 @@
    
     <ion-row>
       <div>
-        <button ion-button clear small (click)="thumbUp()">
+        <button ion-button clear small (click)="thumbUp(topic)">
           <ion-icon name="thumbs-up" style="color: #d03e84"></ion-icon>
           <div class="corner-count">{{topic.thumbed}}</div>
         </button>
-        <button ion-button clear small (click)="showComments()">
+        <button ion-button clear small (click)="showComments(topic)">
           <ion-icon name="text" style="color: #556b2f" ></ion-icon>
           <div class="corner-count">{{topic.commented}}</div>
         </button>
@@ -60,17 +62,10 @@
         {{comment.profile.name}}
       </h3>
       <p text-wrap>{{comment.content}}</p>
-      <!--
-      <a class="subdued like-count">
-        <ion-icon name="heart" color="danger" ></ion-icon>
-       0 {{ comment.likeCount}}
-      </a>
-      -->
       <span class="post-time">
         <ion-icon name="time"></ion-icon>
         {{comment.createdAt | amCalendar | chineseCalendar}}
       </span>
     </ion-item>
   </div>
-
 </ion-content> 

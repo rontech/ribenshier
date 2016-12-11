@@ -20,25 +20,25 @@ import { GlobalValidator } from '../common/global-validator';
   ]
 })
 export class NewActivityComponent {
+  minDay: any;
+  maxDay: any;
   newActivityForm: FormGroup;
   title = new FormControl('', Validators.compose([
                                  Validators.required,
                                  Validators.maxLength(50)]));
   people = new FormControl('', Validators.compose([
-                                 Validators.required,
                                  GlobalValidator.numberCheck,
-                                 Validators.maxLength(5)]));
+                                 GlobalValidator.maxValueCheck(99999)]));
   day = new FormControl('', Validators.compose([
                                  Validators.required,
                                  GlobalValidator.futureTimeCheck
                                  ]));
   deadline = new FormControl('', Validators.compose([
-                                 Validators.required,
                                  GlobalValidator.futureTimeCheck
                                  ]));
   description = new FormControl('', Validators.compose([
                                  Validators.required,
-                                 Validators.maxLength(2000)]));
+                                 Validators.maxLength(1000)]));
   constructor(
     private navCtrl: NavController,
     private viewCtrl: ViewController,
@@ -52,14 +52,20 @@ export class NewActivityComponent {
       deadline: this.deadline,
       description: this.description},
       {'validator': Validators.compose([this.deadlineCheck])});
+    let dt = new Date();
+    dt.setDate(dt.getDate() + 1);
+    this.minDay = GlobalValidator.transform(dt);
+    dt.setDate(dt.getDate() + 364);
+    this.maxDay = GlobalValidator.transform(dt);
   }
 
   deadlineCheck(group: FormGroup) {
-    if (group.controls['day'].value != ''
-      && group.controls['deadline'].value != ''
-      && group.controls['day'].value >= group.controls['deadline'].value) {
+    if (group.controls['day'].value === ''
+      ||  group.controls['deadline'].value === '') {
       return null;
     }
+    if(group.controls['day'].value >= group.controls['deadline'].value)
+      return null;
     return {'incorrectDeadline': true};
   } 
  

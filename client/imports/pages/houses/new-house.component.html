@@ -11,27 +11,37 @@
   <ion-list>
     <form [formGroup]="newHouseForm">
       <ion-item>
-          <ion-label floating color="primary">标题</ion-label>
+          <ion-label floating color="primary">标题
+            <ion-icon name="medical"  style="color:red; font-size:3px"></ion-icon></ion-label>
           <ion-input formControlName="title" name="title"></ion-input>
       </ion-item>
 
-      <div *ngIf="title.hasError('required') && title.touched" class="error-hint">标题不能为空!</div>
+      <div *ngIf="title.hasError('required') && title.touched" class="error-hint">请输入标题!</div>
       <div  *ngIf="title.hasError('maxlength') && title.touched" class="error-hint">
-        标题长度最长50位!
+        最长可输入50文字!
       </div>
 
       <ion-item>
-        <ion-label floating color="primary">目的<ion-icon name="medical"  style="color:red;font-size:3px"></ion-icon></ion-label>
-        <ion-select formControlName="forRental">
-          <ion-option value="0" selected="true">出租</ion-option>
+        <ion-label floating color="primary">不动产特色</ion-label>
+        <ion-textarea rows="6" formControlName="brief" name="brief"></ion-textarea>
+      </ion-item>
+
+      <div  *ngIf="brief.hasError('maxlength') && brief.touched" class="error-hint">
+        最长可输入200文字!
+      </div>
+
+      <ion-item>
+        <ion-label floating color="primary">目的</ion-label>
+        <ion-select formControlName="forRental" okText="选择" cancelText="取消" selectedText="出租">
+          <ion-option value="0">出租</ion-option>
           <ion-option value="1">出售</ion-option>
         </ion-select>
       </ion-item>
 
       <ion-item>
-        <ion-label floating color="primary">房屋类型<ion-icon name="medical"  style="color:red;font-size:3px"></ion-icon></ion-label>
-        <ion-select formControlName="type">
-          <ion-option value="0" selected="true">マンション</ion-option>
+        <ion-label floating color="primary">房屋类型</ion-label>
+        <ion-select formControlName="type" okText="选择" cancelText="取消" selectedText="マンション">
+          <ion-option value="0">マンション</ion-option>
           <ion-option value="1">アパート</ion-option>
           <ion-option value="2">一户建</ion-option>
           <ion-option value="3">土地</ion-option>
@@ -40,69 +50,70 @@
       </ion-item>
 
       <ion-item>
-        <ion-label floating color="primary">不动产特点</ion-label>
-        <ion-textarea rows="6" formControlName="brief" name="brief"></ion-textarea>
-      </ion-item>
-
-      <div  *ngIf="brief.hasError('minlength') && brief.touched" class="error-hint">
-        不动产特点长度不能低于1位!
-      </div>
-      <div  *ngIf="brief.hasError('maxlength') && brief.touched" class="error-hint">
-        不动产特点长度最长50位!
-      </div>
-
-      <ion-item>
-        <ion-label floating color="primary">房型(LDK,DK...etc)</ion-label>
+        <ion-label floating color="primary">房型(LDK,3DK...etc)
+            <ion-icon name="medical"  style="color:red; font-size:3px"></ion-icon></ion-label>
         <ion-input formControlName="floorPlan"  name="floorPlan"></ion-input>
       </ion-item>
 
+      <div *ngIf="floorPlan.hasError('required') && floorPlan.touched" class="error-hint">请输入房型!</div>
       <div  *ngIf="floorPlan.hasError('maxlength') && floorPlan.touched" class="error-hint">
-        房型长度最长50位!
+        最长可输入10文字!
       </div>
 
       <ion-item>
-        <ion-label floating color="primary">面积(平米）</ion-label>
+        <ion-label floating color="primary">面积(平米）
+            <ion-icon name="medical"  style="color:red; font-size:3px"></ion-icon></ion-label>
         <ion-input formControlName="area" name="area"></ion-input>
       </ion-item>
 
-      <div *ngIf="area.hasError('incorrectNumberFormat') && area.touched" class="error-hint">请输入数字!</div>
+      <div *ngIf="area.hasError('required') && area.touched" class="error-hint">请输入面积!</div>
+      <div *ngIf="area.hasError('incorrectFloatFormat') && area.touched" class="error-hint">请输入数字(小数点下2位)!</div>
 
       <ion-item>
-        <ion-label floating color="primary">交通</ion-label>
+        <ion-label floating color="primary">交通
+            <ion-icon name="medical"  style="color:red; font-size:3px"></ion-icon></ion-label>
         <ion-input formControlName="access"  name="access"></ion-input>
       </ion-item>
 
+      <div *ngIf="access.hasError('required') && access.touched" class="error-hint">请输入交通信息!</div>
       <div  *ngIf="access.hasError('maxlength') && access.touched" class="error-hint">
-        交通长度最长50位!
+        最长可输入100文字!
       </div>
 
       <ion-item>
-        <ion-label floating color="primary">价格(万円)</ion-label>
+        <ion-label floating color="primary">价格(万円)
+            <ion-icon name="medical"  style="color:red; font-size:3px"></ion-icon></ion-label>
         <ion-input formControlName="price"  name="price"></ion-input>
       </ion-item>
 
-      <div *ngIf="price.hasError('incorrectNumberFormat') && price.touched" class="error-hint">请输入数字!</div>
+      <div *ngIf="price.hasError('required') && price.touched" class="error-hint">请输入价格!</div>
+      <div *ngIf="price.hasError('incorrectFloatFormat') && price.touched" class="error-hint">请输入数字(小数点下两位)!</div>
 
       <ion-item>
-        <ion-label floating color="primary">建成年数</ion-label>
+        <ion-label floating color="primary">建成年数
+            <ion-icon name="medical"  style="color:red; font-size:3px"></ion-icon></ion-label>
         <ion-input formControlName="built"  name="built"></ion-input>
       </ion-item>
       
-       <div *ngIf="built.hasError('incorrectNumberFormat') && built.touched" class="error-hint">请输入数字!</div>
+      <div *ngIf="built.hasError('required') && built.touched" class="error-hint">请输入建成年数!</div>
+      <div *ngIf="built.hasError('incorrectNumberFormat') && built.touched" class="error-hint">请输入数字!</div>
 
       <ion-item>
-        <ion-label floating color="primary">详细信息</ion-label>
+        <ion-label floating color="primary">详细信息
+            <ion-icon name="medical"  style="color:red; font-size:3px"></ion-icon></ion-label>
         <ion-textarea rows="6"  formControlName="description"></ion-textarea>
       </ion-item>
 
+      <div *ngIf="description.hasError('required') && description.touched" class="error-hint">请输入详细信息!</div>
       <div  *ngIf="description.hasError('maxlength') && description.touched" class="error-hint">
-        详细信息长度最长2000位!
+        最长可输入1000文字!
       </div>
 
       <ion-row>
         <ion-item>
           <label class="upload-label" for="picture_upload_main">
             ＋上传主图片
+            <ion-icon name="medical"  style="color:red; font-size:3px"></ion-icon>
             <input type="file" id="picture_upload_main" style="display:none;" (change)="uploadPicture($event.target.files, 'main')"/>
           </label>
         </ion-item>
@@ -124,7 +135,7 @@
           <label class="upload-label" for="picture_upload_sub">
             ＋上传副图片(限3张）
             <input type="file" id="picture_upload_sub" style="display:none;" (change)="uploadPicture($event.target.files, 'sub')"/>
-          <label>
+          </label>
         </ion-item>
 
         <ion-list>

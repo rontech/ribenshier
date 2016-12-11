@@ -22,9 +22,8 @@ import { UserComponent } from '../../pages/user/user.component';
   ]
 })
 export class JobDetail implements OnInit {
-  private job: Job;
+  jobs: Observable<Job[]>;
   private jobId: string;
-  private barTitle: string;
   private mySlideOptions = {
     initialSlide: 1,
     loop: true,
@@ -42,16 +41,17 @@ export class JobDetail implements OnInit {
   }
  
   ngOnInit() {
-    this.job = Jobs.findOne(this.jobId);
-    const user = Meteor.users.findOne({_id: this.job.creatorId}, {fields: {profile: 1}});
-    this.job.profile = user.profile;
-    this.barTitle = this.utilSrv.editTitle(this.job.title, 12);
+    this.subJobs();
     this.subComments();
   }
 
-  showOptions(): void {
+  barTitle(job) {
+    return this.utilSrv.editTitle(job.title, 12);
+  }
+
+  showOptions(job): void {
     const popover = this.popoverCtrl.create(JobOptionsComponent, {
-      job: this.job
+      job: job
     }, {
       cssClass: 'options-popover'
     });
@@ -59,16 +59,16 @@ export class JobDetail implements OnInit {
     popover.present();
   }
 
-  showComments(): void {
-    this.navCtrl.push(JobCommentsPage, {job: this.job}); 
+  showComments(job): void {
+    this.navCtrl.push(JobCommentsPage, {job: job}); 
   }
 
-  showOptionsOrNot(): boolean {
+  showOptionsOrNot(job): boolean {
     if(!Meteor.user()) {
       return false;
     }
     
-    if(this.job.creatorId === Meteor.user()._id) {
+    if(job.creatorId === Meteor.user()._id) {
       return true;
     }
 
@@ -80,6 +80,22 @@ export class JobDetail implements OnInit {
 
   viewUser(id): void {
     this.navCtrl.push(UserComponent, {userId: id});
+  }
+
+  private subJobs(): void {
+    MeteorObservable.subscribe('jobs').subscribe(() => {
+      MeteorObservable.autorun().subscribe(() => {
+        this.jobs = Jobs
+          .find({_id: this.jobId})
+          .map(jobs => {
+            jobs.forEach(job => {
+              const user = Meteor.users.findOne({_id: job.creatorId}, {fields: {profile: 1}});
+              job.profile = user.profile;
+            });
+            return jobs;
+          }).zone();
+      });
+    });
   }
 
   private subComments(): void {

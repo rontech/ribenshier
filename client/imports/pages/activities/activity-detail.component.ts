@@ -24,9 +24,8 @@ import { UserComponent } from '../../pages/user/user.component';
   ]
 })
 export class ActivityDetail implements OnInit {
-  private activity: Activity;
+  activities: Observable<Activity[]>;
   private activityId: string;
-  private barTitle: string;
   private comments: Observable<ActivityComment[]>;
   private members: Observable<ActivityMember[]>;
  
@@ -41,17 +40,18 @@ export class ActivityDetail implements OnInit {
   }
  
   ngOnInit() {
-    this.activity = Activities.findOne(this.activityId);
-    const user = Meteor.users.findOne({_id: this.activity.creatorId}, {fields: {profile: 1}});
-    this.activity.profile = user.profile;
-    this.barTitle = this.utilSrv.editTitle(this.activity.title, 12);
+    this.subActivities();
     this.subComments();
     this.subJoinedMembers();
   }
 
-  showOptions(): void {
+  barTitle(activity) {
+    return this.utilSrv.editTitle(activity.title, 12);
+  }
+
+  showOptions(activity): void {
     const popover = this.popoverCtrl.create(ActivityOptionsComponent, {
-      activity: this.activity
+      activity: activity
     }, {
       cssClass: 'options-popover'
     });
@@ -59,22 +59,22 @@ export class ActivityDetail implements OnInit {
     popover.present();
   }
 
-  showComments(): void {
-    this.navCtrl.push(ActivityCommentsPage, {activity: this.activity}); 
+  showComments(activity): void {
+    this.navCtrl.push(ActivityCommentsPage, {activity: activity}); 
   }
 
-  joinActivity(): void {
+  joinActivity(activity): void {
     MeteorObservable.call('joinActivity',
                       this.activityId,
                       Meteor.userId()
       ).subscribe({
       next: () => {
-        this.activity.joined += 1;
+        activity.joined += 1;
         this.utilSrv.alertDialog('信息', '报名成功!');
       },
       error: (e: Error) => {
         if(e.message.indexOf('already-joined') != -1) {
-          this.confirmUnjoin();
+          this.confirmUnjoin(activity);
         } else {
           this.utilSrv.alertDialog('提醒', e.message);
         }
@@ -82,12 +82,12 @@ export class ActivityDetail implements OnInit {
     });
   }
 
-  showOptionsOrNot(): boolean {
+  showOptionsOrNot(activity): boolean {
     if(!Meteor.user()) {
       return false;
     }
     
-    if(this.activity.creatorId === Meteor.user()._id) {
+    if(activity.creatorId === Meteor.user()._id) {
       return true;
     }
 
@@ -99,6 +99,22 @@ export class ActivityDetail implements OnInit {
 
   viewUser(id): void {
     this.navCtrl.push(UserComponent, {userId: id});
+  }
+
+  private subActivities(): void {
+    MeteorObservable.subscribe('activities').subscribe(() => {
+      MeteorObservable.autorun().subscribe(() => {
+        this.activities = Activities
+          .find({_id: this.activityId})
+          .map(activities => {
+            activities.forEach(activity => {
+              const user = Meteor.users.findOne({_id: activity.creatorId}, {fields: {profile: 1}});
+              activity.profile = user.profile;
+            });
+            return activities;
+          }).zone();
+      });
+    });
   }
 
   private subJoinedMembers() {
@@ -137,7 +153,7 @@ export class ActivityDetail implements OnInit {
     });
   }
 
-  private confirmUnjoin(): void {
+  private confirmUnjoin(activity): void {
     const alert = this.alertCtrl.create({
       title: '提醒',
       message: '你已经报名，需要取消吗?',
@@ -149,7 +165,7 @@ export class ActivityDetail implements OnInit {
         {
           text: '取消活动',
           handler: () => {
-            this.unjoinActivity(alert);
+            this.unjoinActivity(alert, activity);
             return false;
           }
         }
@@ -159,14 +175,14 @@ export class ActivityDetail implements OnInit {
     alert.present();
   }
 
-  private unjoinActivity(alert): void {
+  private unjoinActivity(alert, activity): void {
     alert.dismiss();
     MeteorObservable.call('unjoinActivity',
-                      this.activity._id,
+                      activity._id,
                       Meteor.userId()
       ).subscribe({
       next: () => {
-        this.activity.joined -= 1;
+        activity.joined -= 1;
       },
       error: (e: Error) => {
         this.utilSrv.alertDialog('提醒', e.message);

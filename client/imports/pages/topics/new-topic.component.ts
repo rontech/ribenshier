@@ -30,11 +30,9 @@ export class NewTopicComponent {
   newTopicForm: FormGroup;
   title = new FormControl('',Validators.compose([
                              Validators.required,
-                             Validators.minLength(1),
                              Validators.maxLength(50)]));
   content = new FormControl('',Validators.compose([
                                Validators.required,
-                               Validators.minLength(1),
                                Validators.maxLength(2000)]));
 
   constructor(

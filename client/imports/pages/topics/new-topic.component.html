@@ -11,37 +11,34 @@
   <ion-list>
     <form [formGroup]="newTopicForm">
     <ion-item>
-      <ion-label floating color="primary">标题</ion-label>
+      <ion-label floating color="primary">标题
+        <ion-icon name="medical"  style="color:red; font-size:3px"></ion-icon></ion-label>
       <ion-input formControlName="title"  name="title"></ion-input>
     </ion-item>
 
-    <div *ngIf="title.hasError('required') && title.touched" class="error-hint">标题不能为空!</div>
-    <div  *ngIf="title.hasError('minlength') && title.touched" class="error-hint">
-      标题长度不能低于1位!
-    </div>
+    <div *ngIf="title.hasError('required') && title.touched" class="error-hint">请输入标题!</div>
     <div  *ngIf="title.hasError('maxlength') && title.touched" class="error-hint">
-      标题长度最长50位!
+      最长可输入50文字!
     </div>
 
     <ion-item>
-      <ion-label floating color="primary">内容</ion-label>
+      <ion-label floating color="primary">内容
+        <ion-icon name="medical"  style="color:red; font-size:3px"></ion-icon></ion-label>
       <ion-textarea rows="6" formControlName="content" name="content"></ion-textarea>
     </ion-item>
 
-    <div *ngIf="content.hasError('required') && content.touched" class="error-hint">内容不能为空!</div>
-    <div  *ngIf="content.hasError('minlength') && content.touched" class="error-hint">
-      内容长度不能低于1位!
-    </div>
+    <div *ngIf="content.hasError('required') && content.touched" class="error-hint">请输入内容!</div>
     <div  *ngIf="content.hasError('maxlength') && content.touched" class="error-hint">
-      内容长度最长2000位!
+      最长可输入5000文字!
     </div>
 
     <ion-row>
       <ion-item>
         <label class="upload-label" for="picture_upload">
           ＋上传图片
+          <ion-icon name="medical"  style="color:red; font-size:3px"></ion-icon>
           <input type="file" id="picture_upload" style="display:none;" (change)="uploadPicture($event.target.files, 'main')"/>
-        <label>
+        </label>
       </ion-item>
 
     <ion-list>

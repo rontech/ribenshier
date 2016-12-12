@@ -46,7 +46,7 @@
 
       <ion-item>
         <div><ion-icon name="close-circle"  style="color: #4682b4"></ion-icon><span class="section-name">报名截止时间</span></div>
-        <div class="section-content">{{activity.deadline | date:'yyyy年M月d日'}}</div>
+        <div class="section-content" *ngIf="activity.deadline">{{activity.deadline | date:'yyyy年M月d日'}}</div>
       </ion-item>
 
       <ion-item>

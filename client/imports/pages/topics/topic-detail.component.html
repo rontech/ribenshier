@@ -13,7 +13,7 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content *ngFor="let topic of topics | async">
+<ion-content>
   <ion-fab right bottom>
     <button ion-fab mini color="dark"><ion-icon ios="ios-share-outline" md="md-share"></ion-icon></button>
     <ion-fab-list side="top">
@@ -21,51 +21,53 @@
       <button ion-fab><ion-icon name="chatbubbles" (click)="shareViaWechat()"></ion-icon></button>
     </ion-fab-list>
   </ion-fab>
+  
+  <div *ngFor="let topic of topics | async">
+    <div><h2>{{topic.title}}</h2></div>
 
-  <div><h2>{{topic.title}}</h2></div>
-
-  <ion-item class="item-no-border">
-    <ion-avatar item-left (click)="viewUser(topic.creatorId)">
-      <img [src]="topic.profile.picture">
-    </ion-avatar>
-    <h2 color="primary"  class="post-author" (click)="viewUser(topic.creatorId)">{{topic.profile.name }}</h2>
-    <span class="post-time">
-      <ion-icon name="timer-outline"></ion-icon>
-      {{topic.createdAt | amTimeAgo | chineseTimeAgo}}
-    </span>
-  </ion-item>
-
-  <div padding>
-    <img *ngIf="topic.picture" [src]="topic.picture">
-    <div class="topic-content">{{topic.content}}</div>
-   
-    <ion-row>
-      <div>
-        <button ion-button clear small (click)="thumbUp(topic)">
-          <ion-icon name="thumbs-up" style="color: #d03e84"></ion-icon>
-          <div class="corner-count">{{topic.thumbed}}</div>
-        </button>
-        <button ion-button clear small (click)="showComments(topic)">
-          <ion-icon name="text" style="color: #556b2f" ></ion-icon>
-          <div class="corner-count">{{topic.commented}}</div>
-        </button>
-      </div>
-    </ion-row>
-
-    <ion-label color="danger">最新评论</ion-label>
-    <ion-item class="post-comment" *ngFor="let comment of comments | async">
-      <ion-avatar item-left (click)="viewUser(comment.senderId)">
-        <img [src]="comment.profile.picture">
+    <ion-item class="item-no-border">
+      <ion-avatar item-left (click)="viewUser(topic.creatorId)">
+        <img [src]="topic.profile.picture">
       </ion-avatar>
-
-      <h3 color="primary"  class="post-author">
-        {{comment.profile.name}}
-      </h3>
-      <p text-wrap>{{comment.content}}</p>
+      <h2 color="primary"  class="post-author" (click)="viewUser(topic.creatorId)">{{topic.profile.name }}</h2>
       <span class="post-time">
-        <ion-icon name="time"></ion-icon>
-        {{comment.createdAt | amCalendar | chineseCalendar}}
+        <ion-icon name="timer-outline"></ion-icon>
+        {{topic.createdAt | amTimeAgo | chineseTimeAgo}}
       </span>
     </ion-item>
+
+    <div padding>
+      <img *ngIf="topic.picture" [src]="topic.picture">
+      <div class="topic-content">{{topic.content}}</div>
+   
+      <ion-row>
+        <div>
+          <button ion-button clear small (click)="thumbUp(topic)">
+            <ion-icon name="thumbs-up" style="color: #d03e84"></ion-icon>
+            <div class="corner-count">{{topic.thumbed}}</div>
+          </button>
+          <button ion-button clear small (click)="showComments(topic)">
+            <ion-icon name="text" style="color: #556b2f" ></ion-icon>
+            <div class="corner-count">{{topic.commented}}</div>
+          </button>
+        </div>
+      </ion-row>
+
+      <ion-label color="danger">最新评论</ion-label>
+      <ion-item class="post-comment" *ngFor="let comment of comments | async">
+        <ion-avatar item-left (click)="viewUser(comment.senderId)">
+          <img [src]="comment.profile.picture">
+        </ion-avatar>
+
+        <h3 color="primary"  class="post-author">
+          {{comment.profile.name}}
+        </h3>
+        <p text-wrap>{{comment.content}}</p>
+        <span class="post-time">
+          <ion-icon name="time"></ion-icon>
+          {{comment.createdAt | amCalendar | chineseCalendar}}
+        </span>
+      </ion-item>
+    </div>
   </div>
 </ion-content> 

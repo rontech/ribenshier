@@ -12,7 +12,7 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content class="house-detail-content" *ngFor="let house of houses | async">
+<ion-content class="house-detail-content">
   <ion-fab right bottom>
     <button ion-fab mini color="dark"><ion-icon ios="ios-share-outline" md="md-share"></ion-icon></button>
     <ion-fab-list side="top">
@@ -21,90 +21,86 @@
     </ion-fab-list>
   </ion-fab>
 
-  <div><h3>{{house.title}}</h3></div>
+  <div *ngFor="let house of houses | async">
+    <div><h3>{{house.title}}</h3></div>
 
-  <ion-item class="item-no-border">
-    <ion-avatar item-left (click)="viewUser(house.creatorId)">
-      <img [src]="house.profile.picture">
-    </ion-avatar>
-    <h2 color="primary"  class="post-author" (click)="viewUser(house.creatorId)">{{house.profile.name }}</h2>
-    <span class="post-time">
-      <ion-icon name="timer-outline"></ion-icon>
-      {{house.createdAt | amTimeAgo | chineseTimeAgo}}
-    </span>
-  </ion-item>
-
-  <div padding>
-    <ion-item>
-      <div class="brief-description">{{house.brief}}</div>
-    </ion-item>
-
-    <ion-item>
-      <img *ngIf="house.picture" [src]="house.picture"/>
-    </ion-item>
-
-    <ion-item>
-      <div><ion-icon name="flag"  style="color: #4682b4"></ion-icon><span class="section-name">物件类型</span></div>
-      <div class="section-content">{{getHouseType(house)}}</div>
-    </ion-item>
-  
-    <ion-item>
-      <div><ion-icon name="analytics"  style="color: #4682b4"></ion-icon><span class="section-name">房型・面积・年数</span></div>
-      <div class="section-content">{{house.floorPlan}}・{{house.area}}平米・{{house.built}}年</div>
-    </ion-item>
-
-    <ion-item>
-      <div><ion-icon name="subway"  style="color: #4682b4"></ion-icon><span class="section-name">交通</span></div>
-      <div class="section-content">{{house.access}}</div>
-    </ion-item>
-
-    <ion-item>
-      <div><ion-icon name="cash"  style="color: #4682b4"></ion-icon><span class="section-name">价格</span></div>
-      <div class="section-content">{{house.price}}万円</div>
-    </ion-item>
-
-    <ion-item>
-      <div class="house-item"><ion-icon name="information-circle"  style="color: #4682b4"></ion-icon><span class="section-name">物件详细</span></div>
-      <div class="section-content-small">{{house.content}}</div>
-    </ion-item>
-
-    <ion-item>
-      <ion-slides [options]="mySlideOptions">
-        <ion-slide *ngFor="let picture of pictures | async">
-          <img [src]="picture.picture"/>
-        </ion-slide>
-      </ion-slides>
-    </ion-item>
-
-    <ion-row>
-      <div>
-        <button ion-button clear small (click)="showComments(house)">
-          <ion-icon name="text" style="color: #556b2f" ></ion-icon>
-          <div class="corner-count">{{house.commented}}</div>
-        </button>
-      </div>
-    </ion-row>
-
-    <ion-label color="danger">最新评论</ion-label>
-    <ion-item class="post-comment" *ngFor="let comment of comments | async">
-      <ion-avatar item-left (click)="viewUser(comment.senderId)">
-        <img [src]="comment.profile.picture">
+    <ion-item class="item-no-border">
+      <ion-avatar item-left (click)="viewUser(house.creatorId)">
+        <img [src]="house.profile.picture">
       </ion-avatar>
-
-      <h3 color="primary"  class="post-author">
-        {{comment.profile.name}}
-      </h3>
-      <p text-wrap>{{comment.content}}</p>
-      <!--
-      <a class="subdued like-count">
-        <ion-icon name="heart" color="danger" ></ion-icon>
-       0 {{ comment.likeCount}}
-      </a>
-      -->
+      <h2 color="primary"  class="post-author" (click)="viewUser(house.creatorId)">{{house.profile.name }}</h2>
       <span class="post-time">
-        <ion-icon name="time"></ion-icon>
-        {{comment.createdAt | amCalendar | chineseCalendar}}
+        <ion-icon name="timer-outline"></ion-icon>
+        {{house.createdAt | amTimeAgo | chineseTimeAgo}}
       </span>
     </ion-item>
+
+    <div padding>
+      <ion-item>
+        <div class="brief-description">{{house.brief}}</div>
+      </ion-item>
+
+      <ion-item>
+        <img *ngIf="house.picture" [src]="house.picture"/>
+      </ion-item>
+
+      <ion-item>
+        <div><ion-icon name="flag"  style="color: #4682b4"></ion-icon><span class="section-name">物件类型</span></div>
+        <div class="section-content">{{getHouseType(house)}}</div>
+      </ion-item>
+  
+      <ion-item>
+        <div><ion-icon name="analytics"  style="color: #4682b4"></ion-icon><span class="section-name">房型・面积・年数</span></div>
+        <div class="section-content">{{house.floorPlan}}・{{house.area}}平米・{{house.built}}年</div>
+      </ion-item>
+
+      <ion-item>
+        <div><ion-icon name="subway"  style="color: #4682b4"></ion-icon><span class="section-name">交通</span></div>
+        <div class="section-content">{{house.access}}</div>
+      </ion-item>
+
+      <ion-item>
+        <div><ion-icon name="cash"  style="color: #4682b4"></ion-icon><span class="section-name">价格</span></div>
+        <div class="section-content">{{house.price}}万円</div>
+      </ion-item>
+
+      <ion-item>
+        <div class="house-item"><ion-icon name="information-circle"  style="color: #4682b4"></ion-icon><span class="section-name">物件详细</span></div>
+        <div class="section-content-small">{{house.content}}</div>
+      </ion-item>
+
+      <ion-item>
+        <ion-slides [options]="mySlideOptions">
+          <ion-slide *ngFor="let picture of pictures | async">
+            <img [src]="picture.picture"/>
+          </ion-slide>
+        </ion-slides>
+      </ion-item>
+
+      <ion-row>
+        <div>
+          <button ion-button clear small (click)="showComments(house)">
+            <ion-icon name="text" style="color: #556b2f" ></ion-icon>
+            <div class="corner-count">{{house.commented}}</div>
+          </button>
+        </div>
+      </ion-row>
+
+      <ion-label color="danger">最新评论</ion-label>
+      <ion-item class="post-comment" *ngFor="let comment of comments | async">
+        <ion-avatar item-left (click)="viewUser(comment.senderId)">
+          <img [src]="comment.profile.picture">
+        </ion-avatar>
+
+        <h3 color="primary"  class="post-author">
+          {{comment.profile.name}}
+        </h3>
+        <p text-wrap>{{comment.content}}</p>
+        <span class="post-time">
+          <ion-icon name="time"></ion-icon>
+          {{comment.createdAt | amCalendar | chineseCalendar}}
+        </span>
+      </ion-item>
+    </div>
   </div>
 </ion-content> 

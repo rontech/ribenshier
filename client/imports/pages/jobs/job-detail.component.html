@@ -12,7 +12,7 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content class="job-detail-content" *ngFor="let job of jobs | async">
+<ion-content class="job-detail-content">
   <ion-fab right bottom>
     <button ion-fab mini color="dark"><ion-icon ios="ios-share-outline" md="md-share"></ion-icon></button>
     <ion-fab-list side="top">
@@ -21,74 +21,71 @@
     </ion-fab-list>
   </ion-fab>
 
-  <div><h3>{{job.title}}</h3></div>
+  <div *ngFor="let job of jobs | async">
+    <div><h3>{{job.title}}</h3></div>
 
-  <ion-item class="item-no-border">
-    <ion-avatar item-left (click)="viewUser(job.creatorId)">
-      <img [src]="job.profile.picture">
-    </ion-avatar>
-    <h2 color="primary"  class="post-author" (click)="viewUser(job.creatorId)">{{job.profile.name }}</h2>
-    <span class="post-time">
-      <ion-icon name="timer-outline"></ion-icon>
-      {{job.createdAt | amTimeAgo | chineseTimeAgo}}
-    </span>
-  </ion-item>
-
-  <div padding>
-    <ion-item>
-      <div><ion-icon name="link"  style="color: #4682b4"></ion-icon><span class="section-name">职位</span></div>
-      <div class="section-content">{{job.position}}</div>
-    </ion-item>
-  
-    <ion-item>
-      <div><ion-icon name="locate"  style="color: #4682b4"></ion-icon><span class="section-name">工作地点</span></div>
-      <div class="section-content">{{job.location}}</div>
-    </ion-item>
-
-    <ion-item>
-      <div><ion-icon name="people"  style="color: #4682b4"></ion-icon><span class="section-name">招聘人数</span></div>
-      <div class="section-content"> {{job.people}}名</div>
-    </ion-item>
-
-    <ion-item>
-      <div><ion-icon name="calendar"  style="color: #4682b4"></ion-icon><span class="section-name">开始时期<span></div>
-      <div class="section-content"> {{job.start | date:'yyyy年M月d日'}}</div>
-    </ion-item>
-
-    <ion-item>
-      <div><ion-icon name="information-circle"  style="color: #4682b4"></ion-icon><span class="section-name">工作详细</span></div>
-      <div class="section-content-small">{{job.content}}</div>
-    </ion-item>
-
-    <ion-row>
-      <div>
-        <button ion-button clear small (click)="showComments(job)">
-          <ion-icon name="text" style="color: #556b2f" ></ion-icon>
-          <div class="corner-count">{{job.commented}}</div>
-        </button>
-      </div>
-    </ion-row>
-
-    <ion-label color="danger">最新评论</ion-label>
-    <ion-item class="post-comment" *ngFor="let comment of comments | async">
-      <ion-avatar item-left (click)="viewUser(comment.senderId)">
-        <img [src]="comment.profile.picture">
+    <ion-item class="item-no-border">
+      <ion-avatar item-left (click)="viewUser(job.creatorId)">
+        <img [src]="job.profile.picture">
       </ion-avatar>
-
-      <h3 color="primary"  class="post-author">
-        {{comment.profile.name}}
-      </h3>
-      <p text-wrap>{{comment.content}}</p>
-      <!--
-      <a class="subdued like-count">
-        <ion-icon name="heart" color="danger" ></ion-icon>
-       0 {{ comment.likeCount}}
-      </a>
-      -->
+      <h2 color="primary"  class="post-author" (click)="viewUser(job.creatorId)">{{job.profile.name }}</h2>
       <span class="post-time">
-        <ion-icon name="time"></ion-icon>
-        {{comment.createdAt | amCalendar | chineseCalendar}}
+        <ion-icon name="timer-outline"></ion-icon>
+        {{job.createdAt | amTimeAgo | chineseTimeAgo}}
       </span>
     </ion-item>
+
+    <div padding>
+      <ion-item>
+        <div><ion-icon name="link"  style="color: #4682b4"></ion-icon><span class="section-name">职位</span></div>
+        <div class="section-content">{{job.position}}</div>
+      </ion-item>
+  
+      <ion-item>
+        <div><ion-icon name="locate"  style="color: #4682b4"></ion-icon><span class="section-name">工作地点</span></div>
+        <div class="section-content">{{job.location}}</div>
+      </ion-item>
+
+      <ion-item>
+        <div><ion-icon name="people"  style="color: #4682b4"></ion-icon><span class="section-name">招聘人数</span></div>
+        <div class="section-content"> {{job.people}}名</div>
+      </ion-item>
+
+      <ion-item>
+        <div><ion-icon name="calendar"  style="color: #4682b4"></ion-icon><span class="section-name">开始时期<span></div>
+        <div class="section-content"> {{job.start | date:'yyyy年M月d日'}}</div>
+      </ion-item>
+
+      <ion-item>
+        <div><ion-icon name="information-circle"  style="color: #4682b4"></ion-icon><span class="section-name">工作详细</span></div>
+        <div class="section-content-small">{{job.content}}</div>
+      </ion-item>
+
+      <ion-row>
+        <div>
+          <button ion-button clear small (click)="showComments(job)">
+            <ion-icon name="text" style="color: #556b2f" ></ion-icon>
+            <div class="corner-count">{{job.commented}}</div>
+          </button>
+        </div>
+      </ion-row>
+
+      <ion-label color="danger">最新评论</ion-label>
+      <ion-item class="post-comment" *ngFor="let comment of comments | async">
+        <ion-avatar item-left (click)="viewUser(comment.senderId)">
+          <img [src]="comment.profile.picture">
+        </ion-avatar>
+
+        <h3 color="primary"  class="post-author">
+          {{comment.profile.name}}
+        </h3>
+        <p text-wrap>{{comment.content}}</p>
+        <span class="post-time">
+          <ion-icon name="time"></ion-icon>
+          {{comment.createdAt | amCalendar | chineseCalendar}}
+        </span>
+      </ion-item>
+    </div>
+  </div>
   </div>
 </ion-content> 

@@ -18,75 +18,77 @@
       <button ion-fab><ion-icon name="chatbubbles" (click)="shareViaWechat()"></ion-icon></button>
     </ion-fab-list>
   </ion-fab>
+  
+  <div *ngFor="let activity of activities | async">
+    <div><h3>{{activity.title}}</h3></div>
 
-  <div><h3>{{activity.title}}</h3></div>
-
-  <ion-item class="item-no-border">
-    <ion-avatar item-left (click)="viewUser(activity.creatorId)">
-      <img [src]="activity.profile.picture">
-    </ion-avatar>
-    <h2 color="primary"  class="post-author" (click)="viewUser(activity.creatorId)">{{activity.profile.name }}</h2>
-    <span class="post-time">
-      <ion-icon name="timer-outline"></ion-icon>
-      {{activity.createdAt | amTimeAgo | chineseTimeAgo}}
-    </span>
-  </ion-item>
-
-  <div padding>
-    <ion-item>
-      <div><ion-icon name="people"  style="color: #4682b4"></ion-icon><span class="section-name">定员人数</span></div>
-      <div class="section-content" *ngIf="activity.people" >{{activity.people}}名</div>
-    </ion-item>
-
-    <ion-item>
-      <div><ion-icon name="calendar"  style="color: #4682b4"></ion-icon><span class="section-name">活动时间</span></div>
-      <div class="section-content">{{activity.day | date:'yyyy年M月d日'}}</div>
-    </ion-item>
-
-    <ion-item>
-      <div><ion-icon name="close-circle"  style="color: #4682b4"></ion-icon><span class="section-name">报名截止时间</span></div>
-      <div class="section-content">{{activity.deadline | date:'yyyy年M月d日'}}</div>
-    </ion-item>
-
-    <ion-item>
-      <div><ion-icon name="information-circle"  style="color: #4682b4"></ion-icon><span class="section-name">活动内容介绍</span></div>
-      <div class="section-content-small">{{activity.content}}</div>
-    </ion-item>
-
-    <ion-item>
-      <div><ion-icon name="list"  style="color: #4682b4"></ion-icon><span class="section-name">已报名{{activity.joined}}名</span></div>
-      <span *ngFor="let member of members | async">
-        <img [src]="member.profile.picture" class="small-user-avatar" [alt]="member.profile.name" (click)="viewUser(member.senderId)"></img>
-      </sapn>
-    </ion-item>
-
-    <ion-row>
-      <div>
-        <button ion-button clear small (click)="joinActivity(activity)">
-          <ion-icon name="person-add" style="color: #d03e84"></ion-icon>
-          <div class="corner-count">{{activity.joined}}</div>
-        </button>
-        <button ion-button clear small (click)="showComments(activity)">
-          <ion-icon name="text" style="color: #556b2f" ></ion-icon>
-          <div class="corner-count">{{activity.commented}}</div>
-        </button>
-      </div>
-    </ion-row>
-
-    <ion-label color="danger">最新评论</ion-label>
-    <ion-item class="post-comment" *ngFor="let comment of comments | async">
-      <ion-avatar item-left (click)="viewUser(comment.senderId)">
-        <img [src]="comment.profile.picture">
+    <ion-item class="item-no-border">
+      <ion-avatar item-left (click)="viewUser(activity.creatorId)">
+        <img [src]="activity.profile.picture">
       </ion-avatar>
-
-      <h3 color="primary"  class="post-author">
-        {{comment.profile.name}}
-      </h3>
-      <p text-wrap>{{comment.content}}</p>
+      <h2 color="primary"  class="post-author" (click)="viewUser(activity.creatorId)">{{activity.profile.name }}</h2>
       <span class="post-time">
-        <ion-icon name="time"></ion-icon>
-        {{comment.createdAt | amCalendar | chineseCalendar}}
+        <ion-icon name="timer-outline"></ion-icon>
+        {{activity.createdAt | amTimeAgo | chineseTimeAgo}}
       </span>
     </ion-item>
+
+    <div padding>
+      <ion-item>
+        <div><ion-icon name="people"  style="color: #4682b4"></ion-icon><span class="section-name">定员人数</span></div>
+        <div class="section-content" *ngIf="activity.people" >{{activity.people}}名</div>
+      </ion-item>
+
+      <ion-item>
+        <div><ion-icon name="calendar"  style="color: #4682b4"></ion-icon><span class="section-name">活动时间</span></div>
+        <div class="section-content">{{activity.day | date:'yyyy年M月d日'}}</div>
+      </ion-item>
+
+      <ion-item>
+        <div><ion-icon name="close-circle"  style="color: #4682b4"></ion-icon><span class="section-name">报名截止时间</span></div>
+        <div class="section-content">{{activity.deadline | date:'yyyy年M月d日'}}</div>
+      </ion-item>
+
+      <ion-item>
+        <div><ion-icon name="information-circle"  style="color: #4682b4"></ion-icon><span class="section-name">活动内容介绍</span></div>
+        <div class="section-content-small">{{activity.content}}</div>
+      </ion-item>
+
+      <ion-item>
+        <div><ion-icon name="list"  style="color: #4682b4"></ion-icon><span class="section-name">已报名{{activity.joined}}名</span></div>
+        <span *ngFor="let member of members | async">
+          <img [src]="member.profile.picture" class="small-user-avatar" [alt]="member.profile.name" (click)="viewUser(member.senderId)"></img>
+        </sapn>
+      </ion-item>
+
+      <ion-row>
+        <div>
+          <button ion-button clear small (click)="joinActivity(activity)">
+            <ion-icon name="person-add" style="color: #d03e84"></ion-icon>
+            <div class="corner-count">{{activity.joined}}</div>
+          </button>
+          <button ion-button clear small (click)="showComments(activity)">
+            <ion-icon name="text" style="color: #556b2f" ></ion-icon>
+            <div class="corner-count">{{activity.commented}}</div>
+          </button>
+        </div>
+      </ion-row>
+
+      <ion-label color="danger">最新评论</ion-label>
+      <ion-item class="post-comment" *ngFor="let comment of comments | async">
+        <ion-avatar item-left (click)="viewUser(comment.senderId)">
+          <img [src]="comment.profile.picture">
+        </ion-avatar>
+
+        <h3 color="primary"  class="post-author">
+          {{comment.profile.name}}
+        </h3>
+        <p text-wrap>{{comment.content}}</p>
+        <span class="post-time">
+          <ion-icon name="time"></ion-icon>
+          {{comment.createdAt | amCalendar | chineseCalendar}}
+        </span>
+      </ion-item>
+    </div>
   </div>
 </ion-content> 

@@ -50,6 +50,7 @@
       </ion-item>
 
       <div *ngIf="people.hasError('required') && people.touched" class="error-hint">请输入人数！</div>
+      <div *ngIf="people.hasError('incorrectNumberFormat') && people.touched" class="error-hint">请输入数字！</div>
       <div *ngIf="people.hasError('overMaxValue') && people.touched" class="error-hint">
         请输入99999以下的数字!
       </div>

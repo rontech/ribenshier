@@ -37,7 +37,7 @@
 
     <div padding>
       <ion-item>
-        <div class="brief-description">{{house.brief}}</div>
+        <div *ngIf="house.brief" class="brief-description">{{house.brief}}</div>
       </ion-item>
 
       <ion-item>

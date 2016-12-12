@@ -33,7 +33,7 @@ export class NewTopicComponent {
                              Validators.maxLength(50)]));
   content = new FormControl('',Validators.compose([
                                Validators.required,
-                               Validators.maxLength(2000)]));
+                               Validators.maxLength(5000)]));
 
   constructor(
     private navCtrl: NavController,

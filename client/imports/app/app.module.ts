@@ -112,7 +112,7 @@ import 'intl/locale-data/jsonp/en';
       { component: ActivityDetail, name: 'ActivityDetail', segment: 'activity-detail/:activityId'},
       { component: HouseDetail, name: 'HouseDetail', segment: 'house-detail/:houseId'},
       { component: JobDetail, name: 'JobDetail', segment: 'job-detail/:jobId'},
-      { component: ResetPasswordComponent, name: 'ResetPassword', segment: 'reset-password/:token'}
+      { component: ResetPasswordComponent, name: 'ResetPassword', segment: 'reset-page/:token'}
     ]
   }),
     MomentModule,

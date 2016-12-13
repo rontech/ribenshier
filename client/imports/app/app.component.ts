@@ -93,7 +93,7 @@ export class AppComponent implements OnInit{
     this.platform.ready().then(() => {
       // Convenience to route with a given nav
       Deeplinks.routeWithNavController(this.nav, {
-        '/reset-password/:token': ResetPasswordComponent, 
+        '/reset-page/:token': ResetPasswordComponent, 
         '/topic-detail/:topicId': TopicDetail 
       }).subscribe((match) => {
         console.log('Successfully routed', match);

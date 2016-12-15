@@ -73,6 +73,20 @@ export class TopicDetail implements OnInit {
     });
   }
 
+  commentUp(comment): void {
+    MeteorObservable.call('commentUp',
+                      comment._id,
+                      Meteor.userId()
+      ).subscribe({
+      next: () => {
+        comment.thumbed += 1;
+      },
+      error: (e: Error) => {
+        this.utilSrv.alertDialog('提醒', e.message);
+      }
+    });
+  }
+
   showOptionsOrNot(topic): boolean {
     if(!Meteor.user()) {
       return false;

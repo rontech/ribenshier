@@ -58,15 +58,24 @@
         <ion-avatar item-left (click)="viewUser(comment.senderId)">
           <img [src]="comment.profile.picture">
         </ion-avatar>
-
-        <h3 color="primary"  class="post-author">
+        <h3 color="primary" class="post-author">
           {{comment.profile.name}}
         </h3>
+        <div class="post-time">
         <p text-wrap>{{comment.content}}</p>
+        </div>
+        <ion-row>
         <span class="post-time">
           <ion-icon name="time"></ion-icon>
           {{comment.createdAt | amCalendar | chineseCalendar}}
         </span>
+         <span class="comment-thumb">
+          <button ion-button clear small (click)="commentUp(comment)">
+            <ion-icon name="thumbs-up" style="color: #d03e84"></ion-icon>
+            <span class="corner-count">{{comment.thumbed}}</span>
+          </button>
+        </span>
+        </ion-row>
       </ion-item>
     </div>
   </div>

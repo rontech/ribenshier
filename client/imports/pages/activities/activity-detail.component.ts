@@ -13,6 +13,7 @@ import { ActivityCommentsPage } from './activity-comments.component';
 import { Activities } from '../../../../both/collections/activities.collection';
 import { ActivityComments } from '../../../../both/collections/activity-comments.collection';
 import { ActivityMembers } from '../../../../both/collections/activity-members.collection';
+import { ActivityCommentThumbeds } from '../../../../both/collections/activity-comment-thumbed.collection';
 import { UtilityService } from '../../services/utility.service';
 import { UserComponent } from '../../pages/user/user.component';
  
@@ -78,6 +79,20 @@ export class ActivityDetail implements OnInit {
         } else {
           this.utilSrv.alertDialog('提醒', e.message);
         }
+      }
+    });
+  }
+
+  activityCommentUp(comment): void {
+    MeteorObservable.call('activityCommentUp',
+                      comment._id,
+                      Meteor.userId()
+      ).subscribe({
+      next: () => {
+        comment.thumbed += 1;
+      },
+      error: (e: Error) => {
+        this.utilSrv.alertDialog('提醒', e.message);
       }
     });
   }

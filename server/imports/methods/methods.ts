@@ -4,6 +4,8 @@ import { Comments } from '../../../both/collections/comments.collection';
 import { Thumbs, Images } from '../../../both/collections/images.collection';
 import { Thumb } from '../../../both/models/image.model';
 import { TopicThumbeds } from '../../../both/collections/topic-thumbed.collection';
+import { CommentThumbeds } from '../../../both/collections/comment-thumbed.collection';
+import { ActivityCommentThumbeds } from '../../../both/collections/activity-comment-thumbed.collection';
 import { check, Match } from 'meteor/check';
 import { Profile } from '../../../both/models/profile.model';
 import { Activities } from '../../../both/collections/activities.collection';
@@ -133,7 +135,7 @@ Meteor.methods({
       '你需要登录才可以操作。');
     check(senderId, nonEmptyString);
     check(topicId, nonEmptyString);
-    
+
     const thumbed = TopicThumbeds.findOne({topicId: topicId, senderId: senderId});
     if (thumbed) throw new Meteor.Error('already-thumbed',
       '你已经点过赞了！');
@@ -238,6 +240,44 @@ Meteor.methods({
         message: jobcomment.content,
         senderId: senderId,
         toId: jobcomment.senderId,
+        read: false,
+        createdAt: dt
+      });
+  },
+  commentUp(commentId: string, senderId: string): void {
+    if (!this.userId) throw new Meteor.Error('unauthorized',
+      '你需要登录才可以操作。');
+    check(senderId, nonEmptyString);
+    check(commentId, nonEmptyString);
+
+    const thumbed = CommentThumbeds.findOne({commentId: commentId, senderId: senderId});
+    if (thumbed) throw new Meteor.Error('already-thumbed',
+      '你已经点过赞了！');
+
+    //Thumbed increment
+     Comments.collection.update(
+       commentId, {$inc: {thumbed: 1}
+     })
+
+    //insert comment thumbed information
+    const thumbedInfo = {
+      commentId: commentId,
+      senderId: senderId
+    };
+    CommentThumbeds.collection.insert(thumbedInfo);
+
+    //add a notification to the comment owner
+    const comment = Comments.collection.findOne(commentId);
+    const creator = Meteor.users.findOne(comment.senderId);
+    let dt = new Date();
+    if(creator.profile.notify && senderId != comment.senderId)
+      Notifications.collection.insert({
+        objId: comment.objId,
+        objType: 'topic',
+        notType: 't',
+        message: comment.content,
+        senderId: senderId,
+        toId: comment.senderId,
         read: false,
         createdAt: dt
       });
@@ -406,6 +446,20 @@ Meteor.methods({
       $inc: {commented: 1},
       $set: {commentedAt: dt, sortedBy: dt, lastComment: content}
     });
+
+    //add a notification activity owner
+    const creator = Meteor.users.findOne(activity.creatorId);
+    if(creator.profile.notify && this.userId != activity.creatorId)
+      Notifications.collection.insert({
+        objId: activityId,
+        objType: 'activity',
+        notType: 'c',
+        message: activity.title,
+        senderId: this.userId,
+        toId: activity.creatorId,
+        read: false,
+        createdAt: dt
+      });
   },
   cancelActivity(activityId: string): void {
     if (!this.userId) throw new Meteor.Error('unauthorized',
@@ -433,6 +487,44 @@ Meteor.methods({
         createdAt: dt
       });
     });
+  },
+  activityCommentUp(commentId: string, senderId: string): void {
+    if (!this.userId) throw new Meteor.Error('unauthorized',
+      '你需要登录才可以操作。');
+    check(senderId, nonEmptyString);
+    check(commentId, nonEmptyString);
+
+    const thumbed = ActivityCommentThumbeds.findOne({commentId: commentId, senderId: senderId});
+    if (thumbed) throw new Meteor.Error('already-thumbed',
+      '你已经点过赞了！');
+
+    //Thumbed increment
+     ActivityComments.collection.update(
+       commentId, {$inc: {thumbed: 1}
+     })
+
+    //insert activity comment thumbed information
+    const thumbedInfo = {
+      commentId: commentId,
+      senderId: senderId
+    };
+    ActivityCommentThumbeds.collection.insert(thumbedInfo);
+
+    //add a notification to the activity comment owner
+    const activitycomment = ActivityComments.collection.findOne(commentId);
+    const creator = Meteor.users.findOne(activitycomment.senderId);
+    let dt = new Date();
+    if(creator.profile.notify && senderId != activitycomment.senderId)
+      Notifications.collection.insert({
+        objId: activitycomment.objId,
+        objType: 'activity',
+        notType: 't',
+        message: activitycomment.content,
+        senderId: senderId,
+        toId: activitycomment.senderId,
+        read: false,
+        createdAt: dt
+      });
   },
   addHouse(
          title: string, forRental: boolean, type: string,

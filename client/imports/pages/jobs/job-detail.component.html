@@ -80,10 +80,19 @@
           {{comment.profile.name}}
         </h3>
         <p text-wrap>{{comment.content}}</p>
-        <span class="post-time">
-          <ion-icon name="time"></ion-icon>
-          {{comment.createdAt | amCalendar | chineseCalendar}}
-        </span>
+        <ion-row>
+          <span class="post-time">
+            <ion-icon name="time"></ion-icon>
+            {{comment.createdAt | amCalendar | chineseCalendar}}
+          </span>
+
+          <span class="job-thumbup">
+            <button ion-button clear small (click)="jobCommentThumbUp(comment)">
+              <ion-icon name="thumbs-up" style="color: #d03e84"></ion-icon>
+              <div class="corner-count">{{comment.thumbed}}</div>
+            </button>
+          </span>
+        </ion-row>
       </ion-item>
     </div>
   </div>

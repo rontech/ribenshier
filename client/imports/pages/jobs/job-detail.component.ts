@@ -82,6 +82,20 @@ export class JobDetail implements OnInit {
     this.navCtrl.push(UserComponent, {userId: id});
   }
 
+  jobCommentThumbUp(comment): void {
+    MeteorObservable.call('jobCommentThumbUp',
+                      comment._id,
+                      Meteor.userId()
+      ).subscribe({
+      next: () => {
+        comment.thumbed += 1; 
+      },
+      error: (e: Error) => {
+        this.utilSrv.alertDialog('提醒', e.message);
+      }
+    });
+  }
+
   private subJobs(): void {
     MeteorObservable.subscribe('jobs').subscribe(() => {
       MeteorObservable.autorun().subscribe(() => {

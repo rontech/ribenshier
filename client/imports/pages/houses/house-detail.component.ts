@@ -93,6 +93,20 @@ export class HouseDetail implements OnInit {
     this.navCtrl.push(UserComponent, {userId: id});
   }
 
+  commentThumbUp(comment): void {
+    MeteorObservable.call('commentThumbUp',
+                      comment._id,
+                      Meteor.userId()
+      ).subscribe({
+      next: () => {
+        comment.thumbed += 1; 
+      },
+      error: (e: Error) => {
+        this.utilSrv.alertDialog('提醒', e.message);
+      }
+    });
+  }
+
   private subHouses(): void {
     MeteorObservable.subscribe('houses').subscribe(() => {
       MeteorObservable.autorun().subscribe(() => {

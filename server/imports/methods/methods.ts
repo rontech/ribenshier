@@ -20,6 +20,8 @@ import { Jobs } from '../../../both/collections/jobs.collection';
 import { JobComments } from '../../../both/collections/job-comments.collection';
 import { Bookmarks } from '../../../both/collections/bookmarks.collection';
 import { Notifications } from '../../../both/collections/notifications.collection';
+import { HouseCommentThumbeds } from '../../../both/collections/house-comment-thumbed.collection';
+import { JobCommentThumbeds } from '../../../both/collections/job-comment-thumbed.collection';
 
 const nonEmptyString = Match.Where((str) => {
   check(str, String);
@@ -162,6 +164,82 @@ Meteor.methods({
         message: topic.title,
         senderId: senderId,
         toId: topic.creatorId,
+        read: false,
+        createdAt: dt
+      });
+  },
+  commentThumbUp(houseCommentId: string, senderId: string): void {
+    if (!this.userId) throw new Meteor.Error('unauthorized',
+      '你需要登录才可以操作。');
+    check(senderId, nonEmptyString);
+    check(houseCommentId, nonEmptyString);
+    
+    const thumbed = HouseCommentThumbeds.findOne({houseCommentId: houseCommentId, senderId: senderId});
+    if (thumbed) throw new Meteor.Error('already-thumbed',
+      '你已经点过赞了！');
+    
+    //Thumbed increment
+    HouseComments.collection.update(houseCommentId, {
+      $inc: {thumbed: 1} 
+    });
+
+    //insert thumbed information
+    const thumbedInfo = {
+      houseCommentId: houseCommentId,
+      senderId: senderId
+    };
+    HouseCommentThumbeds.collection.insert(thumbedInfo);
+
+    //add a notification to the topic owner
+    const housecomment = HouseComments.collection.findOne(houseCommentId);
+    const creator = Meteor.users.findOne(housecomment.senderId);
+    let dt = new Date();
+    if(creator.profile.notify && senderId != housecomment.senderId)
+      Notifications.collection.insert({
+        objId: housecomment.objId,
+        objType: 'house',
+        notType: 't',
+        message: housecomment.content,
+        senderId: senderId,
+        toId: housecomment.senderId,
+        read: false,
+        createdAt: dt
+      });
+  },
+  jobCommentThumbUp(jobCommentId: string, senderId: string): void {
+    if (!this.userId) throw new Meteor.Error('unauthorized',
+      '你需要登录才可以操作。');
+    check(senderId, nonEmptyString);
+    check(jobCommentId, nonEmptyString);
+    
+    const thumbed = JobCommentThumbeds.findOne({jobCommentId: jobCommentId, senderId: senderId});
+    if (thumbed) throw new Meteor.Error('already-thumbed',
+      '你已经点过赞了！');
+    
+    //Thumbed increment
+    JobComments.collection.update(jobCommentId, {
+      $inc: {thumbed: 1} 
+    });
+
+    //insert thumbed information
+    const thumbedInfo = {
+      jobCommentId: jobCommentId,
+      senderId: senderId
+    };
+    JobCommentThumbeds.collection.insert(thumbedInfo);
+
+    //add a notification to the topic owner
+    const jobcomment = JobComments.collection.findOne(jobCommentId);
+    const creator = Meteor.users.findOne(jobcomment.senderId);
+    let dt = new Date();
+    if(creator.profile.notify && senderId != jobcomment.senderId)
+      Notifications.collection.insert({
+        objId: jobcomment.objId,
+        objType: 'job',
+        notType: 't',
+        message: jobcomment.content,
+        senderId: senderId,
+        toId: jobcomment.senderId,
         read: false,
         createdAt: dt
       });
@@ -544,7 +622,8 @@ Meteor.methods({
       objId: houseId,
       senderId: this.userId,
       content: content,
-      createdAt: dt
+      createdAt: dt,
+      thumbed: 0
     });
 
     //commented incremant
@@ -629,7 +708,8 @@ Meteor.methods({
       objId: jobId,
       senderId: this.userId,
       content: content,
-      createdAt: dt
+      createdAt: dt,
+      thumbed: 0
     });
 
     //commented incremant

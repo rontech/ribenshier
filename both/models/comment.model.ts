@@ -8,4 +8,5 @@ export interface Comment {
   content?: string;
   ownership?: string;
   createdAt?: Date;
+  type ?:string;
 }

@@ -6,6 +6,8 @@ import { Comment } from '../../../../both/models/comment.model';
 import { MeteorObservable, MongoObservable } from 'meteor-rxjs';
 import { UtilityService } from '../../services/utility.service';
 import { UserComponent } from '../../pages/user/user.component';
+import { HouseSecondComment } from '../../../../both/models/house-second-comment.model';
+import { HouseSecondComments } from '../../../../both/collections/house-second-comments.collection';
  
 export class CommonCommentsPage {
   id: string;
@@ -15,8 +17,11 @@ export class CommonCommentsPage {
   optionsComponent: any;
   title: string;
   comments: any;
+  secondComments: Observable<HouseSecondComment[]>[];
+  firstComment:any;
   comment = '';
   autoScroller: Subscription;
+  commentlist: Array<string>;
   
   @ViewChild(Content) content:Content;
  
@@ -81,13 +86,39 @@ export class CommonCommentsPage {
  
   sendComment(): void {
     if(Meteor.user()) {
-      MeteorObservable.call(this.addMethod, this.id, this.comment).zone().subscribe(() => {
+      if(this.commentlist === undefined) {
+        MeteorObservable.call(this.addMethod, this.id, this.comment).zone().subscribe(() => {
         this.comment = '';
         this.scroller.scrollTop = this.scroller.scrollHeight;
         this.content.scrollToBottom(300);//300ms animation speed
-      });
+        });
+      } else {
+        MeteorObservable.call('addHouseSecondComment', this.id, this.comment,this.commentlist).zone().subscribe(() => {
+        this.comment = '';
+        this.commentlist = undefined;
+        this.scroller.scrollTop = this.scroller.scrollHeight;
+        this.content.scrollToBottom(300);//300ms animation speed
+        });
+      }
     } else {
       this.utilSrv.alertDialog('提醒', '你需要登录才可以评论。');
+    }
+  }
+
+  answerComment(name,senderid,firstcontent): Array<String> {
+    if(Meteor.user()) {
+      document.getElementById("comment").focus();
+      var commentid = document.getElementById("comment");
+      commentid.setAttribute("placeholder", "回復"+name+":");
+      this.commentlist = [name,senderid,firstcontent];
+      return this.commentlist;
+    }
+  }
+
+  onInitKeyup(){
+    if(this.comment.length === 0){
+      this.commentlist = undefined;
+      document.getElementById("comment").setAttribute("placeholder", "输入评论内容");
     }
   }
 

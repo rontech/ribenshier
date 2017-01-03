@@ -23,6 +23,8 @@ import { Notifications } from '../../../both/collections/notifications.collectio
 import { HouseCommentThumbeds } from '../../../both/collections/house-comment-thumbed.collection';
 import { JobCommentThumbeds } from '../../../both/collections/job-comment-thumbed.collection';
 import { HouseSecondComments } from '../../../both/collections/house-second-comments.collection';
+import { JobSecondComments } from '../../../both/collections/job-second-comments.collection';
+import { ActivitySecondComments } from '../../../both/collections/activity-second-comments.collection';
 
 const nonEmptyString = Match.Where((str) => {
   check(str, String);
@@ -439,7 +441,8 @@ Meteor.methods({
       objId: activityId,
       senderId: this.userId,
       content: content,
-      createdAt: dt
+      createdAt: dt,
+      type: 'main'
     });
 
     //commented incremant
@@ -625,7 +628,7 @@ Meteor.methods({
       content: content,
       createdAt: dt,
       thumbed: 0,
-      type: "main"
+      type: 'main'
     });
 
     //commented incremant
@@ -648,64 +651,167 @@ Meteor.methods({
         createdAt: dt
       });
   },
-  addHouseSecondComment(houseId: string, content: string,houseSecondComment:string[]): void {
-     if (!this.userId) throw new Meteor.Error('unauthorized',
-      '你需要登录才可以操作。');
-    check(houseId, nonEmptyString);
-    check(content, nonEmptyString);
-    check(houseSecondComment[0], nonEmptyString);
-    check(houseSecondComment[1], nonEmptyString);
-    check(houseSecondComment[2], nonEmptyString);
-    const house = Houses.collection.findOne(houseId);
-    const firstcomment = HouseComments.collection.findOne({objId:houseId,senderId:houseSecondComment[1],content:houseSecondComment[2]});
-    let firstCommentId;
-    if(firstcomment.type == "sub") {
-      const secondcomment = HouseSecondComments.collection.findOne({objId:houseId,fromId:houseSecondComment[1],content:houseSecondComment[2]});
-      firstCommentId = secondcomment.firstCommentId;
-    } else {
-      firstCommentId = firstcomment._id;
-    }
- 
-    if (!house) throw new Meteor.Error('house-not-exists',
+  addReplyComment(objId: string, objtype: string,content: string, replyComment: string[]): void {
+    if (!this.userId) throw new Meteor.Error('unauthorized',
+    '你需要登录才可以操作。');
+
+    if(objtype == 'house'){
+      const house = Houses.collection.findOne(objId);
+
+      if (!house) throw new Meteor.Error('house-not-exists',
       '对象主题不存在。');
 
-    let dt = new Date();
-     HouseComments.collection.insert({
-      objId: houseId,
-      senderId: this.userId,
-      content: content,
-      createdAt: dt,
-      type: "sub"
-    });
+      const firstcomment = HouseComments.collection.findOne({objId:objId,senderId:replyComment[1],content:replyComment[2]});
+      let firstCommentId;
+      if(firstcomment.type == 'sub') {
+        const secondcomment = HouseSecondComments.collection.findOne({objId:objId,fromId:replyComment[1],content:replyComment[2]});
+        firstCommentId = secondcomment.firstCommentId;
+      } else {
+        firstCommentId = firstcomment._id;
+      }
 
-    HouseSecondComments.collection.insert({
-      firstCommentId: firstCommentId,
-      fromId: this.userId,
-      objId: houseId,
-      toId: houseSecondComment[1],
-      content: content,
-      createdAt: dt
-    });
+      let dt = new Date();
+      HouseComments.collection.insert({
+          objId: objId,
+          senderId: this.userId,
+          content: content,
+          createdAt: dt,
+          type: 'sub'
+      });
 
-    //commented incremant
-    Houses.collection.update(houseId, {
-      $inc: {commented: 1},
-      $set: {commentedAt: dt, sortedBy: dt, lastComment: content}
-    });
-
-     //add a notification to the owner
-    const creator = Meteor.users.findOne(house.creatorId);
-    if(creator.profile.notify && this.userId != houseSecondComment[1])
-      Notifications.collection.insert({
-        objId: houseId,
-        objType: 'house',
-        notType: 'c',
-        message: houseSecondComment[2],
-        senderId: this.userId,
-        toId: houseSecondComment[1],
-        read: false,
+      HouseSecondComments.collection.insert({
+        firstCommentId: firstCommentId,
+        fromId: this.userId,
+        objId: objId,
+        toId: replyComment[1],
+        content: content,
         createdAt: dt
       });
+
+      //commented incremant
+      Houses.collection.update(objId, {
+        $inc: {commented: 1},
+        $set: {commentedAt: dt, sortedBy: dt, lastComment: content}
+      });
+
+      //add a notification to the owner
+      const creator = Meteor.users.findOne(house.creatorId);
+      if(creator.profile.notify && this.userId != replyComment[1])
+        Notifications.collection.insert({
+          objId: objId,
+          objType: 'house',
+          notType: 'c',
+          message: replyComment[2],
+          senderId: this.userId,
+          toId: replyComment[1],
+          read: false,
+          createdAt: dt
+        });
+    } else if(objtype == 'job') {
+      const job = Jobs.collection.findOne(objId);
+
+      if (!job) throw new Meteor.Error('house-not-exists',
+      '对象主题不存在。');
+
+      const firstcomment = JobComments.collection.findOne({objId:objId,senderId:replyComment[1],content:replyComment[2]});
+      let firstCommentId;
+      if(firstcomment.type == 'sub') {
+        const secondcomment = JobSecondComments.collection.findOne({objId:objId,fromId:replyComment[1],content:replyComment[2]});
+        firstCommentId = secondcomment.firstCommentId;
+      } else {
+        firstCommentId = firstcomment._id;
+      }
+ 
+      let dt = new Date();
+      JobComments.collection.insert({
+        objId: objId,
+        senderId: this.userId,
+        content: content,
+        createdAt: dt,
+        type: 'sub'
+      });
+
+      JobSecondComments.collection.insert({
+        firstCommentId: firstCommentId,
+        fromId: this.userId,
+        objId: objId,
+        toId: replyComment[1],
+        content: content,
+        createdAt: dt
+      });
+
+      //commented incremant
+      Jobs.collection.update(objId, {
+        $inc: {commented: 1},
+        $set: {commentedAt: dt, sortedBy: dt, lastComment: content}
+      });
+
+      //add a notification to the owner
+      const creator = Meteor.users.findOne(job.creatorId);
+      if(creator.profile.notify && this.userId != replyComment[1])
+        Notifications.collection.insert({
+          objId: objId,
+          objType: 'job',
+          notType: 'c',
+          message: replyComment[2],
+          senderId: this.userId,
+          toId: replyComment[1],
+          read: false,
+          createdAt: dt
+        });
+    } else {
+      const activity = Activities.collection.findOne(objId);
+
+      if (!activity) throw new Meteor.Error('house-not-exists',
+        '对象主题不存在。');
+
+      const firstcomment = ActivityComments.collection.findOne({objId:objId,senderId:replyComment[1],content:replyComment[2]});
+      let firstCommentId;
+      if(firstcomment.type == 'sub') {
+        const secondcomment = ActivitySecondComments.collection.findOne({objId:objId,fromId:replyComment[1],content:replyComment[2]});
+        firstCommentId = secondcomment.firstCommentId;
+      } else {
+        firstCommentId = firstcomment._id;
+      }
+
+      let dt = new Date();
+      ActivityComments.collection.insert({
+        objId: objId,
+        senderId: this.userId,
+        content: content,
+        createdAt: dt,
+        type: 'sub'
+      });
+
+      ActivitySecondComments.collection.insert({
+        firstCommentId: firstCommentId,
+        fromId: this.userId,
+        objId: objId,
+        toId: replyComment[1],
+        content: content,
+        createdAt: dt
+      });
+
+      //commented incremant
+      Activities.collection.update(objId, {
+        $inc: {commented: 1},
+        $set: {commentedAt: dt, sortedBy: dt, lastComment: content}
+      });
+
+      //add a notification to the owner
+      const creator = Meteor.users.findOne(activity.creatorId);
+      if(creator.profile.notify && this.userId != replyComment[1])
+        Notifications.collection.insert({
+          objId: objId,
+          objType: 'activity',
+          notType: 'c',
+          message: replyComment[2],
+          senderId: this.userId,
+          toId: replyComment[1],
+          read: false,
+          createdAt: dt
+        });
+    }
   },
   addJob(title: string,
           location: string,
@@ -770,7 +876,8 @@ Meteor.methods({
       senderId: this.userId,
       content: content,
       createdAt: dt,
-      thumbed: 0
+      thumbed: 0,
+      type: 'main'
     });
 
     //commented incremant

@@ -17,6 +17,8 @@ import './imports/publications/job-comments.publication';
 import './imports/publications/bookmarks.publication';
 import './imports/publications/notifications.publication';
 import './imports/publications/house-second-comments.publication';
+import './imports/publications/job-second-comments.publication';
+import './imports/publications/activity-second-comments.publication';
 
 const mainInstance = new Main();
 mainInstance.start();

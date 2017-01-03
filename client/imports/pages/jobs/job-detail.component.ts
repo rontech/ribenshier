@@ -13,6 +13,8 @@ import { Jobs } from '../../../../both/collections/jobs.collection';
 import { JobComments } from '../../../../both/collections/job-comments.collection';
 import { UtilityService } from '../../services/utility.service';
 import { UserComponent } from '../../pages/user/user.component';
+import { ReplyComment } from '../../../../both/models/reply-comment.model';
+import { JobSecondComments } from '../../../../both/collections/job-second-comments.collection';
  
 @Component({
   selector: 'job-detail',
@@ -30,6 +32,7 @@ export class JobDetail implements OnInit {
     pager: true
   };
   private comments: Observable<JobComment[]>;
+  private secondComments: Observable<ReplyComment[]>;
  
   constructor(
     navParams: NavParams,
@@ -43,6 +46,7 @@ export class JobDetail implements OnInit {
   ngOnInit() {
     this.subJobs();
     this.subComments();
+    this.replyComments();
   }
 
   barTitle(job) {
@@ -116,10 +120,10 @@ export class JobDetail implements OnInit {
     MeteorObservable.subscribe('job-comments', this.jobId).subscribe(() => {
       MeteorObservable.autorun().subscribe(() => {
         this.comments = JobComments
-          .find({objId: this.jobId}, { sort: { createdAt: -1 }, limit: 10 })
+          .find({objId: this.jobId,type:'main'},{sort:{createdAt:-1},limit:10})
           .map(comments => {
             comments.forEach(comment => {
-              const user = Meteor.users.findOne({_id: comment.senderId}, {fields: {profile: 1}});
+              const user = Meteor.users.findOne({_id:comment.senderId},{fields:{profile:1}});
               comment.profile = user.profile;
               if(Meteor.userId()) {
                 comment.ownership = Meteor.userId() == comment.senderId ? 'mine' : 'other';
@@ -128,6 +132,24 @@ export class JobDetail implements OnInit {
               }
             });
             return comments;
+          }).zone();
+      });
+    });
+  }
+
+  private replyComments(): void {
+    MeteorObservable.subscribe('job-second-comments', this.jobId).subscribe(() => {
+      MeteorObservable.autorun().subscribe(() => {
+        this.secondComments = JobSecondComments
+          .find({objId: this.jobId},{sort:{createdAt:1}})
+          .map(secondComments => {
+            secondComments.forEach(secondComment => {
+              const user = Meteor.users.findOne({_id:secondComment.fromId},{fields:{profile:1}});
+              secondComment.profile = user.profile;
+              const toUser = Meteor.users.findOne({_id:secondComment.toId},{fields:{profile:1}});
+              secondComment.toProfile = toUser.profile;
+            });
+            return secondComments;
           }).zone();
       });
     });

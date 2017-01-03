@@ -6,18 +6,17 @@ import { Comment } from '../../../../both/models/comment.model';
 import { MeteorObservable, MongoObservable } from 'meteor-rxjs';
 import { UtilityService } from '../../services/utility.service';
 import { UserComponent } from '../../pages/user/user.component';
-import { HouseSecondComment } from '../../../../both/models/house-second-comment.model';
-import { HouseSecondComments } from '../../../../both/collections/house-second-comments.collection';
  
 export class CommonCommentsPage {
   id: string;
   objectName: string;
   addMethod: string;
+  addReplyCommentMethod: string;
+  type: string;
   selectedObject: any;
   optionsComponent: any;
   title: string;
   comments: any;
-  secondComments: Observable<HouseSecondComment[]>[];
   firstComment:any;
   comment = '';
   autoScroller: Subscription;
@@ -86,14 +85,14 @@ export class CommonCommentsPage {
  
   sendComment(): void {
     if(Meteor.user()) {
-      if(this.commentlist === undefined) {
+      if(this.commentlist == undefined) {
         MeteorObservable.call(this.addMethod, this.id, this.comment).zone().subscribe(() => {
         this.comment = '';
         this.scroller.scrollTop = this.scroller.scrollHeight;
         this.content.scrollToBottom(300);//300ms animation speed
         });
       } else {
-        MeteorObservable.call('addHouseSecondComment', this.id, this.comment,this.commentlist).zone().subscribe(() => {
+        MeteorObservable.call(this.addReplyCommentMethod, this.id, this.type, this.comment,this.commentlist).zone().subscribe(() => {
         this.comment = '';
         this.commentlist = undefined;
         this.scroller.scrollTop = this.scroller.scrollHeight;
@@ -105,13 +104,12 @@ export class CommonCommentsPage {
     }
   }
 
-  answerComment(name,senderid,firstcontent): Array<String> {
+  answerComment(name,senderId,firstContent): void {
     if(Meteor.user()) {
       document.getElementById("comment").focus();
       var commentid = document.getElementById("comment");
       commentid.setAttribute("placeholder", "回復"+name+":");
-      this.commentlist = [name,senderid,firstcontent];
-      return this.commentlist;
+      this.commentlist = [name,senderId,firstContent];
     }
   }
 

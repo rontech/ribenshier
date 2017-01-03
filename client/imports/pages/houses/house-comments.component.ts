@@ -22,6 +22,8 @@ import { CommonCommentsPage } from '../common/common-comments-page.component';
 export class HouseCommentsPage extends CommonCommentsPage implements OnInit, OnDestroy {
   selectedOject: House;
   addMethod: string = 'addHouseComment';
+  addReplyCommentMethod: string = 'addReplyComment';
+  type:string ='house';
   objectName: string = 'house';
   optionsComponent = HouseOptionsComponent;
   comments: Observable<HouseComment[]>;

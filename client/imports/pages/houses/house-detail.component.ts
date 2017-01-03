@@ -16,7 +16,7 @@ import { HouseComments } from '../../../../both/collections/house-comments.colle
 import { UtilityService } from '../../services/utility.service';
 import { Users } from '../../../../both/collections/users.collection';
 import { UserComponent } from '../../pages/user/user.component';
-import { HouseSecondComment } from '../../../../both/models/house-second-comment.model';
+import { ReplyComment } from '../../../../both/models/reply-comment.model';
 import { HouseSecondComments } from '../../../../both/collections/house-second-comments.collection';
  
 @Component({
@@ -38,7 +38,7 @@ export class HouseDetail implements OnInit {
   private rentalTypes = ['待租', '待售'];
   private houseTypes = ['マンション',  'アパート', '一户建', '土地' ,'其它物件'];
   private comments: Observable<HouseComment[]>;
-  private secondComments: Observable<HouseSecondComment[]>;
+  private secondComments: Observable<ReplyComment[]>;
  
   constructor(
     navParams: NavParams,
@@ -131,10 +131,10 @@ export class HouseDetail implements OnInit {
     MeteorObservable.subscribe('house-comments', this.houseId).subscribe(() => {
       MeteorObservable.autorun().subscribe(() => {
         this.comments = HouseComments
-          .find({objId: this.houseId,type:"main"}, { sort: { createdAt: -1 }, limit: 10 })
+          .find({objId: this.houseId,type:'main'},{sort:{createdAt:-1},limit:10})
           .map(comments => {
             comments.forEach(comment => {
-              const user = Meteor.users.findOne({_id: comment.senderId}, {fields: {profile: 1}});
+              const user = Meteor.users.findOne({_id: comment.senderId}, {fields: {profile:1}});
               comment.profile = user.profile;
               if(Meteor.userId()) {
                 comment.ownership = Meteor.userId() == comment.senderId ? 'mine' : 'other';
@@ -152,12 +152,12 @@ export class HouseDetail implements OnInit {
     MeteorObservable.subscribe('house-second-comments', this.houseId).subscribe(() => {
       MeteorObservable.autorun().subscribe(() => {
         this.secondComments = HouseSecondComments
-          .find({objId: this.houseId}, { sort: { createdAt: 1 }})
+          .find({objId: this.houseId},{sort:{ createdAt:1}})
           .map(secondComments => {
             secondComments.forEach(secondComment => {
-              const user = Meteor.users.findOne({_id: secondComment.fromId}, {fields: {profile: 1}});
+              const user = Meteor.users.findOne({_id: secondComment.fromId}, {fields: {profile:1}});
               secondComment.profile = user.profile;
-              const toUser = Meteor.users.findOne({_id: secondComment.toId}, {fields: {profile: 1}});
+              const toUser = Meteor.users.findOne({_id: secondComment.toId}, {fields: {profile:1}});
               secondComment.toProfile = toUser.profile;
             });
             return secondComments;

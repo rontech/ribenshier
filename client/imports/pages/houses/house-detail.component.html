@@ -114,10 +114,6 @@
           ==secondComment.toId" >{{secondComment.profile.name}}:{{secondComment.content}}</p>
           <p class="line" *ngIf="comment._id==secondComment.firstCommentId && comment.senderId
           !=secondComment.toId">{{secondComment.profile.name}}回復{{secondComment.toProfile.name}}:{{secondComment.content}}</p>
-          <span class="subcomment-time" *ngIf="comment._id==secondComment.firstCommentId">
-            <ion-icon class="comment-time" name="time"></ion-icon>
-            {{secondComment.createdAt | amCalendar | chineseCalendar}}
-          </span>
           </ion-row>
       </ion-item>
     </div>

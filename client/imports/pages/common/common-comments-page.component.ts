@@ -11,12 +11,16 @@ export class CommonCommentsPage {
   id: string;
   objectName: string;
   addMethod: string;
+  addReplyCommentMethod: string;
+  type: string;
   selectedObject: any;
   optionsComponent: any;
   title: string;
   comments: any;
+  firstComment:any;
   comment = '';
   autoScroller: Subscription;
+  commentlist: Array<string>;
   
   @ViewChild(Content) content:Content;
  
@@ -81,13 +85,38 @@ export class CommonCommentsPage {
  
   sendComment(): void {
     if(Meteor.user()) {
-      MeteorObservable.call(this.addMethod, this.id, this.comment).zone().subscribe(() => {
+      if(this.commentlist == undefined) {
+        MeteorObservable.call(this.addMethod, this.id, this.comment).zone().subscribe(() => {
         this.comment = '';
         this.scroller.scrollTop = this.scroller.scrollHeight;
         this.content.scrollToBottom(300);//300ms animation speed
-      });
+        });
+      } else {
+        MeteorObservable.call(this.addReplyCommentMethod, this.id, this.type, this.comment,this.commentlist).zone().subscribe(() => {
+        this.comment = '';
+        this.commentlist = undefined;
+        this.scroller.scrollTop = this.scroller.scrollHeight;
+        this.content.scrollToBottom(300);//300ms animation speed
+        });
+      }
     } else {
       this.utilSrv.alertDialog('提醒', '你需要登录才可以评论。');
+    }
+  }
+
+  answerComment(name,senderId,firstContent): void {
+    if(Meteor.user()) {
+      document.getElementById("comment").focus();
+      var commentid = document.getElementById("comment");
+      commentid.setAttribute("placeholder", "回復"+name+":");
+      this.commentlist = [name,senderId,firstContent];
+    }
+  }
+
+  onInitKeyup(){
+    if(this.comment.length === 0){
+      this.commentlist = undefined;
+      document.getElementById("comment").setAttribute("placeholder", "输入评论内容");
     }
   }
 

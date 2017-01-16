@@ -22,6 +22,8 @@ import { CommonCommentsPage } from '../common/common-comments-page.component';
 export class JobCommentsPage extends CommonCommentsPage  implements OnInit, OnDestroy {
   selectedOject: Job;
   addMethod: string = 'addJobComment';
+  addReplyCommentMethod: string = 'addReplyComment';
+  type:string ='job';
   objectName: string = 'job';
   optionsComponent = JobOptionsComponent;
   comments: Observable<JobComment[]>;

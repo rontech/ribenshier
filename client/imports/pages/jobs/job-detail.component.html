@@ -93,6 +93,12 @@
             </button>
           </span>
         </ion-row>
+        <ion-row  *ngFor="let secondComment of secondComments | async">
+          <p class="line" *ngIf="comment._id==secondComment.firstCommentId && comment.senderId
+          ==secondComment.toId" >{{secondComment.profile.name}}:{{secondComment.content}}</p>
+          <p class="line" *ngIf="comment._id==secondComment.firstCommentId && comment.senderId
+          !=secondComment.toId">{{secondComment.profile.name}}回復{{secondComment.toProfile.name}}:{{secondComment.content}}</p>
+          </ion-row>
       </ion-item>
     </div>
   </div>

@@ -22,7 +22,9 @@ import { CommonCommentsPage } from '../common/common-comments-page.component';
 export class ActivityCommentsPage extends CommonCommentsPage implements OnInit, OnDestroy {
   selectedOject: Activity;
   addMethod: string = 'addActivityComment';
+  addReplyCommentMethod: string = 'addReplyComment';
   objectName: string = 'activity';
+  type:string ='activity';
   optionsComponent = ActivityOptionsComponent;
   comments: Observable<ActivityComment[]>;
  

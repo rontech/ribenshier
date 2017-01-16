@@ -13,7 +13,7 @@
        (hold)="onMessageHold($event, $index, comment)">
     <div *ngIf="comment.ownership === 'other'">
       <img class="profile-picture left" [src]="comment.profile.picture" (click)="viewUser(comment.senderId)"/>
-      <div class="chat-bubble left">
+      <div class="chat-bubble left" (click)="answerComment(comment.profile.name,comment.senderId,comment.content)">
         <div class="message">
           {{ comment.content }}
         </div>
@@ -25,7 +25,7 @@
 
     <div *ngIf="comment.ownership === 'mine'">
       <img class="profile-picture right" [src]="comment.profile.picture" (click)="viewUser(comment.senderId)"/>
-      <div class="chat-bubble right">
+      <div class="chat-bubble right" (click)="answerComment(comment.profile.name,comment.senderId,comment.content)">
         <div class="message" ng-bind-html="comment.content">
           {{ comment.content }}
         </div>
@@ -40,9 +40,9 @@
 
 <ion-footer>
   <ion-toolbar class="footer-bar" color="white">
-    <textarea [(ngModel)]="comment" cols="60" placeholder="输入评论内容" class="comment-editor"></textarea>
+    <textarea [(ngModel)]="comment" (keyup)="onInitKeyup()" cols="60" id="comment" placeholder="输入评论内容" class="comment-editor"></textarea>
     <ion-buttons end>
-      <button ion-button (click)="sendComment()" class="comment-editor-button" [disabled]="!comment || comment.trim().length == 0">
+      <button ion-button id="commentbutton" (click)="sendComment()" class="comment-editor-button" [disabled]="!comment || comment.trim().length == 0">
         <ion-icon name="send" color="primary"></ion-icon>
       </button>
     </ion-buttons>

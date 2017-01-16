@@ -16,6 +16,8 @@ import { ActivityMembers } from '../../../../both/collections/activity-members.c
 import { ActivityCommentThumbeds } from '../../../../both/collections/activity-comment-thumbed.collection';
 import { UtilityService } from '../../services/utility.service';
 import { UserComponent } from '../../pages/user/user.component';
+import { ReplyComment } from '../../../../both/models/reply-comment.model';
+import { ActivitySecondComments } from '../../../../both/collections/activity-second-comments.collection';
  
 @Component({
   selector: 'activity-detail',
@@ -29,6 +31,7 @@ export class ActivityDetail implements OnInit {
   private activityId: string;
   private comments: Observable<ActivityComment[]>;
   private members: Observable<ActivityMember[]>;
+  private secondComments: Observable<ReplyComment[]>;
  
   constructor(
     navParams: NavParams,
@@ -43,6 +46,7 @@ export class ActivityDetail implements OnInit {
   ngOnInit() {
     this.subActivities();
     this.subComments();
+    this.replyComments();
     this.subJoinedMembers();
   }
 
@@ -151,10 +155,10 @@ export class ActivityDetail implements OnInit {
     MeteorObservable.subscribe('activity-comments', this.activityId).subscribe(() => {
       MeteorObservable.autorun().subscribe(() => {
         this.comments = ActivityComments
-          .find({objId: this.activityId}, { sort: { createdAt: -1 }, limit: 10 })
+          .find({objId: this.activityId,type:'main'},{sort:{createdAt:-1},limit:10})
           .map(comments => {
             comments.forEach(comment => {
-              const user = Meteor.users.findOne({_id: comment.senderId}, {fields: {profile: 1}});
+              const user = Meteor.users.findOne({_id:comment.senderId},{fields:{profile:1}});
               comment.profile = user.profile;
               if(Meteor.userId()) {
                 comment.ownership = Meteor.userId() == comment.senderId ? 'mine' : 'other';
@@ -163,6 +167,24 @@ export class ActivityDetail implements OnInit {
               }
             });
             return comments;
+          }).zone();
+      });
+    });
+  }
+
+  private replyComments(): void {
+    MeteorObservable.subscribe('activity-second-comments', this.activityId).subscribe(() => {
+      MeteorObservable.autorun().subscribe(() => {
+        this.secondComments = ActivitySecondComments
+          .find({objId: this.activityId},{sort:{createdAt:1}})
+          .map(secondComments => {
+            secondComments.forEach(secondComment => {
+              const user = Meteor.users.findOne({_id:secondComment.fromId},{fields:{profile:1}});
+              secondComment.profile = user.profile;
+              const toUser = Meteor.users.findOne({_id:secondComment.toId},{fields:{profile:1}});
+              secondComment.toProfile = toUser.profile;
+            });
+            return secondComments;
           }).zone();
       });
     });

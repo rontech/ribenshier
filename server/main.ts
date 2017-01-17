@@ -19,6 +19,7 @@ import './imports/publications/notifications.publication';
 import './imports/publications/house-second-comments.publication';
 import './imports/publications/job-second-comments.publication';
 import './imports/publications/activity-second-comments.publication';
+import './imports/publications/apper-comments.publication';
 
 const mainInstance = new Main();
 mainInstance.start();

@@ -4,6 +4,8 @@ import { Meteor } from 'meteor/meteor';
 import { Topic } from '../../../../both/models/topic.model';
 import { Comment } from '../../../../both/models/comment.model';
 import { Comments } from '../../../../both/collections/comments.collection';
+import { ApperComment } from '../../../../both/models/apper-comment.model';
+import { ApperComments } from '../../../../both/collections/apper-comments.collection';
 import { Topics } from '../../../../both/collections/topics.collection';
 import { Observable } from 'rxjs';
 import template from './topic-detail.component.html';
@@ -25,7 +27,7 @@ export class TopicDetail implements OnInit {
   topics: Observable<Topic[]>;
   private topicId: string;
   private comments: Observable<Comment[]>;
- 
+  private apperComments:Observable<ApperComment[]>
   constructor(
     navParams: NavParams,
     private navCtrl: NavController,
@@ -39,6 +41,7 @@ export class TopicDetail implements OnInit {
   ngOnInit() {
     this.subTopics();
     this.subComments();
+    this.subApperComment();
   }
 
   barTitle(topic) {
@@ -145,7 +148,7 @@ export class TopicDetail implements OnInit {
     MeteorObservable.subscribe('comments', this.topicId).subscribe(() => {
       MeteorObservable.autorun().subscribe(() => {
         this.comments = Comments
-          .find({objId: this.topicId}, { sort: { createdAt: -1 }, limit: 10 })
+          .find({objId: this.topicId,type: "main"}, { sort: { createdAt: -1 }, limit: 10 })
           .map(comments => {
             comments.forEach(comment => {
               const user = Meteor.users.findOne({_id: comment.senderId}, {fields: {profile: 1}});
@@ -156,8 +159,26 @@ export class TopicDetail implements OnInit {
                 comment.ownership = 'other';
               }
             });
-            return comments;            
+            return comments;
           }).zone();
+      });
+    });
+  }
+
+  private subApperComment(): void {
+    MeteorObservable.subscribe('apper-comments',this.topicId).subscribe(() => {
+      MeteorObservable.autorun().subscribe(() => {
+        this.apperComments = ApperComments
+        .find({objId: this.topicId})
+        .map(apperComments =>{
+          apperComments.forEach(apperComment => {
+            const user = Meteor.users.findOne({_id: apperComment.fromId}, {fields: {profile: 1}});
+            apperComment.profile = user.profile;
+            const replyuser = Meteor.users.findOne({_id: apperComment.toId}, {fields: {profile: 1}});
+            apperComment.toProfile = replyuser.profile;
+          })
+          return apperComments;
+        }).zone();
       });
     });
   }

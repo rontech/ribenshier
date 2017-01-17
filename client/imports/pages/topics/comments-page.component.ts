@@ -22,6 +22,8 @@ import { CommonCommentsPage } from '../common/common-comments-page.component';
 export class CommentsPage extends CommonCommentsPage implements OnInit, OnDestroy {
   selectedOject: Topic;
   addMethod: string = 'addComment';
+  addReplyCommentMethod: string = 'addReplyComment';
+  type: string = 'topic';
   objectName: string = 'topic';
   optionsComponent = TopicOptionsComponent;
   comments: Observable<Comment[]>;

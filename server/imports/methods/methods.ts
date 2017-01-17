@@ -25,6 +25,7 @@ import { JobCommentThumbeds } from '../../../both/collections/job-comment-thumbe
 import { HouseSecondComments } from '../../../both/collections/house-second-comments.collection';
 import { JobSecondComments } from '../../../both/collections/job-second-comments.collection';
 import { ActivitySecondComments } from '../../../both/collections/activity-second-comments.collection';
+import { ApperComments } from '../../../both/collections/apper-comments.collection';
 
 const nonEmptyString = Match.Where((str) => {
   check(str, String);
@@ -110,7 +111,8 @@ Meteor.methods({
       objId: topicId,
       senderId: this.userId,
       content: content,
-      createdAt: dt
+      createdAt: dt,
+      type: 'main'
     });
 
     //commented incremant
@@ -129,6 +131,64 @@ Meteor.methods({
         message: topic.title,
         senderId: this.userId,
         toId: topic.creatorId,
+        read: false,
+        createdAt: dt
+      });
+  },
+  addApperComment(topicId: string,comment:string,reply:Array<string>): void {
+     if (!this.userId) throw new Meteor.Error('unauthorized',
+      '你需要登录才可以操作。');
+    check(topicId, nonEmptyString);
+
+    const topic = Topics.collection.findOne(topicId);
+ 
+    if (!topic) throw new Meteor.Error('comments-not-exists',
+      '对象主题不存在。');
+
+    const comments = Comments.collection.findOne({content:reply[2],objId:topicId,senderId:reply[1]});
+    if(comments.type == 'sub'){
+    const secComments = ApperComments.collection.findOne({fromId:reply[1],content:reply[2]});
+    let dt = new Date();
+    const subcomment =({
+      firstCommentId:secComments.firstCommentId,
+      fromId: this.userId,
+      toId: reply[1],
+      content: comment,
+      createdAt: dt,
+      objId: topicId
+  })
+    ApperComments.collection.insert(subcomment);
+    }else{
+    let dt = new Date();
+    const subcomment =({
+      firstCommentId:comments._id,
+      fromId: this.userId,
+      toId: reply[1],
+      content: comment,
+      createdAt: dt,
+      objId: topicId
+  })
+    ApperComments.collection.insert(subcomment);
+}
+    let dt = new Date();
+    const soncomment = ({
+      objId: topicId,
+      senderId: this.userId,
+      content: comment,
+      createdAt: dt,
+      type: 'sub'
+    })
+    Comments.collection.insert(soncomment);
+
+    const creator = Meteor.users.findOne(topic.creatorId);
+    if(creator.profile.notify && this.userId != reply[1])
+      Notifications.collection.insert({
+        objId: topicId,
+        objType: 'topic',
+        notType: 'c',
+        message: reply[2],
+        senderId: this.userId,
+        toId: reply[1],
         read: false,
         createdAt: dt
       });
@@ -294,6 +354,10 @@ Meteor.methods({
       '你需要登录才可以操作。');
  
     let dt = new Date();
+    if(typeof deadline === 'string') {
+        deadline = new Date(deadline);
+      }
+
     const activity = {
       title: title,
       people: people,
@@ -339,6 +403,7 @@ Meteor.methods({
       throw new Meteor.Error('stopped', '活动已经中止。');
 
     if(activity.deadline) {
+      let deadline;
       let now = new Date();
       let today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
@@ -655,7 +720,58 @@ Meteor.methods({
     if (!this.userId) throw new Meteor.Error('unauthorized',
     '你需要登录才可以操作。');
 
-    if(objtype == 'house'){
+    if (objtype == 'topic'){
+      const topic = Topics.collection.findOne(objId);
+ 
+    if (!topic) throw new Meteor.Error('comments-not-exists','对象主题不存在。');
+      const comments = Comments.collection.findOne({content:replyComment[2],objId:objId,senderId:replyComment[1]});
+    if(comments.type == 'sub'){
+      const secComments = ApperComments.collection.findOne({fromId:replyComment[1],content:replyComment[2]});
+    let dt = new Date();
+      const subcomment =({
+        firstCommentId:secComments.firstCommentId,
+        fromId: this.userId,
+        toId: replyComment[1],
+        content: content,
+        createdAt: dt,
+        objId: objId
+  })
+    ApperComments.collection.insert(subcomment);
+    }else{
+    let dt = new Date();
+    const subcomment =({
+      firstCommentId:comments._id,
+      fromId: this.userId,
+      toId: replyComment[1],
+      content: content,
+      createdAt: dt,
+      objId: objId
+    })
+    ApperComments.collection.insert(subcomment);
+}
+    let dt = new Date();
+      const soncomment = ({
+        objId: objId,
+        senderId: this.userId,
+        content: content,
+        createdAt: dt,
+        type: 'sub'
+      })
+    Comments.collection.insert(soncomment);
+
+    const creator = Meteor.users.findOne(topic.creatorId);
+    if(creator.profile.notify && this.userId != replyComment[1])
+      Notifications.collection.insert({
+        objId: objId,
+        objType: 'topic',
+        notType: 'c',
+        message: replyComment[2],
+        senderId: this.userId,
+        toId: replyComment[1],
+        read: false,
+        createdAt: dt
+      });
+  }else if(objtype == 'house'){
       const house = Houses.collection.findOne(objId);
 
       if (!house) throw new Meteor.Error('house-not-exists',

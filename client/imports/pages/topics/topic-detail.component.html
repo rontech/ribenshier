@@ -55,9 +55,11 @@
 
       <ion-label color="danger">最新评论</ion-label>
       <ion-item class="post-comment" *ngFor="let comment of comments | async">
+      <ion-row>
         <ion-avatar item-left (click)="viewUser(comment.senderId)">
           <img [src]="comment.profile.picture">
         </ion-avatar>
+        <div>
         <h3 color="primary" class="post-author">
           {{comment.profile.name}}
         </h3>
@@ -74,7 +76,17 @@
             <ion-icon name="thumbs-up" style="color: #d03e84"></ion-icon>
             <span class="corner-count">{{comment.thumbed}}</span>
           </button>
-        </span>
+          </span>
+        </ion-row>
+        </div>
+        </ion-row>
+
+        <ion-row *ngFor="let apperComment of apperComments | async">
+        <p class="line" *ngIf="comment._id ==apperComment.firstCommentId && comment.senderId == apperComment.toId">{{apperComment.profile.name}}:{{apperComment.content}}
+        </p>
+        <p class="line" *ngIf="comment._id ==apperComment.firstCommentId && comment.senderId != apperComment.toId">
+        {{apperComment.profile.name}}回復{{apperComment.toProfile.name}}:{{apperComment.content}}
+        </p>
         </ion-row>
       </ion-item>
     </div>

@@ -19,6 +19,8 @@ export class CommonCommentsPage {
   comments: any;
   firstComment:any;
   comment = '';
+  fromId: string;
+  toId: string;
   autoScroller: Subscription;
   commentlist: Array<string>;
   
@@ -101,7 +103,7 @@ export class CommonCommentsPage {
       }
     } else {
       this.utilSrv.alertDialog('提醒', '你需要登录才可以评论。');
-    }
+    } 
   }
 
   answerComment(name,senderId,firstContent): void {
@@ -146,7 +148,7 @@ export class CommonCommentsPage {
   private get commentEditor(): HTMLInputElement {
     return <HTMLInputElement>document.querySelector('.comment-editor');
   }
- 
+
   private get scroller(): Element {
     return this.commentsList;
   }

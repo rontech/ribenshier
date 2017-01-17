@@ -8,11 +8,22 @@ topic-detail {
 
   .comment-thumb {
     float: right;
-    width: 80%;
+    width: 150px;
     text-align: right;
   }
 
   .post-time {
     margin-top: 10px;
+  }
+
+  .subcomment-time {
+    font-size: 6px;
+    float: right;
+    width: 80%;
+    text-align: right;
+  }
+
+  .line {
+    text-indent:6em;
   }
 }

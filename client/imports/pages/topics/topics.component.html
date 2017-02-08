@@ -136,7 +136,7 @@
             <span >
               <p class="activity-info"> 
                 <ion-icon name="bonfire"  style="color: #4682b4"></ion-icon>
-                定员{{activity.people}}名 {{activity.day | date:'M月d日'}}发动 ...
+                {{showPeople(activity.people)}} {{activity.day | date:'M月d日'}}发动 ...
               </p>
               <p class="topic-brief">{{activity.content.slice(0, 22)}}</p>
               <p class="topic-brief">{{activity.content.slice(22, 44)}}...</p>

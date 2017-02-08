@@ -273,6 +273,11 @@ export class TopicsComponent implements OnInit {
     this.navCtrl.parent.parent.push(UserComponent, {userId: id});
   }
 
+  showPeople(people) {
+    if(people) return '定員' + people + '名';
+    return '定員不限';
+  }
+
   private subJoinedMembers(id) {
     MeteorObservable.subscribe('activity-members', id).subscribe(() => {
       MeteorObservable.autorun().subscribe(() => {

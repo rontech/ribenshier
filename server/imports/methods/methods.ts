@@ -354,9 +354,17 @@ Meteor.methods({
       '你需要登录才可以操作。');
  
     let dt = new Date();
-    if(typeof deadline === 'string') {
+    if(deadline && typeof deadline === 'string') {
         deadline = new Date(deadline);
-      }
+    }
+
+    if(typeof day === 'string') {
+        day = new Date(day);
+    }
+
+    if(people && typeof people === 'string') {
+        people = parseInt(people);
+    }
 
     const activity = {
       title: title,
@@ -407,7 +415,7 @@ Meteor.methods({
       let now = new Date();
       let today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
-      if(today.getTime() > activity.deadline.getTime())
+      if(activity.deadline && today.getTime() > activity.deadline.getTime())
         throw new Meteor.Error('outdated', '活动已经过期。');
     }
 
@@ -418,7 +426,7 @@ Meteor.methods({
     if(activity.status === '1') 
       throw new Meteor.Error('overcrowded', '活动已经满员。');
 
-    if(activity.joined >= activity.people) 
+    if(activity.people && activity.joined >= activity.people) 
       throw new Meteor.Error('overcrowded', '活动已经满员。');
 
     let status = '0';

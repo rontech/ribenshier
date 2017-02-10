@@ -95,7 +95,7 @@ export class ProfileComponent implements OnInit {
            originalStore: 'images',
             originalId: pictureId
         }).map((thumbs: Thumb[]) => {
-          this.profile.picture = thumbs[0].path;
+          this.profile.picture = thumbs[0].url;
           this.profile.thumbId = thumbs[0]._id;
           return thumbs;
         });

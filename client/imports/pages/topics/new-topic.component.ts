@@ -126,7 +126,7 @@ export class NewTopicComponent {
     upload(files[0])
       .then((result) => {
         loader.dismissAll();
-        this.picture = result.path;
+        this.picture = result.url;
         this.pictureId = result._id;
         this.updatePicture();
       }).catch((e) => {
@@ -158,7 +158,7 @@ export class NewTopicComponent {
            originalStore: 'images',
             originalId: this.pictureId
         }).map((thumbs: Thumb[]) => {
-          this.thumbnail = thumbs[0].path;
+          this.thumbnail = thumbs[0].url;
           this.thumbId = thumbs[0]._id;
           return thumbs;
         });

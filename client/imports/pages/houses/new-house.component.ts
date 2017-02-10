@@ -133,7 +133,7 @@ export class NewHouseComponent {
       .then((result) => {
         loader.dismissAll();
         if(type === 'main') {
-          this.picture = result.path;
+          this.picture = result.url;
           this.pictureId = result._id;
           this.updatePictureMain();
         } else {
@@ -179,7 +179,7 @@ export class NewHouseComponent {
            originalStore: 'images',
             originalId: this.pictureId
         }).map((thumbs: Thumb[]) => {
-          this.thumb = thumbs[0].path;
+          this.thumb = thumbs[0].url;
           this.thumbId = thumbs[0]._id;
           return thumbs;
         });

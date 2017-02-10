@@ -103,8 +103,8 @@ export class NewTopicComponent {
       return;
     }
 
-     if (files[0].size > 512000) {
-      this.utilSrv.alertDialog('图片不能大于500KB', '请重新选择图片上传');
+     if (files[0].size > 2048000) {
+      this.utilSrv.alertDialog('图片不能大于2M', '请重新选择图片上传');
       return;
     }
 

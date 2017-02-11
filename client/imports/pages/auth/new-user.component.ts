@@ -6,7 +6,7 @@ import * as style from './new-user.component.scss';
 import * as Gravatar from 'gravatar';
 import { UtilityService } from '../../services/utility.service';
 import { GlobalValidator } from '../common/global-validator';
-import { ImagesStore } from '../../../../both/collections/images.collection';
+import { ThumbsStore } from '../../../../both/collections/images.collection';
  
 @Component({
   selector: 'new-user',
@@ -66,7 +66,7 @@ export class NewUserComponent {
     let gravatar;
     try {
       gravatar = Gravatar.url(username, {s: 100, d: 'monsterid'}, null);
-      ImagesStore.importFromURL(gravatar, {name: 'gravatar.png', type: 'image/png', 
+      ThumbsStore.importFromURL(gravatar, {name: 'gravatar.png', type: 'image/png', 
         extension: 'png', description: 'from gravatar site'}, (err, file) => {
           if (err) {
             gravatar = '/assets/none.png';

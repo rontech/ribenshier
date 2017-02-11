@@ -11,7 +11,7 @@ App.info({
 
 // app 图标
 App.icons({
-  'iphone': 'appicons/icon.png',
+  //'iphone': 'appicons/icon.png',
   'iphone_2x': 'appicons/Icon-60@2x.png',
   'iphone_3x': 'appicons/Icon-60@3x.png',
   'ipad' : 'appicons/Icon-76.png',

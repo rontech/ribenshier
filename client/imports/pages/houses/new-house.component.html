@@ -121,7 +121,7 @@
         <ion-list>
           <ion-item-sliding *ngFor="let thumb of thumbsMain | async" class="float: right;">
             <button ion-item>
-              <img [src]= 'thumb.path'></img>
+              <img [src]= 'thumb.url'></img>
             </button>
             <ion-item-options>
               <button ion-button color="danger" (click)="removePicture(thumb)">消除</button>
@@ -141,7 +141,7 @@
         <ion-list>
           <ion-item-sliding *ngFor="let thumb of thumbsSub | async" class="float: right;">
             <button ion-item>
-              <img [src]= 'thumb.path'></img>
+              <img [src]= 'thumb.url'></img>
             </button>
             <ion-item-options>
               <button ion-button color="danger" (click)="removePicture(thumb)">消除</button>

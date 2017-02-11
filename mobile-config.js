@@ -11,19 +11,24 @@ App.info({
 
 // app 图标
 App.icons({
-  // 'iphone': 'appicons/iphone.png',
-  'iphone_2x': 'appicons/iphone_2x_120.png',
-  'iphone_3x': 'appicons/iphone_3x_180.png',
-  'ipad' : 'appicons/ipad_76.png',
-  'ipad_2x' :'appicons/ipad_2x_152.png',
-  'ipad_pro' : 'appicons/ipad_pro_167.png'
+  'iphone': 'appicons/icon.png',
+  'iphone_2x': 'appicons/Icon-60@2x.png',
+  'iphone_3x': 'appicons/Icon-60@3x.png',
+  'ipad' : 'appicons/Icon-76.png',
+  'ipad_2x' :'appicons/Icon-76@2x.png'
+  //'ipad_pro' : 'appicons/ipad_pro_167.png'
 });
 
 App.launchScreens({
-	'iphone_2x': 'launchScreen/iphone2x_640X960.png',
-	'iphone5': 'launchScreen/iphone5_640X1136.png',
-	'iphone6': 'launchScreen/iphone6_750X1334.png',
-	'iphone6p_portrait': 'launchscreen/iphone6s_1204X2208.png'
+	'iphone_2x': 'launchScreen/Default@2x.png',
+	'iphone5': 'launchScreen/Default-568h@2x.png',
+	'iphone6': 'launchScreen/Default-667h@2x.png',
+	'iphone6p_portrait': 'launchscreen/Default-Portrait-736h@3x.png',
+  'iphone6p_landscape': 'launchscreen/Default-Landscape-736h@3x.png',
+  'ipad_portrait': 'launchscreen/Default-Portrait.png',
+  'ipad_portrait_2x': 'launchscreen/Default-Portrait@2x.png',
+  'ipad_landscape': 'launchscreen/Default-Landscape.png',
+  'ipad_landscape_2x': 'launchscreen/Default-Landscape@2x.png'
 });
 
 // 服务器

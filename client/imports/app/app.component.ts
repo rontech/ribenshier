@@ -2,6 +2,7 @@ import { Component, ViewChild, OnInit } from '@angular/core';
 import { Platform, Events, MenuController, Nav, AlertController } from 'ionic-angular';
 import { StatusBar, Deeplinks } from 'ionic-native';
 import { Meteor } from 'meteor/meteor';
+import { Session } from 'meteor/session';
 import template from './app.component.html';
 import * as style from './app.component.scss';
 import { TabsContainerComponent } from '../pages/tabs-container/tabs-container.component';
@@ -13,6 +14,7 @@ import { UtilityService } from '../services/utility.service';
 import { Profile } from '../../../both/models/profile.model';
 
 import { TopicDetail } from '../pages/topics/topic-detail.component';
+import { TutorialPage } from '../pages/tutorial/tutorial';
 
 export interface PageObj {
   title: string;
@@ -63,13 +65,19 @@ export class AppComponent implements OnInit{
   ) {
     moment.locale('zh-cn');
 
-    this.rootPage = TabsContainerComponent;
+    // Check if the user has already seen the tutorial
+    if (Session.get('hasSeenTutorial')) {
+       this.rootPage = TabsContainerComponent;
+     } else {
+       this.rootPage = TutorialPage;
+     }
 
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
-      //StatusBar.styleDefault();
+      StatusBar.styleDefault();
     });
+
 
     this.listenToLoginEvents();
 

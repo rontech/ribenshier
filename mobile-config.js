@@ -27,7 +27,7 @@ App.launchScreens({
 });
 
 // 服务器
-App.accessRule('http://www.ribenshier.net/*');
+App.accessRule('http://www.ribenshier.com/*');
 
 //wechat config 
 // 使用插件：boxfish:accounts-wechat

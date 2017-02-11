@@ -1,0 +1,34 @@
+<ion-content no-bounce>
+  <ion-slides (ionSlideWillChange)="onSlideChangeStart($event)" pager>
+    <ion-slide>
+      <img src="assets/guide_1.png" class="slide-image"/>
+    </ion-slide>
+
+    <ion-slide>
+      <img src="assets/guide_2.png" class="slide-image"/>
+    </ion-slide>
+
+    <ion-slide>
+      <img src="assets/guide_3.png" class="slide-image"/>
+    </ion-slide>
+
+    <ion-slide>
+      <img src="assets/guide_4.png" class="slide-image"/>
+    </ion-slide>
+  </ion-slides>
+</ion-content>
+
+<ion-footer no-border>
+  <ion-toolbar>
+    <ion-buttons>
+    <button ion-button clear icon-only (click)="startApp()" *ngIf="showSkip">
+      Skip
+    </button>
+    </ion-buttons>
+    <ion-buttons end>
+    <button ion-button icon-right clear (click)="startApp()" *ngIf="!showSkip">
+      Continue
+    </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>

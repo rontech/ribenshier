@@ -62,7 +62,7 @@ export class NewUserComponent {
       gravatar = 'assets/none.png';
     }*/
    
-    gravatar = 'assets/none.png';
+    gravatar = 'http://www.ribenshier.com/assets/none.png';
     this.utilSrv.createUser(username,
        password, username,
        gravatar, 'self',

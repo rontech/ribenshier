@@ -56,12 +56,13 @@ export class NewUserComponent {
 
   private createUser(username, password): void {
     let gravatar;
-    try {
+    /*try {
       gravatar = Gravatar.url(username, {s: 100, d: 'monsterid'}, null);
     } catch(e) {
       gravatar = 'assets/none.png';
-    }
+    }*/
    
+    gravatar = 'assets/none.png';
     this.utilSrv.createUser(username,
        password, username,
        gravatar, 'self',

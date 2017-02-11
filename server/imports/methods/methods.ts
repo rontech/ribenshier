@@ -605,8 +605,8 @@ Meteor.methods({
   },
   addHouse(
          title: string, forRental: boolean, type: string,
-         brief: string, floorPlan: string, area: number,
-         access: string, price: number,built: number,
+         brief: string, floorPlan: string, area: string,
+         access: string, price: string, built: string,
          pictureId: string, picture: string, thumbId: string,
          thumb: string, description: string,
          subPictureIdArray: Array<string>, 
@@ -940,8 +940,8 @@ Meteor.methods({
   addJob(title: string,
           location: string,
           position: string,
-           people: number,
-           start: Date,
+           people: string,
+           start: string,
            description: string): void {
     if (!this.userId) throw new Meteor.Error('unauthorized',
       '你需要登录才可以操作。');

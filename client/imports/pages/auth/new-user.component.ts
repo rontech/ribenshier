@@ -6,6 +6,7 @@ import * as style from './new-user.component.scss';
 import * as Gravatar from 'gravatar';
 import { UtilityService } from '../../services/utility.service';
 import { GlobalValidator } from '../common/global-validator';
+import { ImagesStore } from '../../../../both/collections/images.collection';
  
 @Component({
   selector: 'new-user',
@@ -48,6 +49,13 @@ export class NewUserComponent {
     }
   }
 
+  isMatching(group: FormGroup) {
+    if(group.controls['password'].value === group.controls['passwordConfirm'].value) {
+      return null;
+    }
+    return {notMatch: true};
+  }
+
   create(): void {
     if(this.newUserForm.valid) {
       this.createUser(this.username.value, this.password.value);
@@ -56,13 +64,24 @@ export class NewUserComponent {
 
   private createUser(username, password): void {
     let gravatar;
-    /*try {
+    try {
       gravatar = Gravatar.url(username, {s: 100, d: 'monsterid'}, null);
+      ImagesStore.importFromURL(gravatar, {name: 'gravatar.png', type: 'image/png', 
+        extension: 'png', description: 'from gravatar site'}, (err, file) => {
+          if (err) {
+            gravatar = '/assets/none.png';
+          } else {
+            gravatar = file.url;
+          }
+          this.createUserByPicture(username, password, gravatar);
+        });
     } catch(e) {
-      gravatar = 'assets/none.png';
-    }*/
-   
-    gravatar = 'http://www.ribenshier.com/assets/none.png';
+      gravatar = '/assets/none.png';
+      this.createUserByPicture(username, password, gravatar);
+    }
+  }
+  
+  private createUserByPicture(username, password, gravatar): void {
     this.utilSrv.createUser(username,
        password, username,
        gravatar, 'self',
@@ -76,13 +95,6 @@ export class NewUserComponent {
           this.events.publish('user:signup');
           this.viewCtrl.dismiss();
     });
-  }
-
-  isMatching(group: FormGroup) {
-    if(group.controls['password'].value === group.controls['passwordConfirm'].value) {
-      return null;
-    }
-    return {notMatch: true};
   }
 }
 

@@ -22,9 +22,8 @@ export class TutorialPage {
   ) { }
 
   startApp() {
-    this.navCtrl.push(TabsContainerComponent).then(() => {
-      Session.set("hasSeenTutorial", true);
-    })
+    Session.set('hasSeenTutorial', '1');
+    this.navCtrl.push(TabsContainerComponent);
   }
 
   onSlideChangeStart(slider: Slides) {

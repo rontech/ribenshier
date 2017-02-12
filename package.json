@@ -17,6 +17,7 @@
   "dependencies": {
     "@angular/common": "2.2.1",
     "@angular/compiler": "2.2.1",
+    "@angular/compiler-cli": "2.2.1",
     "@angular/core": "2.2.1",
     "@angular/forms": "2.2.1",
     "@angular/http": "2.2.1",
@@ -24,12 +25,13 @@
     "@angular/platform-browser-dynamic": "2.2.1",
     "@angular/platform-server": "2.2.1",
     "@angular/router": "3.2.1",
-    "@angular/compiler-cli": "2.2.1",
+    "angular": "^1.5.0",
     "angular-ecmascript": "0.0.3",
     "angular2-meteor": "0.7.1",
     "angular2-meteor-polyfills": "0.1.1",
     "angular2-meteor-tests-polyfills": "0.0.2",
     "angular2-moment": "^1.0.0-beta.rc.1",
+    "babel-runtime": "^6.18.0",
     "gm": "^1.23.0",
     "gravatar": "^1.5.2",
     "intl": "^1.2.5",
@@ -43,8 +45,7 @@
     "rxjs": "5.0.0-beta.12",
     "spawn-sync": "^1.0.15",
     "try-thread-sleep": "^1.0.0",
-    "zone.js": "^0.6.21",
-    "babel-runtime": "^6.18.0",
-    "angular": "^1.5.0"
+    "wechat-oauth": "^1.2.1",
+    "zone.js": "^0.6.21"
   }
 }

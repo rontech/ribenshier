@@ -34,14 +34,7 @@ App.launchScreens({
 // 服务器
 App.accessRule('http://www.ribenshier.com/*');
 
-//wechat config 
-// 使用插件：boxfish:accounts-wechat
-// 插件地址：https://github.com/boxfish/meteor-accounts-wechat
-App.configurePlugin('cordova-plugin-wechat', {
-    WECHATAPPID: 'wxdd15b6922237eac5'
-});
-
-// // 添加包方法：meteor add cordova:xu.li.cordova.wechat@https://github.com/xu-li/cordova-plugin-wechat/tarball/ab08d76f322f7988e34231b3655300d3f36b37fa
+// 添加包方法：meteor add cordova:cordova-plugin-wechat@https://github.com/xu-li/cordova-plugin-wechat/tarball/bba096914ef1b5b97d0902affa600aa91232e2a5
 App.configurePlugin('cordova-plugin-wechat', {
 	WECHATAPPID: "wxdd15b6922237eac5"
 });

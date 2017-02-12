@@ -5,9 +5,10 @@ import template from './login.component.html';
 import * as style from './login.component.scss';
 import { MeteorObservable } from 'meteor-rxjs';
 import { UtilityService } from '../../services/utility.service';
-import { NewUserComponent } from './new-user.component'
-import { ForgotPasswordComponent } from './forgot-password.component'
-import { GlobalValidator } from '../common/global-validator'
+import { NewUserComponent } from './new-user.component';
+import { ForgotPasswordComponent } from './forgot-password.component';
+import { GlobalValidator } from '../common/global-validator';
+import { OAuth } from 'wechat-oauth';
  
 @Component({
   selector: 'login',
@@ -82,7 +83,27 @@ export class LoginComponent {
   }
 
   loginViaWeChat() {
-    window.open('https://www.google.co.jp', '_self');
+    let scope = 'snsapi_userinfo';
+    let state = '_' + (+new Date());
+    Wechat.auth(scope, state, response => {
+       this.setUserInfo(response.code);
+    }, reason => {
+      this.utilSrv.alertDialog('微信登录失败', reason);
+    });
+  }
+
+  private setUserInfo(code) {
+    let api = new OAuth('wxdd15b6922237eac5', 'd19ca18ad6bbc9bb2be1bd93e28db5a1');
+
+    api.getAccessToken(code, (err, resp) => {
+      if(err) {
+        this.utilSrv.alertDialog('微信登录失败', err);
+      } else {
+        api.getUser(resp.data.openid, (err2, resp2) => {
+          console.log(resp2);
+        });
+      }
+    });
   }
 
   private initFB() {

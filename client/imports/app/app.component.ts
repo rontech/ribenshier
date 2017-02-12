@@ -66,10 +66,14 @@ export class AppComponent implements OnInit{
     moment.locale('zh-cn');
 
     // Check if the user has already seen the tutorial
-    if (Session.get('hasSeenTutorial')) {
-       this.rootPage = TabsContainerComponent;
+    if (platform.is('cordova')) {
+      if (Session.equals('hasSeenTutorial', '1')) {
+         this.rootPage = TabsContainerComponent;
+       } else {
+         this.rootPage = TutorialPage;
+       }
      } else {
-       this.rootPage = TutorialPage;
+       this.rootPage = TabsContainerComponent;
      }
 
     platform.ready().then(() => {

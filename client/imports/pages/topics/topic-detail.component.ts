@@ -25,6 +25,7 @@ import { UserComponent } from '../../pages/user/user.component';
 })
 export class TopicDetail implements OnInit {
   topics: Observable<Topic[]>;
+  topic: Topic;
   private topicId: string;
   private comments: Observable<Comment[]>;
   private apperComments:Observable<ApperComment[]>
@@ -103,6 +104,29 @@ export class TopicDetail implements OnInit {
       return true;
     }
     return false;
+  }
+
+  setBackTopic(topic) {
+    this.topic = topic;
+    return '';
+  }
+
+  shareViaWechat() {
+    Wechat.share({
+      message: {
+        title: this.topic.title,
+        description: '来自日本事儿的共享',
+        thumb: this.topic.thumb,
+        media: {
+          type: Wechat.Type.WEBPAGE,
+          webpageUrl: 'http://www.ribenshier.com/#/topic-detail/' +  this.topic._id
+        }
+      },
+      scene: Wechat.Scene.TIMELINE   // share to Timeline
+    }, () => {
+    }, reason => {
+      this.utilSrv.alertDialog('共享失败', reason);
+    });
   }
 
   shareViaFacebook(topic): void {

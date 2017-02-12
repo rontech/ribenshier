@@ -28,6 +28,7 @@ import { ActivitySecondComments } from '../../../../both/collections/activity-se
 })
 export class ActivityDetail implements OnInit {
   activities: Observable<Activity[]>;
+  activity: Activity;
   private activityId: string;
   private comments: Observable<ActivityComment[]>;
   private members: Observable<ActivityMember[]>;
@@ -118,6 +119,28 @@ export class ActivityDetail implements OnInit {
 
   viewUser(id): void {
     this.navCtrl.push(UserComponent, {userId: id});
+  }
+
+  setBackActivity(activity) {
+    this.activity = activity;
+    return '';
+  }
+
+  shareViaWechat() {
+    Wechat.share({
+      message: {
+        title: this.activity.title,
+        description: '来自日本事儿的共享',
+        media: {
+          type: Wechat.Type.WEBPAGE,
+          webpageUrl: 'http://www.ribenshier.com/#/activity-detail/' +  this.activity._id
+        }
+      },
+      scene: Wechat.Scene.TIMELINE   // share to Timeline
+    }, () => {
+    }, reason => {
+      this.utilSrv.alertDialog('共享失败', reason);
+    });
   }
 
   private subActivities(): void {

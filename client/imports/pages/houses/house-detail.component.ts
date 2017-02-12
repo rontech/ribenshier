@@ -28,6 +28,7 @@ import { HouseSecondComments } from '../../../../both/collections/house-second-c
 })
 export class HouseDetail implements OnInit {
   houses: Observable<House[]>;
+  house: House;
   private houseId: string;
   private pictures: Observable<HousePicture[]>;
   private mySlideOptions = {
@@ -108,6 +109,29 @@ export class HouseDetail implements OnInit {
       error: (e: Error) => {
         this.utilSrv.alertDialog('提醒', e.message);
       }
+    });
+  }
+
+  setBackTopic(house) {
+    this.house = house;
+    return '';
+  }
+
+  shareViaWechat() {
+    Wechat.share({
+      message: {
+        title: this.house.title,
+        description: '来自日本事儿的共享',
+        thumb: this.house.thumb,
+        media: {
+          type: Wechat.Type.WEBPAGE,
+          webpageUrl: 'http://www.ribenshier.com/#/house-detail/' +  this.house._id
+        }
+      },
+      scene: Wechat.Scene.TIMELINE   // share to Timeline
+    }, () => {
+    }, reason => {
+      this.utilSrv.alertDialog('共享失败', reason);
     });
   }
 

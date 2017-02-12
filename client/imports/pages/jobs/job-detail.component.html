@@ -16,13 +16,12 @@
   <ion-fab right bottom>
     <button ion-fab mini color="dark"><ion-icon ios="ios-share-outline" md="md-share"></ion-icon></button>
     <ion-fab-list side="top">
-      <button ion-fab><ion-icon name="logo-facebook" (click)="shareViaFacebook()"></ion-icon></button>
       <button ion-fab><ion-icon name="chatbubbles" (click)="shareViaWechat()"></ion-icon></button>
     </ion-fab-list>
   </ion-fab>
 
   <div *ngFor="let job of jobs | async">
-    <div><h3>{{job.title}}</h3></div>
+    <div><h3>{{job.title}{{setBacJob(job)}}</h3></div>
 
     <ion-item class="item-no-border">
       <ion-avatar item-left (click)="viewUser(job.creatorId)">

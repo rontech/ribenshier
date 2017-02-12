@@ -25,6 +25,7 @@ import { JobSecondComments } from '../../../../both/collections/job-second-comme
 })
 export class JobDetail implements OnInit {
   jobs: Observable<Job[]>;
+  job: Job;
   private jobId: string;
   private mySlideOptions = {
     initialSlide: 1,
@@ -97,6 +98,28 @@ export class JobDetail implements OnInit {
       error: (e: Error) => {
         this.utilSrv.alertDialog('提醒', e.message);
       }
+    });
+  }
+
+  setBackJob(job) {
+    this.job = job;
+    return '';
+  }
+
+  shareViaWechat() {
+    Wechat.share({
+      message: {
+        title: this.job.title,
+        description: '来自日本事儿的共享',
+        media: {
+          type: Wechat.Type.WEBPAGE,
+          webpageUrl: 'http://www.ribenshier.com/#/job-detail/' +  this.job._id
+        }
+      },
+      scene: Wechat.Scene.TIMELINE   // share to Timeline
+    }, () => {
+    }, reason => {
+      this.utilSrv.alertDialog('共享失败', reason);
     });
   }
 

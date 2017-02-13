@@ -1,7 +1,10 @@
 MeteorWechat = {};
 MeteorWechat.whitelistedFields = ['nickname', 'sex', 'province', 'city', 'country',
   'headimgurl', 'privilege'];
-
+var config =  {
+   appId: 'wxdd15b6922237eac5',
+  secret: 'd19ca18ad6bbc9bb2be1bd93e28db5a1'
+}
 var OAuth = Package.oauth.OAuth;
 
 var serviceName = 'wechat';
@@ -44,9 +47,6 @@ var serviceHandler = function(query) {
 };
 
 var getTokenResponse = function (query) {
-  var config = ServiceConfiguration.configurations.findOne({service: 'wechat'});
-  if (!config)
-    throw new ServiceConfiguration.ConfigError();
 
   var response;
   try {

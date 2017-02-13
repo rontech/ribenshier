@@ -9,12 +9,6 @@ import { AppModule } from './imports/app/app.module';
 enableProdMode();
 
 Meteor.startup(() => {
-  Wechat.isInstalled(installed => {
-      console.log("Wechat installed: " + (installed ? "Yes" : "No"));
-    }, reason => {
-      console.log("Failed: " + reason);
-  });
-
   const sub = MeteorObservable.autorun().subscribe(() => {
     if (Meteor.loggingIn()) return;
     

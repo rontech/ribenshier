@@ -5,6 +5,9 @@ page-setting {
     color: map_get($colors, light);
     background: map_get($colors, myapp);
     border: none;
+    .profile-picture {
+      width:120px;
+    }
   }
 
   ion-row {

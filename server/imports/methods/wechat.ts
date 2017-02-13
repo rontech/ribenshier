@@ -3,10 +3,8 @@ import { HTTP } from 'meteor/http';
 import * as _ from 'underscore';
 
 let wechat_config = {
-    service: "webwechat",
-    appId: "wx25a4726b89792eda",
+    appId: 'wx25a4726b89792eda',
     scope: 'basic',
-    loginStyle: 'redirect',
     secret: "7a8d26c1f5de1315486de7fe48d4951d"
 };
 
@@ -23,6 +21,8 @@ let getToken = function(auth) {
     }
   );
 
+console.log("token response=", resp);
+console.log("token response content=", resp.content);
   let content = JSON.parse(resp.content);
   if (content.error) throw content;
 
@@ -52,6 +52,7 @@ let serviceHandler = function(auth) {
   let whitelistedFields = ['nickname', 'sex', 'province', 'city', 
                           'country', 'headimgurl', 'privilege'];
   let resp = getToken(auth);
+  console.log("getToken=", resp);
 
   let serviceData = {
     accessToken: resp.accessToken,
@@ -65,6 +66,7 @@ let serviceHandler = function(auth) {
   if (resp.refreshToken)  serviceData['refreshToken'] = resp.refreshToken;
 
   let identity = getIdentity(resp.accessToken, resp.openId);
+  console.log("getIdentity=", identity);
   let fields = _.pick(identity, whitelistedFields);
   _.extend(serviceData, fields);
 
@@ -74,7 +76,9 @@ let serviceHandler = function(auth) {
 Meteor.methods({
   getWechatAccount(auth) {
     try {
-      return serviceHandler(auth);
+      console.log('auth=', auth);
+      let data =  serviceHandler(auth);
+      console.log('data=', data);
     } catch(e) {
       console.log('catch: ' + e);
     }

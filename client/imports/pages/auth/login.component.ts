@@ -74,30 +74,17 @@ export class LoginComponent {
   }
 
   private registerWechatUser(auth) {
-    MeteorObservable.call('getWechatAccount',
+    MeteorObservable.call('handleWeChatOauthRequest',
        auth,
      ).subscribe({
        next: (data) => {
          console.log(data);
-         this.checkAndRegisterWechatUser(data);
+         this.checkAndRegisterWechatUser(data.serviceData);
        },
        error: (e: Error) => {
          this.utilSrv.alertDialog('微信用户信息读取失败', e);
        }
      });
-     /*
-    let api = new OAuth('wxdd15b6922237eac5', 'd19ca18ad6bbc9bb2be1bd93e28db5a1');
-
-    api.getAccessToken(auth.code, (err1, resp1) => {
-      if(err1) {
-        this.utilSrv.alertDialog('微信登录失败', err1);
-      } else {
-        api.getUser(resp1.data.openid, (err2, resp2) => {
-          console.log(resp2);
-          this.checkAndRegisterWechatUser(resp1.data.openid, resp2);
-        });
-      }
-    });*/
   }
  
   private checkAndRegisterWechatUser(data) {

@@ -8,6 +8,7 @@ import { UtilityService } from '../../services/utility.service';
 import { NewUserComponent } from './new-user.component';
 import { ForgotPasswordComponent } from './forgot-password.component';
 import { GlobalValidator } from '../common/global-validator';
+import { ThumbsStore } from '../../../../both/collections/images.collection';
  
 @Component({
   selector: 'login',
@@ -89,6 +90,7 @@ export class LoginComponent {
  
   private checkAndRegisterWechatUser(data) {
     let dummyMail = data.openId + '@wechat.com'; 
+    let profileImg = '/assets/none.png';
     MeteorObservable.call('checkUserExists',
       dummyMail,
     ).subscribe({
@@ -96,9 +98,13 @@ export class LoginComponent {
          if(checked) {
            this.loginCommon(dummyMail, this.generatePassword(data.openId));
          } else {
-           this.createUser(dummyMail,
+          ThumbsStore.importFromURL(data.headimgurl, {name: 'wechat.jpeg', type: 'image/jpeg',
+            extension: 'jpeg', description: 'from wechat'}, (err, file) => {
+              if (!err) profileImg = file.url; 
+              this.createUser(dummyMail,
                 this.generatePassword(data.openId), data.nickname,
-                data.headimgurl, 'wechat');
+                file.url, 'wechat');
+          });
          }      
        },
        error: (e: Error) => {

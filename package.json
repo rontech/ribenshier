@@ -45,7 +45,7 @@
     "rxjs": "5.0.0-beta.12",
     "spawn-sync": "^1.0.15",
     "try-thread-sleep": "^1.0.0",
-    "wechat-oauth": "^1.2.1",
+    "underscore": "^1.8.3",
     "zone.js": "^0.6.21"
   }
 }

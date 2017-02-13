@@ -23,6 +23,4 @@ declare module "gravatar" {
    export function url(email: any, params: any, https: any): any;
 }
 
-declare module "wechat-oauth" {
-  export class OAuth; 
-}
+declare module 'underscore';

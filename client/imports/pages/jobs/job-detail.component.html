@@ -21,7 +21,7 @@
   </ion-fab>
 
   <div *ngFor="let job of jobs | async">
-    <div><h3>{{job.title}{{setBacJob(job)}}</h3></div>
+    <div><h3>{{job.title}} {{setBackJob(job)}}</h3></div>
 
     <ion-item class="item-no-border">
       <ion-avatar item-left (click)="viewUser(job.creatorId)">

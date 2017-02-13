@@ -2,6 +2,7 @@ import { Main } from './imports/server-main/main';
 import { Meteor } from 'meteor/meteor'
 import { Accounts } from 'meteor/accounts-base';
 import './imports/methods/methods';
+import './imports/methods/wechat';
 import './imports/publications/topics.publication';
 import './imports/publications/comments.publication';
 import './imports/publications/users.publication';

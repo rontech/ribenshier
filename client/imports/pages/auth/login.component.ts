@@ -8,7 +8,6 @@ import { UtilityService } from '../../services/utility.service';
 import { NewUserComponent } from './new-user.component';
 import { ForgotPasswordComponent } from './forgot-password.component';
 import { GlobalValidator } from '../common/global-validator';
-import { OAuth } from 'wechat-oauth';
  
 @Component({
   selector: 'login',
@@ -64,94 +63,61 @@ export class LoginComponent {
     this.navCtrl.setRoot(ForgotPasswordComponent);
   }
 
-  loginViaFacebook(): void {
-    this.initFB();
-
-    let loader = this.loadingCtrl.create({
-      content: '连接服务器...',
-      dismissOnPageChange: true
-    });
-
-    loader.present();
-
-    setTimeout(() => {
-      loader.dismissAll();
-      FB.login((response) => {
-        this.statusChangeCallback(response);
-      }, {scope: 'public_profile,email'});
-    }, 3000);
-  }
-
   loginViaWeChat() {
     let scope = 'snsapi_userinfo';
     let state = '_' + (+new Date());
-    Wechat.auth(scope, state, response => {
-       this.setUserInfo(response.code);
+    Wechat.auth(scope, state, resp => {
+       this.registerWechatUser(resp);
     }, reason => {
       this.utilSrv.alertDialog('微信登录失败', reason);
     });
   }
 
-  private setUserInfo(code) {
+  private registerWechatUser(auth) {
+    MeteorObservable.call('getWechatAccount',
+       auth,
+     ).subscribe({
+       next: (data) => {
+         console.log(data);
+         this.checkAndRegisterWechatUser(data);
+       },
+       error: (e: Error) => {
+         this.utilSrv.alertDialog('微信用户信息读取失败', e);
+       }
+     });
+     /*
     let api = new OAuth('wxdd15b6922237eac5', 'd19ca18ad6bbc9bb2be1bd93e28db5a1');
 
-    api.getAccessToken(code, (err, resp) => {
-      if(err) {
-        this.utilSrv.alertDialog('微信登录失败', err);
+    api.getAccessToken(auth.code, (err1, resp1) => {
+      if(err1) {
+        this.utilSrv.alertDialog('微信登录失败', err1);
       } else {
-        api.getUser(resp.data.openid, (err2, resp2) => {
+        api.getUser(resp1.data.openid, (err2, resp2) => {
           console.log(resp2);
+          this.checkAndRegisterWechatUser(resp1.data.openid, resp2);
         });
       }
-    });
+    });*/
   }
-
-  private initFB() {
-    let js;
-    let fjs = document.getElementsByTagName('script')[0];
-    if (document.getElementById('facebook-jssdk')) return;
-    js = document.createElement('script');
-    js.id = 'facebook-jssdk';
-    js.src = '//connect.facebook.net/ja_JP/sdk.js';
-    fjs.parentNode.insertBefore(js, fjs);
-
-    window.fbAsyncInit = () => {
-      FB.init({
-        appId      : '383813588676104',
-        status     : true,
-        xfbml      : true,
-        version    : 'v2.5'
-      });
-    };
-  }
-
-  private statusChangeCallback(response): void {
-    if (response.status === 'connected') {
-      this.fbLogin();
-    } else if (response.status === 'not_authorized') {
-      this.utilSrv.alertDialog('提醒', '没有Facebook的许可。');
-    }
-  }
-
-  private fbLogin() {
-    FB.api('/me?fields=id, name, email, picture&locale=ja_JP', (response) => {
-      MeteorObservable.call('checkUserExists',
-                      response.email,
-        ).subscribe({
-        next: (checked) => {
-          if(checked) {
-            this.loginCommon(response.email, this.generatePassword(response.id));
-          } else {
-            this.createUser(response.email,
-                 this.generatePassword(response.id), response.name,
-                 response.picture.data.url, 'facebook');
-          }      
-        },
-        error: (e: Error) => {
-          console.log('e=', e);
-        }
-      });
-    });
+ 
+  private checkAndRegisterWechatUser(data) {
+    let dummyMail = data.openId + '@wechat.com'; 
+    MeteorObservable.call('checkUserExists',
+      dummyMail,
+    ).subscribe({
+       next: (checked) => {
+         if(checked) {
+           this.loginCommon(dummyMail, this.generatePassword(data.openId));
+         } else {
+           this.createUser(dummyMail,
+                this.generatePassword(data.openId), data.nickname,
+                data.headimgurl, 'wechat');
+         }      
+       },
+       error: (e: Error) => {
+         this.utilSrv.alertDialog('微信登录失败', e);
+       }
+     });
   }
 
   private generatePassword(id): string {

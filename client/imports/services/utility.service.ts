@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
-import { AlertController } from 'ionic-angular';
+import { Platform, AlertController } from 'ionic-angular';
 import { Meteor} from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
 import { Profile } from '../../../both/models/profile.model';
 
 @Injectable()
 export class UtilityService {
-  constructor(private alertCtrl: AlertController) {} 
+  constructor(
+    public platform: Platform,
+    private alertCtrl: AlertController) {} 
 
   editTitle(title: string, num: number): string {
     let dispTitle = title.slice(0, num);
@@ -87,5 +89,9 @@ export class UtilityService {
       admin: false,
       notify: true
     };
+  }
+
+  isMobileApp() {
+    return this.platform.is('cordova');
   }
 }

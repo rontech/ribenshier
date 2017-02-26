@@ -129,7 +129,7 @@ export class ActivityDetail implements OnInit {
   shareViaWechat() {
     Wechat.share({
       message: {
-        title: this.activity.title,
+        title: '日本事儿',
         description: '来自日本事儿的共享',
         media: {
           type: Wechat.Type.WEBPAGE,

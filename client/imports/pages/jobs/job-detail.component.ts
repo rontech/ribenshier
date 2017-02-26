@@ -109,7 +109,7 @@ export class JobDetail implements OnInit {
   shareViaWechat() {
     Wechat.share({
       message: {
-        title: this.job.title,
+        title: '日本事儿',
         description: '来自日本事儿的共享',
         media: {
           type: Wechat.Type.WEBPAGE,

@@ -114,7 +114,7 @@ export class TopicDetail implements OnInit {
   shareViaWechat() {
     Wechat.share({
       message: {
-        title: this.topic.title,
+        title: '日本事儿',
         description: '来自日本事儿的共享',
         thumb: this.topic.thumb,
         media: {

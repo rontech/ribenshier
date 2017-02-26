@@ -138,7 +138,7 @@ export class NewHouseComponent {
           this.updatePictureMain();
         } else {
           this.subPictureIds.push(result._id);
-          this.subPictures.push(result.path);
+          this.subPictures.push(result.url);
            this.subThumbIds = [];
            this.subThumbs = [];
           this.updatePictureSub();
@@ -197,7 +197,7 @@ export class NewHouseComponent {
           thumbs.forEach(thumb => {
             if(this.subThumbIds.indexOf(thumb._id) < 0) {
               this.subThumbIds.push(thumb._id);
-              this.subThumbs.push(thumb.path);
+              this.subThumbs.push(thumb.url);
             }
           });
           return thumbs;

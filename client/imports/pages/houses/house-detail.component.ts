@@ -112,7 +112,7 @@ export class HouseDetail implements OnInit {
     });
   }
 
-  setBackTopic(house) {
+  setBackHouse(house) {
     this.house = house;
     return '';
   }

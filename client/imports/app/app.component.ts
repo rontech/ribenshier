@@ -67,14 +67,18 @@ export class AppComponent implements OnInit{
 
     // Check if the user has already seen the tutorial
     if (platform.is('cordova')) {
-      if (Session.equals('hasSeenTutorial', '1')) {
-         this.rootPage = TabsContainerComponent;
-       } else {
-         this.rootPage = TutorialPage;
-       }
-     } else {
+      if(Meteor.userId()) {
+        this.rootPage = TabsContainerComponent;
+      } else {
+        if (Session.equals('hasSeenTutorial', '1')) {
+          this.rootPage = TabsContainerComponent;
+        } else {
+          this.rootPage = TutorialPage;
+        }
+      }
+    } else {
        this.rootPage = TabsContainerComponent;
-     }
+    }
 
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.

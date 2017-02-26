@@ -10,7 +10,7 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content class="activity-detail-content" *ngFor="let activity of activities | async">
+<ion-content class="activity-detail-content">
   <ion-fab *ngIf="utilSrv.isMobileApp()" right bottom>
     <button ion-fab mini color="dark"><ion-icon ios="ios-share-outline" md="md-share"></ion-icon></button>
     <ion-fab-list side="top">

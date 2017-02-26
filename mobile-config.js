@@ -12,10 +12,10 @@ App.info({
 // app 图标
 App.icons({
   //'iphone': 'appicons/icon.png',
-  'iphone_2x': 'appicons/Icon-60@2x.png',
-  'iphone_3x': 'appicons/Icon-60@3x.png',
-  'ipad' : 'appicons/Icon-76.png',
-  'ipad_2x' :'appicons/Icon-76@2x.png'
+  'iphone_2x': 'appicons/icon-60@2x.png',
+  'iphone_3x': 'appicons/icon-60@3x.png',
+  'ipad' : 'appicons/icon-76.png',
+  'ipad_2x' :'appicons/icon-76@2x.png'
   //'ipad_pro' : 'appicons/ipad_pro_167.png'
 });
 

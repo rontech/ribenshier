@@ -6,7 +6,8 @@ page-setting {
     background: map_get($colors, myapp);
     border: none;
     .profile-picture {
-      width:120px;
+      width: 120px;
+      height: 120px;
     }
   }
 

@@ -238,17 +238,17 @@ export class TopicsComponent implements OnInit {
   getActivityStatusImage(activity: Activity): string {
     //满员
     if(activity.status === '1') {
-      return 'assets/full.jpg';
+      return 'assets/img_finish.png';
     }
 
     //终止
     if(activity.status === '-1') {
-      return 'assets/cancel.jpg';
+      return 'assets/img_stop.png';
     }
 
     //过期
     if(activity.status === '9') {
-      return 'assets/outdated.png';
+      return 'assets/img_ time_limit.png';
     }
      
     if(activity.deadline) {
@@ -263,10 +263,10 @@ export class TopicsComponent implements OnInit {
       
       if(today.getTime() > deadline.getTime()) {
         activity.status = '9';
-        return 'assets/outdated.png';
+        return 'assets/img_ time_limit.png';
       }
     }
-    return 'assets/recruit.jpg';
+    return 'assets/img_collect.png';
   }
 
   viewUser(id): void {

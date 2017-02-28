@@ -18,6 +18,7 @@ import { ThumbsStore } from '../../../../both/collections/images.collection';
   ]
 })
 export class LoginComponent {
+  bWechatInstalled = false;
   loginForm: FormGroup;
   username = new FormControl('', Validators.compose([
                                  Validators.required,
@@ -36,6 +37,14 @@ export class LoginComponent {
     private loadingCtrl: LoadingController,
     private utilSrv: UtilityService
   ) {
+    if (utilSrv.isMobileApp()) {
+      Wechat.isInstalled(installed => {
+        bWechatInstalled = installed;
+      }, reason => {
+        console.log(reason);
+      });
+    }
+
     this.loginForm = this.formBuilder.group({
       username: this.username,
       password: this.password

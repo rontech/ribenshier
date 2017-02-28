@@ -52,7 +52,7 @@
 
         <ion-row responsive-sm>
           <ion-col>
-            <button *ngIf="utilSrv.isMobileApp()" ion-button (click)="loginViaWeChat()" color="wechat" icon-left block><ion-icon name="chatbubbles"></ion-icon>微信登录</button>
+            <button *ngIf="bWechatInstalled" ion-button (click)="loginViaWeChat()" color="wechat" icon-left block><ion-icon name="chatbubbles"></ion-icon>微信登录</button>
           </ion-col>
         </ion-row>
       </ion-item>

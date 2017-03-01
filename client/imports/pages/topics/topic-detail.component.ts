@@ -24,6 +24,7 @@ import { UserComponent } from '../../pages/user/user.component';
   ]
 })
 export class TopicDetail implements OnInit {
+  bWechatInstalled = false;
   topics: Observable<Topic[]>;
   topic: Topic;
   private topicId: string;
@@ -36,6 +37,14 @@ export class TopicDetail implements OnInit {
     private loadingCtrl: LoadingController,
     private utilSrv: UtilityService
   ) {
+    if (utilSrv.isMobileApp()) {
+      Wechat.isInstalled(installed => {
+        bWechatInstalled = installed;
+      }, reason => {
+        console.log(reason);
+      });
+    }
+
     this.topicId = navParams.get('topicId');
   }
  

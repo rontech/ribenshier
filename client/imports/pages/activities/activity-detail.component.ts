@@ -27,6 +27,7 @@ import { ActivitySecondComments } from '../../../../both/collections/activity-se
   ]
 })
 export class ActivityDetail implements OnInit {
+  bWechatInstalled = false;
   activities: Observable<Activity[]>;
   activity: Activity;
   private activityId: string;
@@ -41,6 +42,14 @@ export class ActivityDetail implements OnInit {
     private alertCtrl: AlertController,
     private utilSrv: UtilityService
   ) {
+    if (utilSrv.isMobileApp()) {
+      Wechat.isInstalled(installed => {
+        bWechatInstalled = installed;
+      }, reason => {
+        console.log(reason);
+      });
+    }
+
     this.activityId = navParams.get('activityId');
   }
  

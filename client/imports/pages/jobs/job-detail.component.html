@@ -13,7 +13,7 @@
 </ion-header>
 
 <ion-content class="job-detail-content">
-  <ion-fab right bottom *ngIf="utilSrv.isMobileApp()">
+  <ion-fab right bottom *ngIf="bWechatInstalled">
     <button ion-fab mini color="dark"><ion-icon ios="ios-share-outline" md="md-share"></ion-icon></button>
     <ion-fab-list side="top">
       <button ion-fab><ion-icon name="chatbubbles" (click)="shareViaWechat()"></ion-icon></button>

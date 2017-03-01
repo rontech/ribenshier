@@ -27,6 +27,7 @@ import { HouseSecondComments } from '../../../../both/collections/house-second-c
   ]
 })
 export class HouseDetail implements OnInit {
+  bWechatInstalled = false;
   houses: Observable<House[]>;
   house: House;
   private houseId: string;
@@ -47,6 +48,14 @@ export class HouseDetail implements OnInit {
     private popoverCtrl: PopoverController,
     private utilSrv: UtilityService
   ) {
+    if (utilSrv.isMobileApp()) {
+      Wechat.isInstalled(installed => {
+        bWechatInstalled = installed;
+      }, reason => {
+        console.log(reason);
+      });
+    }
+
     this.houseId = navParams.get('houseId');
   }
  

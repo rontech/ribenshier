@@ -24,6 +24,7 @@ import { JobSecondComments } from '../../../../both/collections/job-second-comme
   ]
 })
 export class JobDetail implements OnInit {
+  bWechatInstalled = false;
   jobs: Observable<Job[]>;
   job: Job;
   private jobId: string;
@@ -41,6 +42,14 @@ export class JobDetail implements OnInit {
     private popoverCtrl: PopoverController,
     private utilSrv: UtilityService
   ) {
+    if (utilSrv.isMobileApp()) {
+      Wechat.isInstalled(installed => {
+        bWechatInstalled = installed;
+      }, reason => {
+        console.log(reason);
+      });
+    }
+
     this.jobId = navParams.get('jobId');
   }
  

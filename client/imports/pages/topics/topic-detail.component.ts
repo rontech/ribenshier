@@ -39,7 +39,7 @@ export class TopicDetail implements OnInit {
   ) {
     if (utilSrv.isMobileApp()) {
       Wechat.isInstalled(installed => {
-        bWechatInstalled = installed;
+        this.bWechatInstalled = installed;
       }, reason => {
         console.log(reason);
       });

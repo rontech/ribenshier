@@ -37,9 +37,9 @@ export class LoginComponent {
     private loadingCtrl: LoadingController,
     private utilSrv: UtilityService
   ) {
-    if (utilSrv.isMobileApp()) {
+    if (this.utilSrv.isMobileApp()) {
       Wechat.isInstalled(installed => {
-        bWechatInstalled = installed;
+        this.bWechatInstalled = installed;
       }, reason => {
         console.log(reason);
       });

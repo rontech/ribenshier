@@ -125,7 +125,7 @@ export class UserComponent implements OnInit {
   private setJobsPostCount(id) {
     MeteorObservable.call('countByUser',
                     id,
-                    'house'
+                    'job'
       ).subscribe({
       next: (count: number) => {
         this.jobsPostCnt = count;
